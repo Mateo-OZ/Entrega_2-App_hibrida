@@ -1,2 +1,2 @@
-# Entrega-2---App-h-brida
+# Entrega_2-App_hibrida
 Aplicación móvil híbrida funcional para un único dispositivo Android
