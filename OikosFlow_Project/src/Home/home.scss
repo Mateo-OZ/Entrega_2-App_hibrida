@@ -130,4 +130,16 @@
         }
     }
 
+    &__controls {
+        margin: 1rem 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__export-import {
+        display: flex;
+        gap: 0.8rem;
+    }
+
 }

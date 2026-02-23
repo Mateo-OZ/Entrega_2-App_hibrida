@@ -1,17 +1,29 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa"
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+import { data, NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import membersData from "../data/home_datos.json";
+import { useRef } from "react";
 import "../Home/home.scss"
 
 const Home = () => {
-    const [members] = useState(membersData);
+    const [members, setMembers] = useState(() => {
+        const saved = localStorage.getItem("members");
+        return saved ? JSON.parse(saved) : membersData;
+    });
+
 
     const [visibleCount, setVisibleCount] = useState(6);
 
+    useEffect(() => {
+        localStorage.setItem("members", JSON.stringify(members));
+    }, [members]);
+
     const currenUser = "Tiago";
+
+    const fileInputRef = useRef(null);
 
     const getStatusClass = (status) => {
         switch (status) {
@@ -30,6 +42,58 @@ const Home = () => {
         } else {
             setVisibleCount(members.length);
         }
+    };
+
+    const handleDownloadJSON = () => {
+        const dataToDownload = localStorage.getItem("members");
+
+        if (!dataToDownload) {
+            alert("No hay datos para descargar.");
+            return;
+        }
+
+        const blob = new Blob([dataToDownload], {
+            type: "application/json",
+        });
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "home_backup.json";
+        link.click();
+
+        URL.revokeObjectURL(url);
+    };
+
+    const handleOpenFilePicker = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleUploadJSON = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            try {
+                const parsedData = JSON.parse(e.target.result);
+
+                if (!Array.isArray(parsedData)) {
+                    alert("El archivo debe contener un array válido.");
+                    return;
+                }
+
+                setMembers(parsedData); // Esto automáticamente guardará en localStorage
+                alert("Datos cargados correctamente.");
+            } catch (error) {
+                alert("El archivo JSON tiene un error de formato.");
+                console.error(error);
+            }
+        };
+
+        reader.readAsText(file);
     };
 
     return (
@@ -71,13 +135,33 @@ const Home = () => {
                 ))}
             </section>
 
-            {/* Ver más */}
-            <div className="home__more">
-                {members.length > 10 && (
-                    <button onClick={handleToggleView}>
-                        {visibleCount >= members.length ? "Ver Menos..." : "Ver Mas..."}
+            <div className="home__controls">
+                {/* Ver más */}
+                <div className="home__more">
+                    {members.length > 10 && (
+                        <button onClick={handleToggleView}>
+                            {visibleCount >= members.length ? "Ver Menos..." : "Ver Mas..."}
+                        </button>
+                    )}
+                </div>
+                {/* Exportar */}
+                <div className="home__export-import">
+                    <button onClick={handleDownloadJSON} className="btn-secondary">
+                        Descargar JSON
                     </button>
-                )}
+                    {/* Importar */}
+                    <button onClick={handleOpenFilePicker} className="btn-primary">
+                        Subir JSON
+                    </button>
+
+                    <input
+                        type="file"
+                        accept=".json"
+                        ref={fileInputRef}
+                        onChange={handleUploadJSON}
+                        style={{ display: "none" }}
+                    />
+                </div>
             </div>
 
             {/* Bottom Navigation */}
@@ -102,7 +186,7 @@ const Home = () => {
                     <span>Perfil</span>
                 </NavLink>
             </nav>
-        </div>
+        </div >
     );
 };
 
