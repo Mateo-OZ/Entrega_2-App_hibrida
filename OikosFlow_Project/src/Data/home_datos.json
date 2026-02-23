@@ -1,0 +1,74 @@
+[
+    {
+        "id": 1,
+        "name": "Darlene",
+        "role": "Dog Trainer",
+        "status": "Activo"
+    },
+    {
+        "id": 2,
+        "name": "Ronald",
+        "role": "Marketing",
+        "status": "Inactivo"
+    },
+    {
+        "id": 3,
+        "name": "Jerome",
+        "role": "President",
+        "status": "Activo"
+    },
+    {
+        "id": 4,
+        "name": "Robert",
+        "role": "Medical",
+        "status": "Activo"
+    },
+    {
+        "id": 5,
+        "name": "Bessie",
+        "role": "Dog Trainer",
+        "status": "Deshabilitado"
+    },
+    {
+        "id": 6,
+        "name": "Mark",
+        "role": "Developer",
+        "status": "Activo"
+    },
+    {
+        "id": 7,
+        "name": "Angela",
+        "role": "Designer",
+        "status": "Inactivo"
+    },
+    {
+        "id": 8,
+        "name": "John",
+        "role": "Teacher",
+        "status": "Activo"
+    },
+    {
+        "id": 9,
+        "name": "Laura",
+        "role": "Engineer",
+        "status": "Activo"
+    },
+    {
+        "id": 10,
+        "name": "Pedro",
+        "role": "Chef",
+        "status": "Inactivo"
+    },
+    {
+        "id": 11,
+        "name": "Sofia",
+        "role": "Lawyer",
+        "status": "Activo"
+    },
+    {
+        "id": 12,
+        "name": "Daniel",
+        "role": "Nurse",
+        "status": "Activo"
+    }
+]
