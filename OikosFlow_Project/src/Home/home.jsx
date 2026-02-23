@@ -62,10 +62,10 @@ const Home = () => {
                 {members.slice(0, visibleCount).map((member) => (
                     <div className="table__row" key={member.id}>
                         <span>{member.id}</span>
-                        <span>{member.name}</span>
-                        <span>{member.role}</span>
-                        <span className={getStatusClass(member.status)}>
-                            {member.status}
+                        <span>{member.nombre_encargado}</span>
+                        <span>{member.trabajo_a_realizar}</span>
+                        <span className={getStatusClass(member.estado)}>
+                            {member.estado}
                         </span>
                     </div>
                 ))}
