@@ -20,8 +20,7 @@ const Home = () => {
         { id: 12, name: "Daniel", role: "Nurse", status: "Activo" },
     ]);
 
-    const [showModal, setShowModal] = useState(false);
-    const [taskName, setTaskName] = useState("");
+    const [visibleCount, setVisibleCount] = useState(6);
 
     const currenUser = "Tiago";
 
@@ -34,6 +33,14 @@ const Home = () => {
             case "Deshabilitado":
                 return "Estado Deshabilitado";
         };
+    };
+
+    const handleToggleView = () => {
+        if (visibleCount >= members.length) {
+            setVisibleCount(6);
+        } else {
+            setVisibleCount(members.length);
+        }
     };
 
     return (
@@ -63,7 +70,7 @@ const Home = () => {
                     <span>Estado</span>
                 </div>
 
-                {members.map((member) => (
+                {members.slice(0, visibleCount).map((member) => (
                     <div className="table__row" key={member.id}>
                         <span>{member.id}</span>
                         <span>{member.name}</span>
@@ -77,7 +84,11 @@ const Home = () => {
 
             {/* Ver más */}
             <div className="home__more">
-                <button>Ver más...</button>
+                {members.length > 10 && (
+                    <button onClick={handleToggleView}>
+                        {visibleCount >= members.length ? "Ver Menos..." : "Ver Mas..."}
+                    </button>
+                )}
             </div>
 
             {/* Bottom Navigation */}
