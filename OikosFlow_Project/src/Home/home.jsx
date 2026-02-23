@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa"
+import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import membersData from "../data/home_datos.json";
@@ -82,19 +83,23 @@ const Home = () => {
             {/* Bottom Navigation */}
             <nav className="home__bottom-nav">
                 <NavLink to="/" end>
-                    Home
+                    <FaHome />
+                    <span>Home</span>
                 </NavLink>
 
                 <NavLink to="/tareas">
-                    Tareas
+                    <FaTasks />
+                    <span>Tareas</span>
                 </NavLink>
 
                 <NavLink to="/historial">
-                    Historial
+                    <FaHistory />
+                    <span>Historial</span>
                 </NavLink>
 
                 <NavLink to="/perfil">
-                    Perfil
+                    <FaUser />
+                    <span>Perfil</span>
                 </NavLink>
             </nav>
         </div>

@@ -103,20 +103,30 @@
         margin-top: auto;
         display: flex;
         justify-content: space-around;
-        padding: 1rem 0;
+        align-items: center;
+        padding: 0.8rem 0;
         background-color: white;
         border-top: 1px solid #ddd;
 
         a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-decoration: none;
             color: #888;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
+            gap: 4px;
             transition: 0.2s ease;
+
+            svg {
+                font-size: 1.2rem;
+            }
         }
 
         a.active {
             color: #4f5d75;
-            font-weight: bold;
+            font-weight: 600;
         }
     }
 
