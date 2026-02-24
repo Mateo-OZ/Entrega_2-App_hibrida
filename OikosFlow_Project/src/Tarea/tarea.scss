@@ -1,0 +1,98 @@
+.tareas {
+    padding: 1.5rem;
+    background-color: #f5f6fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        text-align: center;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    &__subtitle {
+        margin-bottom: 1rem;
+        color: #4f5d75;
+    }
+
+    &__table {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 2rem;
+
+        .table__header,
+        .table__row {
+            display: grid;
+            grid-template-columns: 40px 1fr 2fr 120px;
+            padding: 0.8rem;
+            align-items: center;
+        }
+
+        .table__header {
+            font-weight: bold;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table__row {
+            border-bottom: 1px solid #eee;
+        }
+    }
+}
+
+/* Estados */
+.estado {
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    text-transform: capitalize;
+}
+
+.estado.activo {
+    background-color: #4f5d75;
+    color: white;
+}
+
+.estado.inactivo {
+    background-color: #dcdde1;
+    color: #333;
+}
+
+.estado.deshabilitado {
+    background-color: transparent;
+    border: 1px solid #4f5d75;
+    color: #4f5d75;
+}
+
+/* Bottom Navigation (igual que Home) */
+.bottom-nav {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.8rem 0;
+    background-color: white;
+    border-top: 1px solid #ddd;
+
+    a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #888;
+        font-size: 0.75rem;
+        gap: 4px;
+
+        svg {
+            font-size: 1.2rem;
+        }
+    }
+
+    a.active {
+        color: #4f5d75;
+        font-weight: 600;
+    }
+}

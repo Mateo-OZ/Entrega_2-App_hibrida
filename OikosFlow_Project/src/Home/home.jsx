@@ -166,7 +166,7 @@ const Home = () => {
 
             {/* Bottom Navigation */}
             <nav className="home__bottom-nav">
-                <NavLink to="/" end>
+                <NavLink to="/home" end>
                     <FaHome />
                     <span>Home</span>
                 </NavLink>
