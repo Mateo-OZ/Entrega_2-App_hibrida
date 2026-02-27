@@ -3,12 +3,12 @@ import tareasData from "../data/tareas_datos.json";
 import "../Tarea/tarea.scss";
 import { NavLink } from "react-router-dom";
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const Tareas = () => {
     const usuarioActivo =
         localStorage.getItem("usuarioActivo") || "Tiago";
 
-    // ✅ CORREGIDO
     const [tareas, setTareas] = useState(() => {
         const saved = localStorage.getItem("tareas");
         return saved ? JSON.parse(saved) : tareasData;
@@ -46,7 +46,10 @@ const Tareas = () => {
 
     const handleAddTask = (e) => {
         e.preventDefault();
-        if (!nuevoTrabajo.trim()) return;
+        if (!nuevoTrabajo.trim()) {
+            toast.error("La tarea no puede estar vacía");
+            return;
+        }
 
         const ultimoId =
             tareas.length > 0
@@ -61,6 +64,7 @@ const Tareas = () => {
         };
 
         setTareas([...tareas, nuevaTarea]);
+        toast.success("Tarea añadida correctamente");
         setShowModal(false);
         setNuevoTrabajo("");
     };
@@ -101,7 +105,6 @@ const Tareas = () => {
                     <span>Estado</span>
                 </div>
 
-                {/* ✅ USANDO EL FILTRO CORRECTO */}
                 {tareasFiltradas.map((tarea) => (
                     <div className="table__row" key={tarea.id}>
                         <span>{tarea.id}</span>
@@ -114,7 +117,7 @@ const Tareas = () => {
                 ))}
             </div>
 
-            <button className="btn-add" onClick={() => setShowModal(true)}>
+            <button className="btn btn-add" onClick={() => setShowModal(true)}>
                 Añadir Tarea
             </button>
 
