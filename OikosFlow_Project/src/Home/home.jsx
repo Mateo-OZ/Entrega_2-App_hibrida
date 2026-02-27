@@ -9,6 +9,11 @@ import { useRef } from "react";
 import "../Home/home.scss"
 
 const Home = () => {
+    const handleFullReset = () => {
+        localStorage.clear();
+        window.location.reload();
+    };
+
     const [members, setMembers] = useState(() => {
         const saved = localStorage.getItem("members");
         return saved ? JSON.parse(saved) : membersData;
@@ -48,7 +53,7 @@ const Home = () => {
         const dataToDownload = localStorage.getItem("members");
 
         if (!dataToDownload) {
-            alert("No hay datos para descargar.");
+            toast.error("No hay datos para descargar");
             return;
         }
 
@@ -64,6 +69,8 @@ const Home = () => {
         link.click();
 
         URL.revokeObjectURL(url);
+
+        toast.success("JSON descargado correctamente");
     };
 
     const handleOpenFilePicker = () => {
@@ -85,10 +92,10 @@ const Home = () => {
                     return;
                 }
 
-                setMembers(parsedData); // Esto automáticamente guardará en localStorage
-                alert("Datos cargados correctamente.");
+                setMembers(parsedData);
+                toast.success("Datos cargados correctamente");
             } catch (error) {
-                alert("El archivo JSON tiene un error de formato.");
+                toast.error("Archivo JSON inválido");
                 console.error(error);
             }
         };
@@ -146,11 +153,11 @@ const Home = () => {
                 </div>
                 {/* Exportar */}
                 <div className="home__export-import">
-                    <button onClick={handleDownloadJSON} className="btn-secondary">
+                    <button onClick={handleDownloadJSON} className="btn btn-add">
                         Descargar JSON
                     </button>
                     {/* Importar */}
-                    <button onClick={handleOpenFilePicker} className="btn-primary">
+                    <button onClick={handleOpenFilePicker} className="btn btn-add">
                         Subir JSON
                     </button>
 
@@ -162,11 +169,14 @@ const Home = () => {
                         style={{ display: "none" }}
                     />
                 </div>
+                <button onClick={handleFullReset}>
+                    Restaurar sistema
+                </button>
             </div>
 
             {/* Bottom Navigation */}
             <nav className="home__bottom-nav">
-                <NavLink to="/" end>
+                <NavLink to="/home" end>
                     <FaHome />
                     <span>Home</span>
                 </NavLink>

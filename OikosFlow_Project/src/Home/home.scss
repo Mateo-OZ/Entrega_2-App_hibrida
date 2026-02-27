@@ -143,3 +143,18 @@
     }
 
 }
+
+.btn-add {
+    align-self: center;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    background-color: #4f5d75;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}

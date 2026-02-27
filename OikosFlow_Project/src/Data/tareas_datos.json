@@ -1,0 +1,104 @@
+[
+    {
+        "id": 1,
+        "nombre_encargado": "Darlene",
+        "trabajo_a_realizar": "Limpiar la cocina y desinfectar superficies",
+        "estado": "Activo"
+    },
+    {
+        "id": 2,
+        "nombre_encargado": "Ronald",
+        "trabajo_a_realizar": "Sacar la basura y reciclar",
+        "estado": "Inactivo"
+    },
+    {
+        "id": 3,
+        "nombre_encargado": "Jerome",
+        "trabajo_a_realizar": "Revisar y pagar servicios (agua, luz, internet)",
+        "estado": "Activo"
+    },
+    {
+        "id": 4,
+        "nombre_encargado": "Robert",
+        "trabajo_a_realizar": "Comprar víveres y artículos de limpieza",
+        "estado": "Activo"
+    },
+    {
+        "id": 5,
+        "nombre_encargado": "Bessie",
+        "trabajo_a_realizar": "Regar las plantas y cuidar el jardín",
+        "estado": "Deshabilitado"
+    },
+    {
+        "id": 6,
+        "nombre_encargado": "Mark",
+        "trabajo_a_realizar": "Reparar la llave del baño que gotea",
+        "estado": "Activo"
+    },
+    {
+        "id": 7,
+        "nombre_encargado": "Angela",
+        "trabajo_a_realizar": "Organizar el ropero comunitario",
+        "estado": "Inactivo"
+    },
+    {
+        "id": 8,
+        "nombre_encargado": "John",
+        "trabajo_a_realizar": "Barrer y trapear áreas comunes",
+        "estado": "Activo"
+    },
+    {
+        "id": 9,
+        "nombre_encargado": "Laura",
+        "trabajo_a_realizar": "Lavar los platos y ordenar la cocina",
+        "estado": "Activo"
+    },
+    {
+        "id": 10,
+        "nombre_encargado": "Pedro",
+        "trabajo_a_realizar": "Limpiar el refrigerador y revisar fechas de vencimiento",
+        "estado": "Inactivo"
+    },
+    {
+        "id": 11,
+        "nombre_encargado": "Sofia",
+        "trabajo_a_realizar": "Administrar el fondo común para gastos",
+        "estado": "Activo"
+    },
+    {
+        "id": 12,
+        "nombre_encargado": "Daniel",
+        "trabajo_a_realizar": "Cambiar las sábanas y toallas sucias",
+        "estado": "Activo"
+    },
+    {
+        "id": 13,
+        "nombre_encargado": "Tiago",
+        "trabajo_a_realizar": "Limpiar los baños y reponer papel higiénico",
+        "estado": "Activo"
+    },
+    {
+        "id": 14,
+        "nombre_encargado": "Tiago",
+        "trabajo_a_realizar": "Organizar la despensa y revisar productos vencidos",
+        "estado": "Activo"
+    },
+    {
+        "id": 15,
+        "nombre_encargado": "Tiago",
+        "trabajo_a_realizar": "Revisar bombillos dañados y cambiarlos",
+        "estado": "Inactivo"
+    },
+    {
+        "id": 16,
+        "nombre_encargado": "Tiago",
+        "trabajo_a_realizar": "Limpiar ventanas del salón principal",
+        "estado": "Activo"
+    },
+    {
+        "id": 17,
+        "nombre_encargado": "Tiago",
+        "trabajo_a_realizar": "Ordenar herramientas del cuarto de mantenimiento",
+        "estado": "Deshabilitado"
+    }
+]
