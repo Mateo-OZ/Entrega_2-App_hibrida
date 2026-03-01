@@ -11,6 +11,9 @@ const Historial = () => {
     return saved ? JSON.parse(saved) : historialData;
   });
 
+  const [showModal, setShowModal] = useState(false);
+  const [busqueda, setBusqueda] = useState("");
+
   const [visibleCount, setVisibleCount] = useState(6);
 
   useEffect(() => {
@@ -38,6 +41,25 @@ const Historial = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    const filtrados = historialData.filter((member) =>
+      member.nombre_encargado
+        .toLowerCase()
+        .includes(busqueda.toLowerCase())
+    );
+
+    setMembers(filtrados);
+    setShowModal(false);
+    setBusqueda("");
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setBusqueda("");
+  };
+
   return (
     <div className="historial">
 
@@ -63,6 +85,7 @@ const Historial = () => {
         ))}
       </section>
 
+      {/* CONTROLES */}
       <div className="historial__controls">
 
         <div className="historial__more">
@@ -75,13 +98,16 @@ const Historial = () => {
           )}
         </div>
 
-        {/* BOTÓN EXISTE PERO NO HACE NADA */}
-        <button className="btn btn-add">
+        <button
+          className="btn btn-add"
+          onClick={() => setShowModal(true)}
+        >
           Buscar
         </button>
 
       </div>
 
+      {/* BOTTOM NAV */}
       <nav className="historial__bottom-nav">
         <NavLink to="/home" end>
           <FaHome />
@@ -103,6 +129,44 @@ const Historial = () => {
           <span>Perfil</span>
         </NavLink>
       </nav>
+
+      {/* MODAL */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-card">
+
+            <h2 className="modal-title">Buscar Encargado</h2>
+
+            <form onSubmit={handleSearch} className="modal-form">
+
+              <div className="form-group">
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  value={busqueda}
+                  onChange={(e) => setBusqueda(e.target.value)}
+                  placeholder="Ej: Tiago"
+                />
+              </div>
+
+              <div className="modal-buttons">
+                <button
+                  type="button"
+                  className="btn-cancel"
+                  onClick={handleCloseModal}
+                >
+                  Cancelar
+                </button>
+
+                <button type="submit" className="btn-add-task">
+                  Buscar
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      )}
 
     </div>
   );
