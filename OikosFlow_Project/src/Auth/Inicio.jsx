@@ -1,7 +1,15 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Inicio = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const usuarioActivo = localStorage.getItem("usuarioActivo");
+    if (usuarioActivo) {
+      navigate("/home", { replace: true });
+    }
+  }, [navigate]);
 
   return (
     <div className="auth">

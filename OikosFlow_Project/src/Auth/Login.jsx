@@ -1,11 +1,34 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import usuariosBase from "../Data/usuarios_datos.json";
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const [correo, setCorreo] = useState("");
+  const [contrasena, setContrasena] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const stored = localStorage.getItem("usuarios");
+    const usuarios = stored ? JSON.parse(stored) : usuariosBase;
+
+    const encontrado = usuarios.find(
+      (u) =>
+        u.correo.toLowerCase() === correo.toLowerCase() &&
+        u.contrasena === contrasena
+    );
+
+    if (!encontrado) {
+      toast.error("Correo o contraseña incorrectos");
+      return;
+    }
+
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    localStorage.setItem("usuarioActivo", encontrado.nombre_completo);
+
     toast.success("Sesión iniciada correctamente.");
     navigate("/home");
   };
@@ -34,6 +57,8 @@ const Login = () => {
               className="auth__input"
               type="email"
               placeholder="correo@mail.com"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
             />
           </label>
 
@@ -43,6 +68,8 @@ const Login = () => {
               className="auth__input"
               type="password"
               placeholder="••••••••"
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
             />
           </label>
 

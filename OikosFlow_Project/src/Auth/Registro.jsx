@@ -1,13 +1,51 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useState } from "react";
+import usuariosBase from "../Data/usuarios_datos.json";
 
 const Registro = () => {
   const navigate = useNavigate();
 
+  const [nombreCompleto, setNombreCompleto] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [fechaNacimiento, setFechaNacimiento] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [contrasena, setContrasena] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast.success("Cuenta creada correctamente. Inicia sesión para continuar.");
-    navigate("/auth/login");
+
+    if (!nombreCompleto || !telefono || !fechaNacimiento || !correo || !contrasena) {
+      toast.error("Todos los campos son obligatorios");
+      return;
+    }
+
+    const stored = localStorage.getItem("usuarios");
+    const usuarios = stored ? JSON.parse(stored) : usuariosBase;
+
+    const existe = usuarios.some((u) => u.correo.toLowerCase() === correo.toLowerCase());
+    if (existe) {
+      toast.error("Ya existe un usuario con este correo");
+      return;
+    }
+
+    const ultimoId = usuarios.length > 0 ? Math.max(...usuarios.map((u) => u.id)) : 0;
+
+    const nuevoUsuario = {
+      id: ultimoId + 1,
+      nombre_completo: nombreCompleto,
+      telefono: telefono,
+      fecha_nacimiento: fechaNacimiento,
+      correo,
+      contrasena,
+    };
+
+    const actualizados = [...usuarios, nuevoUsuario];
+    localStorage.setItem("usuarios", JSON.stringify(actualizados));
+    localStorage.setItem("usuarioActivo", nombreCompleto);
+
+    toast.success("Cuenta creada correctamente");
+    navigate("/home");
   };
 
   return (
@@ -43,6 +81,8 @@ const Registro = () => {
               className="auth__input"
               type="text"
               placeholder="Nombre completo"
+              value={nombreCompleto}
+              onChange={(e) => setNombreCompleto(e.target.value)}
             />
           </label>
 
@@ -54,6 +94,8 @@ const Registro = () => {
                 className="auth__input"
                 type="tel"
                 placeholder="Número"
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
               />
             </div>
           </label>
@@ -64,6 +106,8 @@ const Registro = () => {
               className="auth__input"
               type="text"
               placeholder="MM / DD / YYYY"
+              value={fechaNacimiento}
+              onChange={(e) => setFechaNacimiento(e.target.value)}
             />
           </label>
 
@@ -73,6 +117,8 @@ const Registro = () => {
               className="auth__input"
               type="email"
               placeholder="correo@mail.com"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
             />
           </label>
 
@@ -82,6 +128,8 @@ const Registro = () => {
               className="auth__input"
               type="password"
               placeholder="••••••••"
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
             />
           </label>
 
