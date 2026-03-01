@@ -3,7 +3,13 @@ import { Toaster } from "react-hot-toast";
 import Home from "./Home/home.jsx";
 import Tarea from "./Tarea/tarea.jsx";
 import Historial from "./Historial/historial.jsx";
-import './App.css'
+import Inicio from "./Auth/Inicio.jsx";
+import Registro from "./Auth/Registro.jsx";
+import Login from "./Auth/Login.jsx";
+import RecuperarSms from "./Auth/RecuperarSms.jsx";
+import RecuperarCorreo from "./Auth/RecuperarCorreo.jsx";
+import "./App.css";
+import "./Auth/auth.scss";
 
 function App() {
   return (
@@ -43,6 +49,11 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/tareas" element={<Tarea />} />
         <Route path="/historial" element={<Historial />} />
+        <Route path="/auth" element={<Inicio />} />
+        <Route path="/auth/registro" element={<Registro />} />
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/recuperar-sms" element={<RecuperarSms />} />
+        <Route path="/auth/recuperar-correo" element={<RecuperarCorreo />} />
       </Routes>
     </>
   );

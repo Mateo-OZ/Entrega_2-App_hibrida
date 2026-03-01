@@ -1,0 +1,34 @@
+import { useNavigate } from "react-router-dom";
+
+const Inicio = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="auth">
+      <div className="auth__card">
+        <div className="auth__image" />
+
+        <h1 className="auth__title">OikosFlow</h1>
+        <p className="auth__subtitle">Tu hogar, tu equipo, tu tarea</p>
+
+        <div className="auth__actions">
+          <button
+            className="auth__button auth__button--primary"
+            onClick={() => navigate("/auth/registro")}
+          >
+            Registro
+          </button>
+          <button
+            className="auth__button auth__button--secondary"
+            onClick={() => navigate("/auth/login")}
+          >
+            Iniciar Sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Inicio;
+
