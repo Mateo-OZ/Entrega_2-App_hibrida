@@ -3,12 +3,22 @@ import "./perfil.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
 import profileImage from "../Data/profile.jpg";
+import usuariosBase from "../Data/usuarios_datos.json";
 
 const Perfil = () => {
 
   const navigate = useNavigate();
 
   const [usuario, setUsuario] = useState({
+    nombre_completo: "",
+    telefono: "",
+    fecha_nacimiento: "",
+    correo: ""
+  });
+
+  const [showModal, setShowModal] = useState(false);
+
+  const [formData, setFormData] = useState({
     nombre_completo: "",
     telefono: "",
     fecha_nacimiento: "",
@@ -27,11 +37,34 @@ const Perfil = () => {
           fecha_nacimiento: parsed.fecha_nacimiento || "",
           correo: parsed.correo || ""
         });
+
+        setFormData(parsed);
       } catch (error) {
         console.error("Error leyendo usuarioActivo:", error);
       }
     }
   }, []);
+
+  const handleEdit = (e) => {
+    e.preventDefault();
+
+    const stored = localStorage.getItem("usuarios");
+    const usuarios = stored ? JSON.parse(stored) : usuariosBase;
+
+    const actualizados = usuarios.map((u) =>
+      u.correo === usuario.correo ? { ...u, ...formData } : u
+    );
+
+    localStorage.setItem("usuarios", JSON.stringify(actualizados));
+    localStorage.setItem("usuarioActivo", JSON.stringify(formData));
+
+    setUsuario(formData);
+    setShowModal(false);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className="perfil">
@@ -72,6 +105,7 @@ const Perfil = () => {
       <div className="perfil__edit">
         <button 
           className="btn btn-add"
+          onClick={() => setShowModal(true)}
         >
           Editar
         </button>
@@ -118,6 +152,68 @@ const Perfil = () => {
           <span>Perfil</span>
         </NavLink>
       </nav>
+
+      {/* MODAL EDITAR */}
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-card">
+
+            <h2 className="modal-title">Editar Perfil</h2>
+
+            <form onSubmit={handleEdit} className="modal-form">
+
+              <div className="form-group">
+                <label>Nombre</label>
+                <input
+                  type="text"
+                  value={formData.nombre_completo}
+                  onChange={(e) =>
+                    setFormData({ ...formData, nombre_completo: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Telefono</label>
+                <input
+                  type="text"
+                  value={formData.telefono}
+                  onChange={(e) =>
+                    setFormData({ ...formData, telefono: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Fecha Nacimiento</label>
+                <input
+                  type="text"
+                  value={formData.fecha_nacimiento}
+                  onChange={(e) =>
+                    setFormData({ ...formData, fecha_nacimiento: e.target.value })
+                  }
+                />
+              </div>
+
+              <div className="modal-buttons">
+                <button
+                  type="button"
+                  className="btn-cancel"
+                  onClick={handleCloseModal}
+                >
+                  Cancelar
+                </button>
+
+                <button type="submit" className="btn-add-task">
+                  Guardar
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+      )}
 
     </div>
   );
