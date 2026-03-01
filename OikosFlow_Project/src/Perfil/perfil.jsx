@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import "./perfil.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
@@ -7,12 +8,30 @@ const Perfil = () => {
 
   const navigate = useNavigate();
 
-  const usuario = {
-    nombre: "Juan Pérez",
-    telefono: "+57 3001234567",
-    fechaNacimiento: "10/05/1998",
-    correo: "juan@email.com"
-  };
+  const [usuario, setUsuario] = useState({
+    nombre_completo: "",
+    telefono: "",
+    fecha_nacimiento: "",
+    correo: ""
+  });
+
+  useEffect(() => {
+    const stored = localStorage.getItem("usuarioActivo");
+
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setUsuario({
+          nombre_completo: parsed.nombre_completo || "",
+          telefono: parsed.telefono || "",
+          fecha_nacimiento: parsed.fecha_nacimiento || "",
+          correo: parsed.correo || ""
+        });
+      } catch (error) {
+        console.error("Error leyendo usuarioActivo:", error);
+      }
+    }
+  }, []);
 
   return (
     <div className="perfil">
@@ -29,7 +48,7 @@ const Perfil = () => {
 
         <div className="form-group">
           <label>Nombre Completo</label>
-          <input type="text" value={usuario.nombre} readOnly />
+          <input type="text" value={usuario.nombre_completo} readOnly />
         </div>
 
         <div className="form-group">
@@ -39,7 +58,7 @@ const Perfil = () => {
 
         <div className="form-group">
           <label>Fecha Nacimiento</label>
-          <input type="text" value={usuario.fechaNacimiento} readOnly />
+          <input type="text" value={usuario.fecha_nacimiento} readOnly />
         </div>
 
         <div className="form-group">
@@ -53,7 +72,6 @@ const Perfil = () => {
       <div className="perfil__edit">
         <button 
           className="btn btn-add"
-          onClick={() => navigate("/editar-perfil")}
         >
           Editar
         </button>
@@ -62,14 +80,17 @@ const Perfil = () => {
       <div className="perfil__actions">
         <button 
           className="btn btn-add"
-          onClick={() => navigate("/cambiar-contrasena-correo")}
+          onClick={() => navigate("/auth/recuperar-sms")}
         >
           Cambiar <br /> Contraseña
         </button>
 
         <button 
           className="btn btn-add"
-          onClick={() => navigate("/login")}
+          onClick={() => {
+            localStorage.removeItem("usuarioActivo");
+            navigate("/auth");
+          }}
         >
           Cerrar Sesión
         </button>
