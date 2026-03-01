@@ -26,7 +26,7 @@ const Home = () => {
         localStorage.setItem("members", JSON.stringify(members));
     }, [members]);
 
-    const currenUser = "Tiago";
+    const currenUser = localStorage.getItem("usuarioActivo") || "Tiago";
 
     const fileInputRef = useRef(null);
 
