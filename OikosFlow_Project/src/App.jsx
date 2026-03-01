@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import Home from "./Home/home.jsx";
 import Tarea from "./Tarea/tarea.jsx";
 import Historial from "./Historial/historial.jsx";
+import Perfil from "./Perfil/perfil.jsx";
 import './App.css'
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/tareas" element={<Tarea />} />
         <Route path="/historial" element={<Historial />} />
+        <Route path="/perfil" element={<Perfil />} />
       </Routes>
     </>
   );
