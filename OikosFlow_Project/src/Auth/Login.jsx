@@ -1,15 +1,29 @@
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    toast.success("Sesión iniciada correctamente.");
+    navigate("/home");
   };
 
   return (
     <div className="auth">
       <div className="auth__card auth__card--form">
+        <div className="auth__header">
+          <button
+            type="button"
+            className="auth__back-button"
+            onClick={() => navigate("/auth")}
+          >
+            ←
+          </button>
+          <span className="auth__header-title">Login</span>
+        </div>
+
         <h2 className="auth__form-title">¡Bienvenido!</h2>
         <p className="auth__form-subtitle">Inicia sesión en tu cuenta</p>
 

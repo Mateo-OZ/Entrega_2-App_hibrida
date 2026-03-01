@@ -45,7 +45,7 @@ function App() {
         }}
       />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Inicio />} />
         <Route path="/home" element={<Home />} />
         <Route path="/tareas" element={<Tarea />} />
         <Route path="/historial" element={<Historial />} />

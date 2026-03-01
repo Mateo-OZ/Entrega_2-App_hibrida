@@ -8,6 +8,8 @@ const Inicio = () => {
       <div className="auth__card">
         <div className="auth__image" />
 
+        <div className="auth__logo-circle" />
+
         <h1 className="auth__title">OikosFlow</h1>
         <p className="auth__subtitle">Tu hogar, tu equipo, tu tarea</p>
 

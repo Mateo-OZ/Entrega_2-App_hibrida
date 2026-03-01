@@ -1,22 +1,27 @@
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const RecuperarCorreo = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    toast.success("Te hemos enviado un correo con instrucciones para recuperar tu contraseña.");
   };
 
   return (
     <div className="auth">
       <div className="auth__card auth__card--form">
-        <button
-          type="button"
-          className="auth__back-button"
-          onClick={() => navigate("/auth/login")}
-        >
-          ←
-        </button>
+        <div className="auth__header">
+          <button
+            type="button"
+            className="auth__back-button"
+            onClick={() => navigate("/auth/login")}
+          >
+            ←
+          </button>
+          <span className="auth__header-title">Recuperar</span>
+        </div>
 
         <h2 className="auth__form-title">Recuperar Contraseña</h2>
         <p className="auth__form-subtitle">Verificación por Gmail</p>
