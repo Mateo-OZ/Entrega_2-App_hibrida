@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa"
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
-import { data, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import tareasData from "../data/datos_tareas_unificados.json";
 import usuariosData from "../data/usuarios.json";
@@ -15,32 +15,22 @@ const Home = () => {
 
     const handleFullReset = () => {
         localStorage.clear();
-        setTareas(tareasData); // Reset a datos originales
-        setUsuarios(usuariosData); // Reset a datos originales
+        setTareas(tareasData);
+        setUsuarios(usuariosData);
         window.location.reload();
     };
-
-    const [members, setMembers] = useState(() => {
-        const saved = localStorage.getItem("members");
-        return saved ? JSON.parse(saved) : membersData;
-    });
-
-    const [visibleCount, setVisibleCount] = useState(6);
 
     const [tareas, setTareas] = useState(() => {
         const saved = localStorage.getItem("tareas");
         return saved ? JSON.parse(saved) : tareasData;
     });
 
-    const getNombreUsuario = (id_usuario) => {
-        const usuario = usuarios.find(u => u.id === id_usuario);
-        return usuario ? usuario.nombre_completo : "Usuario no encontrado";
-    };
-
     const [usuarios, setUsuarios] = useState(() => {
         const saved = localStorage.getItem("usuarios");
         return saved ? JSON.parse(saved) : usuariosData;
     });
+
+    const [visibleCount, setVisibleCount] = useState(6);
 
     useEffect(() => {
         localStorage.setItem("tareas", JSON.stringify(tareas));
@@ -64,6 +54,11 @@ const Home = () => {
 
     const fileInputRef = useRef(null);
 
+    const getNombreUsuario = (id_usuario) => {
+        const usuario = usuarios.find(u => u.id === id_usuario);
+        return usuario ? usuario.nombre_completo : "Usuario no encontrado";
+    };
+
     const getStatusClass = (status) => {
         switch (status) {
             case "Pendiente":
@@ -76,10 +71,10 @@ const Home = () => {
     };
 
     const handleToggleView = () => {
-        if (visibleCount >= members.length) {
+        if (visibleCount >= tareas.length) {
             setVisibleCount(6);
         } else {
-            setVisibleCount(members.length);
+            setVisibleCount(tareas.length);
         }
     };
 
@@ -171,16 +166,16 @@ const Home = () => {
                         <span className={getStatusClass(tarea.estado)}>
                             {tarea.estado}
                         </span>
-                        <span>{tarea.version || "General"}</span> {/* Mostrar la categoría */}
+                        <span>{tarea.version || "General"}</span>
                     </div>
                 ))}
             </section>
 
             <div className="home__controls">
                 <div className="home__more">
-                    {members.length > 10 && (
+                    {tareas.length > 10 && (
                         <button onClick={handleToggleView}>
-                            {visibleCount >= members.length ? "Ver Menos..." : "Ver Mas..."}
+                            {visibleCount >= tareas.length ? "Ver Menos..." : "Ver Mas..."}
                         </button>
                     )}
                 </div>
