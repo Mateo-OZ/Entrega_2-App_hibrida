@@ -2,13 +2,16 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa"
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
-import { data, NavLink } from "react-router-dom";
+import { data, NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import membersData from "../data/home_datos.json";
 import { useRef } from "react";
 import "../Home/home.scss"
 
 const Home = () => {
+
+    const navigate = useNavigate();
+
     const handleFullReset = () => {
         localStorage.clear();
         window.location.reload();
@@ -18,7 +21,6 @@ const Home = () => {
         const saved = localStorage.getItem("members");
         return saved ? JSON.parse(saved) : membersData;
     });
-
 
     const [visibleCount, setVisibleCount] = useState(6);
 
@@ -126,11 +128,12 @@ const Home = () => {
                     </div>
 
                     <div className="home__icons">
-                        <FaBell />
-                        <FaUserCircle />
+                        <FaBell onClick={() => navigate("/notificaciones")} />
+                        <FaUserCircle onClick={() => navigate("/perfil")} />
                     </div>
                 </div>
             </header>
+
             {/*Table*/}
             <section className="home__table">
                 <div className="table__header">
@@ -153,7 +156,6 @@ const Home = () => {
             </section>
 
             <div className="home__controls">
-                {/* Ver más */}
                 <div className="home__more">
                     {members.length > 10 && (
                         <button onClick={handleToggleView}>
@@ -161,12 +163,12 @@ const Home = () => {
                         </button>
                     )}
                 </div>
-                {/* Exportar */}
+
                 <div className="home__export-import">
                     <button onClick={handleDownloadJSON} className="btn btn-add">
                         Descargar JSON
                     </button>
-                    {/* Importar */}
+
                     <button onClick={handleOpenFilePicker} className="btn btn-add">
                         Subir JSON
                     </button>
@@ -179,12 +181,12 @@ const Home = () => {
                         style={{ display: "none" }}
                     />
                 </div>
+
                 <button onClick={handleFullReset}>
                     Restaurar sistema
                 </button>
             </div>
 
-            {/* Bottom Navigation */}
             <nav className="home__bottom-nav">
                 <NavLink to="/home" end>
                     <FaHome />
@@ -206,7 +208,7 @@ const Home = () => {
                     <span>Perfil</span>
                 </NavLink>
             </nav>
-        </div >
+        </div>
     );
 };
 

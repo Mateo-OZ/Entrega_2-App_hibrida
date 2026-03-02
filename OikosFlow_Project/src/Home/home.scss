@@ -36,7 +36,10 @@
         display: flex;
         gap: 1rem;
         font-size: 1.2rem;
-        cursor: pointer;
+
+        svg {
+            cursor: pointer;   /* 👈 CAMBIO AQUÍ */
+        }
     }
 
     &__table {
@@ -151,7 +154,6 @@
         display: flex;
         gap: 0.8rem;
     }
-
 }
 
 .btn-add {
