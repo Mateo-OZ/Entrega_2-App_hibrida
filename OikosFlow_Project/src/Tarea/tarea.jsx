@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa";
-import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
+import { FaHome, FaTasks, FaHistory, FaUser, FaCheckCircle } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import tareasData from "../data/datos_tareas_unificados.json";
@@ -9,7 +9,6 @@ import "../Tarea/tarea.scss";
 
 const Tareas = () => {
     const navigate = useNavigate();
-    const fileInputRef = useRef(null);
     const tareasPorPagina = 10;
 
     // Estados
@@ -27,6 +26,8 @@ const Tareas = () => {
     const [paginaActual, setPaginaActual] = useState(1);
     const [modoVista, setModoVista] = useState("mis"); // "mis" o "todas"
     const [showModal, setShowModal] = useState(false);
+    const [showCompleteModal, setShowCompleteModal] = useState(false);
+    const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
     const [nuevoTrabajo, setNuevoTrabajo] = useState("");
     const [encargadoSeleccionado, setEncargadoSeleccionado] = useState("");
     const [estadoSeleccionado, setEstadoSeleccionado] = useState("Pendiente");
@@ -76,6 +77,8 @@ const Tareas = () => {
                 return "estado-pendiente";
             case "En Proceso":
                 return "estado-proceso";
+            case "Completado":
+                return "estado-completado";
             default:
                 return "estado-pendiente";
         }
@@ -84,10 +87,12 @@ const Tareas = () => {
     // Obtener categorías únicas
     const categoriasUnicas = ["Todas", ...new Set(tareas.map(t => t.version).filter(Boolean))];
 
-    // Filtrar tareas por categoría y modo de vista
+    // Filtrar tareas por categoría y modo de vista (excluyendo Completadas)
+    const tareasActivas = tareas.filter(t => t.estado !== "Completado");
+
     const tareasFiltradasPorCategoria = categoriaSeleccionada === "Todas"
-        ? tareas
-        : tareas.filter(t => t.version === categoriaSeleccionada);
+        ? tareasActivas
+        : tareasActivas.filter(t => t.version === categoriaSeleccionada);
 
     const tareasFiltradas = modoVista === "mis" && currentUserId
         ? tareasFiltradasPorCategoria.filter(t => t.id_usuario === currentUserId)
@@ -168,54 +173,55 @@ const Tareas = () => {
         handleCloseModal();
     };
 
-    const handleFullReset = () => {
-        localStorage.clear();
-        setTareas(tareasData);
-        setUsuarios(usuariosData);
-        setCategoriaSeleccionada("Todas");
-        setPaginaActual(1);
-        setModoVista("mis");
-        window.location.reload();
+    // Funciones para completar tarea
+    const handleOpenCompleteModal = (tarea) => {
+        setTareaSeleccionada(tarea);
+        setEstadoSeleccionado(tarea.estado);
+        setShowCompleteModal(true);
     };
 
-    const handleDownloadJSON = () => {
-        const dataToDownload = localStorage.getItem("tareas");
-        if (!dataToDownload) {
-            toast.error("No hay datos para descargar");
-            return;
+    const handleCloseCompleteModal = () => {
+        setShowCompleteModal(false);
+        setTareaSeleccionada(null);
+        setEstadoSeleccionado("Pendiente");
+    };
+
+    const handleUpdateTaskStatus = (e) => {
+        e.preventDefault();
+
+        if (!tareaSeleccionada) return;
+
+        const tareasActualizadas = tareas.map(t =>
+            t.id === tareaSeleccionada.id
+                ? { ...t, estado: estadoSeleccionado }
+                : t
+        );
+
+        setTareas(tareasActualizadas);
+
+        // Si la tarea se completó, crear notificación
+        if (estadoSeleccionado === "Completado") {
+            const storedNoti = localStorage.getItem("notificaciones");
+            const notificaciones = storedNoti ? JSON.parse(storedNoti) : [];
+
+            const nuevaNotificacion = {
+                id: Date.now(),
+                mensaje: `La tarea "${tareaSeleccionada.trabajo_a_realizar}" ha sido completada`,
+                fecha: new Date().toISOString(),
+                leida: false
+            };
+
+            localStorage.setItem(
+                "notificaciones",
+                JSON.stringify([nuevaNotificacion, ...notificaciones])
+            );
+
+            toast.success("¡Tarea completada! 🎉");
+        } else {
+            toast.success(`Estado actualizado a: ${estadoSeleccionado}`);
         }
 
-        const blob = new Blob([dataToDownload], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "Tareas_backup.json";
-        link.click();
-        URL.revokeObjectURL(url);
-        toast.success("JSON descargado correctamente");
-    };
-
-    const handleUploadJSON = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            try {
-                const parsedData = JSON.parse(e.target.result);
-                if (!Array.isArray(parsedData)) {
-                    toast.error("El archivo debe contener un array válido");
-                    return;
-                }
-                setTareas(parsedData);
-                setCategoriaSeleccionada("Todas");
-                setPaginaActual(1);
-                toast.success("Datos cargados correctamente");
-            } catch {
-                toast.error("Archivo JSON inválido");
-            }
-        };
-        reader.readAsText(file);
+        handleCloseCompleteModal();
     };
 
     return (
@@ -267,7 +273,7 @@ const Tareas = () => {
                         ))}
                     </select>
                     <span className="resultados-count">
-                        {tareasFiltradas.length} tareas • Página {paginaActual} de {totalPaginas || 1}
+                        {tareasFiltradas.length} tareas activas • Página {paginaActual} de {totalPaginas || 1}
                     </span>
                 </div>
             </div>
@@ -285,6 +291,7 @@ const Tareas = () => {
                     <span>Tarea</span>
                     <span>Estado</span>
                     <span>Categoría</span>
+                    <span>Acciones</span> {/* Esto ahora se verá completo */}
                 </div>
 
                 {tareasPaginadas.map((tarea) => (
@@ -296,12 +303,21 @@ const Tareas = () => {
                             {tarea.estado}
                         </span>
                         <span>{tarea.version || "General"}</span>
+                        <span>
+                            <button
+                                className="btn-completar"
+                                onClick={() => handleOpenCompleteModal(tarea)}
+                                title="Cambiar estado"
+                            >
+                                <FaCheckCircle />
+                            </button>
+                        </span>
                     </div>
                 ))}
 
                 {tareasFiltradas.length === 0 && (
                     <div className="table__empty">
-                        No hay tareas {modoVista === "mis" ? "asignadas a ti" : "en esta categoría"}
+                        No hay tareas activas {modoVista === "mis" ? "asignadas a ti" : "en esta categoría"}
                     </div>
                 )}
             </section>
@@ -343,28 +359,6 @@ const Tareas = () => {
                     </button>
                 </div>
             )}
-
-            {/* Botones de control JSON */}
-            <div className="tareas__controls">
-                <div className="tareas__export-import">
-                    <button onClick={handleDownloadJSON} className="btn-add">
-                        Descargar JSON
-                    </button>
-                    <button onClick={() => fileInputRef.current.click()} className="btn-add">
-                        Subir JSON
-                    </button>
-                    <input
-                        type="file"
-                        accept=".json"
-                        ref={fileInputRef}
-                        onChange={handleUploadJSON}
-                        style={{ display: "none" }}
-                    />
-                </div>
-                <button onClick={handleFullReset} className="btn-add">
-                    Restaurar sistema
-                </button>
-            </div>
 
             {/* Barra de navegación inferior fija */}
             <nav className="tareas__bottom-nav">
@@ -449,6 +443,39 @@ const Tareas = () => {
                                 </button>
                                 <button type="submit" className="btn-add-task">
                                     Añadir
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal para completar/actualizar tarea */}
+            {showCompleteModal && tareaSeleccionada && (
+                <div className="modal-overlay">
+                    <div className="modal-card">
+                        <h2 className="modal-title">Actualizar Estado</h2>
+                        <p className="modal-subtitle">{tareaSeleccionada.trabajo_a_realizar}</p>
+
+                        <form onSubmit={handleUpdateTaskStatus} className="modal-form">
+                            <div className="form-group">
+                                <label>Estado</label>
+                                <select
+                                    value={estadoSeleccionado}
+                                    onChange={(e) => setEstadoSeleccionado(e.target.value)}
+                                >
+                                    <option>Pendiente</option>
+                                    <option>En Proceso</option>
+                                    <option>Completado</option>
+                                </select>
+                            </div>
+
+                            <div className="modal-buttons">
+                                <button type="button" className="btn-cancel" onClick={handleCloseCompleteModal}>
+                                    Cancelar
+                                </button>
+                                <button type="submit" className="btn-add-task">
+                                    Actualizar
                                 </button>
                             </div>
                         </form>
