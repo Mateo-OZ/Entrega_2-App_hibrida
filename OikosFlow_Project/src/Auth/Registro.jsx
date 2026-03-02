@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import usuariosBase from "../Data/usuarios_datos.json";
+import usuariosBase from "../Data/usuarios.json";
 
 const Registro = () => {
   const navigate = useNavigate();

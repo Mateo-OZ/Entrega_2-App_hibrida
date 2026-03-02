@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import tareasData from "../data/tareas_datos.json";
+import tareasData from "../data/datos_tareas_unificados.json";
 import "../Tarea/tarea.scss";
 import { NavLink } from "react-router-dom";
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
@@ -70,7 +70,7 @@ const Tareas = () => {
             trabajo_a_realizar: nuevoTrabajo,
             estado: estadoSeleccionado
         };
-        
+
         //Subirla a notificaciones
         setTareas([...tareas, nuevaTarea]);
         if (

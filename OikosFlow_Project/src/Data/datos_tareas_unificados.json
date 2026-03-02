@@ -1,0 +1,212 @@
+[
+    {
+        "id": 1,
+        "id_usuario": 2,
+        "trabajo_a_realizar": "Limpiar la cocina y desinfectar superficies",
+        "estado": "Pendiente",
+        "version": "Aseo"
+    },
+    {
+        "id": 2,
+        "id_usuario": 3,
+        "trabajo_a_realizar": "Sacar la basura y reciclar",
+        "estado": "En Proceso",
+        "version": "Aseo"
+    },
+    {
+        "id": 3,
+        "id_usuario": 4,
+        "trabajo_a_realizar": "Revisar y pagar servicios (agua, luz, internet)",
+        "estado": "Pendiente",
+        "version": "Administración"
+    },
+    {
+        "id": 4,
+        "id_usuario": 5,
+        "trabajo_a_realizar": "Comprar víveres y artículos de limpieza",
+        "estado": "Pendiente",
+        "version": "Suministros"
+    },
+    {
+        "id": 5,
+        "id_usuario": 6,
+        "trabajo_a_realizar": "Regar las plantas y cuidar el jardín",
+        "estado": "En Proceso",
+        "version": "Jardinería"
+    },
+    {
+        "id": 6,
+        "id_usuario": 7,
+        "trabajo_a_realizar": "Reparar la llave del baño que gotea",
+        "estado": "Pendiente",
+        "version": "Mantenimiento"
+    },
+    {
+        "id": 7,
+        "id_usuario": 8,
+        "trabajo_a_realizar": "Organizar el ropero comunitario",
+        "estado": "En Proceso",
+        "version": "Organización"
+    },
+    {
+        "id": 8,
+        "id_usuario": 9,
+        "trabajo_a_realizar": "Barrer y trapear áreas comunes",
+        "estado": "Pendiente",
+        "version": "Aseo"
+    },
+    {
+        "id": 9,
+        "id_usuario": 10,
+        "trabajo_a_realizar": "Lavar los platos y ordenar la cocina",
+        "estado": "Pendiente",
+        "version": "Aseo"
+    },
+    {
+        "id": 10,
+        "id_usuario": 11,
+        "trabajo_a_realizar": "Limpiar el refrigerador y revisar fechas de vencimiento",
+        "estado": "En Proceso",
+        "version": "Aseo"
+    },
+    {
+        "id": 11,
+        "id_usuario": 12,
+        "trabajo_a_realizar": "Administrar el fondo común para gastos",
+        "estado": "Pendiente",
+        "version": "Administración"
+    },
+    {
+        "id": 12,
+        "id_usuario": 13,
+        "trabajo_a_realizar": "Cambiar las sábanas y toallas sucias",
+        "estado": "Pendiente",
+        "version": "Lencería"
+    },
+    {
+        "id": 13,
+        "id_usuario": 1,
+        "trabajo_a_realizar": "Limpiar los baños y reponer papel higiénico",
+        "estado": "Pendiente",
+        "version": "Aseo"
+    },
+    {
+        "id": 14,
+        "id_usuario": 1,
+        "trabajo_a_realizar": "Organizar la despensa y revisar productos vencidos",
+        "estado": "Pendiente",
+        "version": "Organización"
+    },
+    {
+        "id": 15,
+        "id_usuario": 7,
+        "trabajo_a_realizar": "Arreglar la conexión de internet",
+        "estado": "Pendiente",
+        "version": "Mantenimiento"
+    },
+    {
+        "id": 16,
+        "id_usuario": 10,
+        "trabajo_a_realizar": "Hacer lista de compras semanal",
+        "estado": "Pendiente",
+        "version": "Suministros"
+    },
+    {
+        "id": 17,
+        "id_usuario": 2,
+        "trabajo_a_realizar": "Organizar archivos digitales del hogar",
+        "estado": "En Proceso",
+        "version": "Administración"
+    },
+    {
+        "id": 18,
+        "id_usuario": 3,
+        "trabajo_a_realizar": "Revisar el inventario de productos de limpieza",
+        "estado": "En Proceso",
+        "version": "Suministros"
+    },
+    {
+        "id": 19,
+        "id_usuario": 4,
+        "trabajo_a_realizar": "Actualizar el calendario de actividades mensuales",
+        "estado": "En Proceso",
+        "version": "Administración"
+    },
+    {
+        "id": 20,
+        "id_usuario": 5,
+        "trabajo_a_realizar": "Revisar el estado de los electrodomésticos",
+        "estado": "En Proceso",
+        "version": "Mantenimiento"
+    },
+    {
+        "id": 21,
+        "id_usuario": 6,
+        "trabajo_a_realizar": "Clasificar documentos importantes",
+        "estado": "En Proceso",
+        "version": "Administración"
+    },
+    {
+        "id": 22,
+        "id_usuario": 7,
+        "trabajo_a_realizar": "Revisar cerraduras y puertas principales",
+        "estado": "En Proceso",
+        "version": "Mantenimiento"
+    },
+    {
+        "id": 23,
+        "id_usuario": 8,
+        "trabajo_a_realizar": "Planificar mantenimiento preventivo del mes",
+        "estado": "En Proceso",
+        "version": "Administración"
+    },
+    {
+        "id": 24,
+        "id_usuario": 9,
+        "trabajo_a_realizar": "Organizar herramientas del taller",
+        "estado": "En Proceso",
+        "version": "Organización"
+    },
+    {
+        "id": 25,
+        "id_usuario": 10,
+        "trabajo_a_realizar": "Actualizar lista de contactos de emergencia",
+        "estado": "En Proceso",
+        "version": "Administración"
+    },
+    {
+        "id": 26,
+        "id_usuario": 11,
+        "trabajo_a_realizar": "Revisar botiquín de primeros auxilios",
+        "estado": "En Proceso",
+        "version": "Mantenimiento"
+    },
+    {
+        "id": 27,
+        "id_usuario": 12,
+        "trabajo_a_realizar": "Auditar gastos del mes anterior",
+        "estado": "En Proceso",
+        "version": "Administración"
+    },
+    {
+        "id": 28,
+        "id_usuario": 13,
+        "trabajo_a_realizar": "Revisar sistema de alarmas",
+        "estado": "En Proceso",
+        "version": "Mantenimiento"
+    },
+    {
+        "id": 29,
+        "id_usuario": 15,
+        "trabajo_a_realizar": "Revisar estado del sistema eléctrico",
+        "estado": "En Proceso",
+        "version": "Mantenimiento"
+    },
+    {
+        "id": 30,
+        "id_usuario": 14,
+        "trabajo_a_realizar": "Organizar manuales de usuario",
+        "estado": "En Proceso",
+        "version": "Organización"
+    }
+]

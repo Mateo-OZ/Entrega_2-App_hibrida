@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import historialData from "../Data/historial_datos.json";
+import historialData from "../data/datos_tareas_unificados.json";
 import "./historial.scss";
 import { NavLink } from "react-router-dom";
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";

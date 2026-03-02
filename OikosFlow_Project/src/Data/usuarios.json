@@ -1,0 +1,122 @@
+[
+  {
+    "id": 1,
+    "nombre_completo": "Tiago",
+    "telefono": "+57 3000000000",
+    "fecha_nacimiento": "2000-01-01",
+    "correo": "tiago@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 2,
+    "nombre_completo": "Darlene",
+    "telefono": "+57 3000000001",
+    "fecha_nacimiento": "1998-05-12",
+    "correo": "darlene@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 3,
+    "nombre_completo": "Ronald",
+    "telefono": "+57 3000000002",
+    "fecha_nacimiento": "1995-11-20",
+    "correo": "ronald@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 4,
+    "nombre_completo": "Jerome",
+    "telefono": "+57 3000000003",
+    "fecha_nacimiento": "1992-03-15",
+    "correo": "jerome@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 5,
+    "nombre_completo": "Robert",
+    "telefono": "+57 3000000004",
+    "fecha_nacimiento": "1988-07-08",
+    "correo": "robert@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 6,
+    "nombre_completo": "Bessie",
+    "telefono": "+57 3000000005",
+    "fecha_nacimiento": "1993-09-22",
+    "correo": "bessie@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 7,
+    "nombre_completo": "Mark",
+    "telefono": "+57 3000000006",
+    "fecha_nacimiento": "1990-12-01",
+    "correo": "mark@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 8,
+    "nombre_completo": "Angela",
+    "telefono": "+57 3000000007",
+    "fecha_nacimiento": "1996-04-17",
+    "correo": "angela@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 9,
+    "nombre_completo": "John",
+    "telefono": "+57 3000000008",
+    "fecha_nacimiento": "1985-06-30",
+    "correo": "john@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 10,
+    "nombre_completo": "Laura",
+    "telefono": "+57 3000000009",
+    "fecha_nacimiento": "1999-02-14",
+    "correo": "laura@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 11,
+    "nombre_completo": "Pedro",
+    "telefono": "+57 3000000010",
+    "fecha_nacimiento": "1991-08-25",
+    "correo": "pedro@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 12,
+    "nombre_completo": "Sofia",
+    "telefono": "+57 3000000011",
+    "fecha_nacimiento": "1994-10-03",
+    "correo": "sofia@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 13,
+    "nombre_completo": "Daniel",
+    "telefono": "+57 3000000012",
+    "fecha_nacimiento": "1989-01-19",
+    "correo": "daniel@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 14,
+    "nombre_completo": "Albert",
+    "telefono": "+57 3000000013",
+    "fecha_nacimiento": "1997-07-07",
+    "correo": "albert@mail.com",
+    "contrasena": "123456"
+  },
+  {
+    "id": 15,
+    "nombre_completo": "Trump",
+    "telefono": "+57 3000000014",
+    "fecha_nacimiento": "1980-06-14",
+    "correo": "trump@mail.com",
+    "contrasena": "123456"
+  }
+]

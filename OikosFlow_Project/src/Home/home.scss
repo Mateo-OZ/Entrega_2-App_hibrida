@@ -38,7 +38,8 @@
         font-size: 1.2rem;
 
         svg {
-            cursor: pointer;   /* 👈 CAMBIO AQUÍ */
+            cursor: pointer;
+            /* 👈 CAMBIO AQUÍ */
         }
     }
 
@@ -168,5 +169,17 @@
 
     &:hover {
         opacity: 0.9;
+    }
+}
+
+.Estado {
+    &Pendiente {
+        background-color: #ffc107; // Amarillo
+        color: #000;
+    }
+
+    &EnProceso {
+        background-color: #17a2b8; // Azul claro
+        color: #fff;
     }
 }

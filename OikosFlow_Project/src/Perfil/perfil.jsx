@@ -3,7 +3,7 @@ import "./perfil.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
 import profileImage from "../Data/profile.jpg";
-import usuariosBase from "../Data/usuarios_datos.json";
+import usuariosBase from "../Data/usuarios.json";
 
 const Perfil = () => {
 
@@ -49,65 +49,65 @@ const Perfil = () => {
 
   // Actualiza usuario, tareas, historial y miembros en localStorage
   const handleEdit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const nombreAnterior = usuario.nombre_completo;
-  const nombreNuevo = formData.nombre_completo;
+    const nombreAnterior = usuario.nombre_completo;
+    const nombreNuevo = formData.nombre_completo;
 
-  const stored = localStorage.getItem("usuarios");
-  const usuarios = stored ? JSON.parse(stored) : usuariosBase;
+    const stored = localStorage.getItem("usuarios");
+    const usuarios = stored ? JSON.parse(stored) : usuariosBase;
 
-  const actualizados = usuarios.map((u) =>
-    u.correo === usuario.correo ? { ...u, ...formData } : u
-  );
-
-  localStorage.setItem("usuarios", JSON.stringify(actualizados));
-  localStorage.setItem("usuarioActivo", JSON.stringify(formData));
-
-  // Actualiza en las tareas el nombre del usuario
-  const tareasStored = localStorage.getItem("tareas");
-  if (tareasStored) {
-    const tareas = JSON.parse(tareasStored);
-    const tareasActualizadas = tareas.map((t) =>
-      t.nombre_encargado === nombreAnterior
-        ? { ...t, nombre_encargado: nombreNuevo }
-        : t
+    const actualizados = usuarios.map((u) =>
+      u.correo === usuario.correo ? { ...u, ...formData } : u
     );
-    localStorage.setItem("tareas", JSON.stringify(tareasActualizadas));
-  }
 
-  // actualiza en historial el nombre del usuario
-  const historialStored = localStorage.getItem("historial");
-  if (historialStored) {
-    const historial = JSON.parse(historialStored);
-    const historialActualizado = historial.map((h) =>
-      h.nombre_encargado === nombreAnterior
-        ? { ...h, nombre_encargado: nombreNuevo }
-        : h
-    );
-    localStorage.setItem("historial", JSON.stringify(historialActualizado));
-  }
+    localStorage.setItem("usuarios", JSON.stringify(actualizados));
+    localStorage.setItem("usuarioActivo", JSON.stringify(formData));
 
-  // Actualizar en home los nommbres de los miembros
-  const membersStored = localStorage.getItem("members");
-  if (membersStored) {
-    const members = JSON.parse(membersStored);
-    const membersActualizados = members.map((m) =>
-      m.nombre_encargado === nombreAnterior
-        ? { ...m, nombre_encargado: nombreNuevo }
-        : m
-    );
-    localStorage.setItem("members", JSON.stringify(membersActualizados));
-  }
-  // Actualiza el estado y cierra el modal
-  setUsuario(formData);
-  setShowModal(false);
-};
+    // Actualiza en las tareas el nombre del usuario
+    const tareasStored = localStorage.getItem("tareas");
+    if (tareasStored) {
+      const tareas = JSON.parse(tareasStored);
+      const tareasActualizadas = tareas.map((t) =>
+        t.nombre_encargado === nombreAnterior
+          ? { ...t, nombre_encargado: nombreNuevo }
+          : t
+      );
+      localStorage.setItem("tareas", JSON.stringify(tareasActualizadas));
+    }
 
-// Cierra el modal de edición sin hacer cambios
-const handleCloseModal = () => {
-  setShowModal(false);
-};
+    // actualiza en historial el nombre del usuario
+    const historialStored = localStorage.getItem("historial");
+    if (historialStored) {
+      const historial = JSON.parse(historialStored);
+      const historialActualizado = historial.map((h) =>
+        h.nombre_encargado === nombreAnterior
+          ? { ...h, nombre_encargado: nombreNuevo }
+          : h
+      );
+      localStorage.setItem("historial", JSON.stringify(historialActualizado));
+    }
+
+    // Actualizar en home los nommbres de los miembros
+    const membersStored = localStorage.getItem("members");
+    if (membersStored) {
+      const members = JSON.parse(membersStored);
+      const membersActualizados = members.map((m) =>
+        m.nombre_encargado === nombreAnterior
+          ? { ...m, nombre_encargado: nombreNuevo }
+          : m
+      );
+      localStorage.setItem("members", JSON.stringify(membersActualizados));
+    }
+    // Actualiza el estado y cierra el modal
+    setUsuario(formData);
+    setShowModal(false);
+  };
+
+  // Cierra el modal de edición sin hacer cambios
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className="perfil">
@@ -147,7 +147,7 @@ const handleCloseModal = () => {
 
       {/* BOTONES */}
       <div className="perfil__edit">
-        <button 
+        <button
           className="btn btn-add"
           onClick={() => setShowModal(true)}
         >
@@ -156,14 +156,14 @@ const handleCloseModal = () => {
       </div>
 
       <div className="perfil__actions">
-        <button 
+        <button
           className="btn btn-add"
           onClick={() => navigate("/auth/recuperar-sms")}
         >
           Cambiar <br /> Contraseña
         </button>
 
-        <button 
+        <button
           className="btn btn-add"
           onClick={() => {
             //borra el usuario activo del local storage

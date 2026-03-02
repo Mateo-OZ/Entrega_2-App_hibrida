@@ -4,7 +4,8 @@ import { FaBell, FaUserCircle } from "react-icons/fa"
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
 import { data, NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import membersData from "../data/home_datos.json";
+import tareasData from "../data/datos_tareas_unificados.json";
+import usuariosData from "../data/usuarios.json";
 import { useRef } from "react";
 import "../Home/home.scss"
 
@@ -14,6 +15,8 @@ const Home = () => {
 
     const handleFullReset = () => {
         localStorage.clear();
+        setTareas(tareasData); // Reset a datos originales
+        setUsuarios(usuariosData); // Reset a datos originales
         window.location.reload();
     };
 
@@ -24,9 +27,28 @@ const Home = () => {
 
     const [visibleCount, setVisibleCount] = useState(6);
 
+    const [tareas, setTareas] = useState(() => {
+        const saved = localStorage.getItem("tareas");
+        return saved ? JSON.parse(saved) : tareasData;
+    });
+
+    const getNombreUsuario = (id_usuario) => {
+        const usuario = usuarios.find(u => u.id === id_usuario);
+        return usuario ? usuario.nombre_completo : "Usuario no encontrado";
+    };
+
+    const [usuarios, setUsuarios] = useState(() => {
+        const saved = localStorage.getItem("usuarios");
+        return saved ? JSON.parse(saved) : usuariosData;
+    });
+
     useEffect(() => {
-        localStorage.setItem("members", JSON.stringify(members));
-    }, [members]);
+        localStorage.setItem("tareas", JSON.stringify(tareas));
+    }, [tareas]);
+
+    useEffect(() => {
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
+    }, [usuarios]);
 
     let currenUser = "Invitado";
     const storedUser = localStorage.getItem("usuarioActivo");
@@ -44,13 +66,13 @@ const Home = () => {
 
     const getStatusClass = (status) => {
         switch (status) {
-            case "Activo":
-                return "Estado Activo";
-            case "Inactivo":
-                return "Estado Inactivo";
-            case "Deshabilitado":
-                return "Estado Deshabilitado";
-        };
+            case "Pendiente":
+                return "Estado Pendiente";
+            case "En Proceso":
+                return "Estado EnProceso";
+            default:
+                return "Estado Pendiente";
+        }
     };
 
     const handleToggleView = () => {
@@ -62,7 +84,7 @@ const Home = () => {
     };
 
     const handleDownloadJSON = () => {
-        const dataToDownload = localStorage.getItem("members");
+        const dataToDownload = localStorage.getItem("tareas");
 
         if (!dataToDownload) {
             toast.error("No hay datos para descargar");
@@ -98,20 +120,17 @@ const Home = () => {
         reader.onload = (e) => {
             try {
                 const parsedData = JSON.parse(e.target.result);
-
                 if (!Array.isArray(parsedData)) {
                     alert("El archivo debe contener un array válido.");
                     return;
                 }
-
-                setMembers(parsedData);
+                setTareas(parsedData); // Cambiado de setMembers
                 toast.success("Datos cargados correctamente");
             } catch (error) {
                 toast.error("Archivo JSON inválido");
                 console.error(error);
             }
         };
-
         reader.readAsText(file);
     };
 
@@ -141,16 +160,18 @@ const Home = () => {
                     <span>Nombre Encargado</span>
                     <span>Trabajo a Realizar</span>
                     <span>Estado</span>
+                    <span>Categoría</span>
                 </div>
 
-                {members.slice(0, visibleCount).map((member) => (
-                    <div className="table__row" key={member.id}>
-                        <span>{member.id}</span>
-                        <span>{member.nombre_encargado}</span>
-                        <span>{member.trabajo_a_realizar}</span>
-                        <span className={getStatusClass(member.estado)}>
-                            {member.estado}
+                {tareas.slice(0, visibleCount).map((tarea) => (
+                    <div className="table__row" key={tarea.id}>
+                        <span>{tarea.id}</span>
+                        <span>{getNombreUsuario(tarea.id_usuario)}</span>
+                        <span>{tarea.trabajo_a_realizar}</span>
+                        <span className={getStatusClass(tarea.estado)}>
+                            {tarea.estado}
                         </span>
+                        <span>{tarea.version || "General"}</span> {/* Mostrar la categoría */}
                     </div>
                 ))}
             </section>
