@@ -70,7 +70,8 @@ const Tareas = () => {
             trabajo_a_realizar: nuevoTrabajo,
             estado: estadoSeleccionado
         };
-
+        
+        //Subirla a notificaciones
         setTareas([...tareas, nuevaTarea]);
         if (
             nuevaTarea.nombre_encargado.trim().toLowerCase() ===

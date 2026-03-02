@@ -12,6 +12,8 @@ const Notificaciones = () => {
     return stored ? JSON.parse(stored) : [];
   });
 
+  //Función que calcula cuánto tiempo ha pasado desde que se creó la notificación
+  //Recibe una fecha y devuelve un texto como: "Hace 5 minutos"
   const tiempoRelativo = (fechaISO) => {
     const ahora = new Date();
     const fecha = new Date(fechaISO);
@@ -28,6 +30,7 @@ const Notificaciones = () => {
     <div className="notificaciones">
 
       <header className="notificaciones__header">
+        {/* Botón que redirige al home */}
         <button
           className="notificaciones__back"
           onClick={() => navigate("/home")}
@@ -37,12 +40,15 @@ const Notificaciones = () => {
         <h1 className="notificaciones__title">OikosFlow</h1>
       </header>
 
+      {/* Si no hay notificaciones, muestra un mensaje informativo */}
       <div className="notificaciones__list">
         {notificaciones.length === 0 ? (
           <p className="notificaciones__empty">
             No tienes notificaciones.
           </p>
         ) : (
+          // Si existen notificaciones, las recorre con map()
+          // y crea una tarjeta por cada una mostrando mensaje y tiempo
           notificaciones.map((n) => (
             <div key={n.id} className="notificaciones__card">
               <p>{n.mensaje}</p>

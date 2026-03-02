@@ -25,12 +25,14 @@ const Perfil = () => {
     correo: ""
   });
 
+  // Carga el usuarioActivo desde localStorage y lo asigna al estado
   useEffect(() => {
     const stored = localStorage.getItem("usuarioActivo");
 
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
+        // Actualiza el usuario mostrado
         setUsuario({
           nombre_completo: parsed.nombre_completo || "",
           telefono: parsed.telefono || "",
@@ -45,13 +47,13 @@ const Perfil = () => {
     }
   }, []);
 
-const handleEdit = (e) => {
+  // Actualiza usuario, tareas, historial y miembros en localStorage
+  const handleEdit = (e) => {
   e.preventDefault();
 
   const nombreAnterior = usuario.nombre_completo;
   const nombreNuevo = formData.nombre_completo;
 
-  // ===== ACTUALIZAR USUARIOS =====
   const stored = localStorage.getItem("usuarios");
   const usuarios = stored ? JSON.parse(stored) : usuariosBase;
 
@@ -62,7 +64,7 @@ const handleEdit = (e) => {
   localStorage.setItem("usuarios", JSON.stringify(actualizados));
   localStorage.setItem("usuarioActivo", JSON.stringify(formData));
 
-  // ===== ACTUALIZAR TAREAS =====
+  // Actualiza en las tareas el nombre del usuario
   const tareasStored = localStorage.getItem("tareas");
   if (tareasStored) {
     const tareas = JSON.parse(tareasStored);
@@ -74,7 +76,7 @@ const handleEdit = (e) => {
     localStorage.setItem("tareas", JSON.stringify(tareasActualizadas));
   }
 
-  // ===== ACTUALIZAR HISTORIAL =====
+  // actualiza en historial el nombre del usuario
   const historialStored = localStorage.getItem("historial");
   if (historialStored) {
     const historial = JSON.parse(historialStored);
@@ -86,7 +88,7 @@ const handleEdit = (e) => {
     localStorage.setItem("historial", JSON.stringify(historialActualizado));
   }
 
-  // ===== ACTUALIZAR HOME (members) =====
+  // Actualizar en home los nommbres de los miembros
   const membersStored = localStorage.getItem("members");
   if (membersStored) {
     const members = JSON.parse(membersStored);
@@ -97,14 +99,15 @@ const handleEdit = (e) => {
     );
     localStorage.setItem("members", JSON.stringify(membersActualizados));
   }
-
+  // Actualiza el estado y cierra el modal
   setUsuario(formData);
   setShowModal(false);
 };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-  };
+// Cierra el modal de edición sin hacer cambios
+const handleCloseModal = () => {
+  setShowModal(false);
+};
 
   return (
     <div className="perfil">
@@ -119,6 +122,7 @@ const handleEdit = (e) => {
       {/* Campos */}
       <div className="perfil__form">
 
+        {/* Inputs en modo para que el usuario solo pueda ver la información sin editar */}
         <div className="form-group">
           <label>Nombre Completo</label>
           <input type="text" value={usuario.nombre_completo} readOnly />
@@ -162,6 +166,7 @@ const handleEdit = (e) => {
         <button 
           className="btn btn-add"
           onClick={() => {
+            //borra el usuario activo del local storage
             localStorage.removeItem("usuarioActivo");
             navigate("/auth");
           }}

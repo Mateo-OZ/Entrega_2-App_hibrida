@@ -33,6 +33,7 @@ const Historial = () => {
     }
   };
 
+  // Alternar entre mostrar solo 6 registros o mostrar todos (ver más)
   const handleToggleView = () => {
     if (visibleCount >= members.length) {
       setVisibleCount(6);
@@ -41,6 +42,7 @@ const Historial = () => {
     }
   };
 
+  // Filtra los encargos por coincidencia en el nombre
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -55,6 +57,7 @@ const Historial = () => {
     setBusqueda("");
   };
 
+  // Cierra el modal y limpia la búsqueda
   const handleCloseModal = () => {
     setShowModal(false);
     setBusqueda("");
@@ -73,6 +76,8 @@ const Historial = () => {
           <span>Estado</span>
         </div>
 
+        {/* Muestra solo la cantidad definida por visibleCount */}
+        {/* Recorre los datos y genera una fila por cada registro */}
         {members.slice(0, visibleCount).map((member) => (
           <div className="table__row" key={member.id}>
             <span>{member.id}</span>
