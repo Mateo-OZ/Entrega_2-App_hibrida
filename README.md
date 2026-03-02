@@ -1,179 +1,212 @@
-# OikosFlow
+## OikosFlow
 
-Aplicación móvil híbrida para la organización, asignación y seguimiento
-de tareas domésticas en viviendas compartidas.
+Aplicación móvil híbrida (SPA en React + Vite) para la **organización, asignación y seguimiento de tareas domésticas** en viviendas compartidas.
 
-Repositorio: https://github.com/Mateo-OZ/Entrega_2-App_hibrida
+- **Repositorio**: `https://github.com/Mateo-OZ/Entrega_2-App_hibrida`
+- **Prototipo UI/UX**: https://www.figma.com/design/jM5rSgT95T7VvsIEmcKkzN/Wireframes-App-Organizacion-de-Tareas?node-id=0-1&p=f&t=tgBvLP556j3eDq36-0
 
-Prototipo UI/UX:
-https://www.figma.com/design/jM5rSgT95T7VvsIEmcKkzN/Wireframes-App-Organizacion-de-Tareas
+---
 
-------------------------------------------------------------------------
+## 1. Propósito del proyecto
 
-# 1. Propósito del Proyecto
+En apartamentos compartidos, las tareas domésticas suelen gestionarse de forma informal, lo que genera:
 
-OikosFlow resuelve la falta de organización y seguimiento en la
-distribución de tareas domésticas dentro de apartamentos compartidos.
+- Confusión sobre responsabilidades.
+- Olvidos frecuentes.
+- Conflictos interpersonales.
+- Percepción de inequidad.
 
-La aplicación introduce:
+**OikosFlow** busca resolver esto proporcionando:
 
--   Claridad en responsabilidades
--   Sistema estructurado de asignación
--   Registro histórico de cumplimiento
--   Recordatorios
--   Transparencia entre convivientes
+- Claridad en las responsabilidades.
+- Sistema estructurado de asignación de tareas.
+- Registro histórico de cumplimiento.
+- Recordatorios y notificaciones.
+- Transparencia entre convivientes.
 
-------------------------------------------------------------------------
+Público objetivo:
 
-# 2. Problema Identificado
+- Estudiantes universitarios.
+- Jóvenes profesionales.
+- Personas entre 18 y 35 años que comparten vivienda en arriendo.
 
-En viviendas compartidas, las tareas suelen gestionarse de forma
-informal, lo que genera:
+---
 
--   Confusión sobre responsabilidades
--   Olvido frecuente
--   Conflictos interpersonales
--   Percepción de inequidad
+## 2. Arquitectura y stack
 
-Insight central:
+- **Tipo**: Aplicación híbrida frontend (SPA).
+- **Framework**: React (con React Router).
+- **Bundler**: Vite.
+- **Lenguaje**: JavaScript (ES6+).
+- **Estilos**: SCSS + CSS modularizado por pantalla.
+- **Estado / datos**:
+  - Simulación de datos mediante archivos JSON en `src/Data`.
+  - Uso de `localStorage` para persistencia simple en el navegador.
 
-Las personas no evitan tareas por irresponsabilidad, sino por
-desorganización y falta de acuerdos claros.
+Estructura principal:
 
-------------------------------------------------------------------------
+- `OikosFlow_Project/`
+  - `src/`
+    - `main.jsx`: punto de entrada de React.
+    - `App.jsx`: configuración de rutas y protección de rutas.
+    - `Auth/`: pantallas de autenticación.
+    - `Home/`: pantalla principal con tabla de usuarios/tareas.
+    - `Tarea/`: gestión de tareas.
+    - `Historial/`: registro histórico de tareas.
+    - `Perfil/`: gestión de datos del usuario.
+    - `Notificaciones/`: lista de notificaciones.
+    - `Data/`: fuentes de datos simulados (JSON).
+  - Configuración: `package.json`, `vite.config.js`, `eslint.config.js`, etc.
 
-# 3. Público Objetivo
+Para un mapa detallado de pantallas y rutas, consulta el archivo `DIAGRAMA_FLUJO_OIKOSFLOW.md` en la raíz del repositorio.
 
--   Estudiantes universitarios
--   Jóvenes profesionales
--   Personas entre 18 y 35 años
--   Usuarios con acceso frecuente a smartphone
--   Convivientes en arriendo compartido
+---
 
-------------------------------------------------------------------------
+## 3. Pantallas principales
 
-# 4. Arquitectura General
+- **Inicio (`/` y `/auth`)**
+  - Logo OikosFlow.
+  - Botón **Registro**.
+  - Botón **Iniciar Sesión**.
+  - Si ya existe un usuario activo en `localStorage`, redirige directamente a **Home**.
 
-Tipo: Aplicación híbrida frontend\
-Stack:
+- **Registro (`/auth/registro`)**
+  - Campos:
+    - Nombre completo.
+    - Teléfono.
+    - Fecha de nacimiento.
+    - Correo.
+    - Contraseña.
 
--   React
--   Vite
--   JavaScript (ES6+)
--   SCSS
+- **Login (`/auth/login`)**
+  - Campos:
+    - Correo.
+    - Contraseña.
+  - Opciones:
+    - Iniciar sesión.
+    - Ir a recuperación de contraseña (SMS / Correo).
 
-Arquitectura: SPA (Single Page Application) con navegación por vistas
-internas.
+- **Recuperar contraseña**
+  - `/auth/recuperar-sms`: flujo simulado vía SMS.
+  - `/auth/recuperar-correo`: flujo simulado vía correo.
 
-------------------------------------------------------------------------
+- **Home (`/home`)**
+  - Saludo personalizado al usuario activo.
+  - Tabla de usuarios/tareas.
+  - Estado por tarea:
+    - Activo.
+    - Inactivo.
+    - Deshabilitado.
+  - Acciones:
+    - Exportar datos a JSON.
+    - Importar datos desde JSON.
+    - Restaurar el sistema (limpia `localStorage`).
+  - Navegación inferior hacia:
+    - Home.
+    - Tareas.
+    - Historial.
+    - Perfil.
 
-# 5. Estructura de Pantallas
+- **Tareas (`/tareas`)**
+  - Secciones:
+    - Mis Tareas.
+    - Tareas del Hogar.
+  - Pantalla de **Añadir Tarea**:
+    - Formulario con:
+      - Nombre.
+      - Tarea.
+      - Estado.
 
-## Inicio
+- **Historial (`/historial`)**
+  - Tabla con el histórico de tareas y estados.
+  - Buscador/filtrado.
 
--   Logo OikosFlow
--   Botón Registro
--   Botón Iniciar Sesión
+- **Perfil (`/perfil`)**
+  - Campos:
+    - Nombre completo.
+    - Teléfono.
+    - Fecha de nacimiento.
+    - Correo.
+  - Acciones:
+    - Editar datos.
+    - Cambiar contraseña.
+    - Cerrar sesión (borra el usuario activo y redirige al flujo de autenticación).
 
-## Registro
+- **Notificaciones (`/notificaciones`)**
+  - Lista de notificaciones relacionadas con las tareas y eventos del hogar.
 
-Campos: - Nombre completo - Teléfono - Fecha de nacimiento - Correo -
-Contraseña
+---
 
-## Login
+## 4. Flujo de usuario (resumen)
 
-Campos: - Correo - Contraseña Opciones: - Iniciar sesión - Olvidé
-contraseña
+1. Inicio (`/` o `/auth`).
+2. Registro o Login.
+3. Home.
+4. Gestión de tareas (Home / Tareas).
+5. Consulta de historial.
+6. Gestión de perfil.
+7. Revisión de notificaciones.
 
-## Recuperar Contraseña
+El detalle visual del flujo está en `DIAGRAMA_FLUJO_OIKOSFLOW.md` (incluye un diagrama Mermaid con todas las rutas y transiciones).
 
--   Recuperación por SMS
--   Recuperación por Gmail
+---
 
-## Estado de Conexión
+## 5. Instalación y ejecución
 
--   Sin conexión
--   Con conexión activa
+### 5.1. Requisitos
 
-## Home
+- **Node.js** >= 18
+- **npm** >= 9
 
--   Saludo personalizado
--   Tabla de usuarios/tareas
--   Estado (Active / Inactive / Disabled)
--   Exportar / Importar
--   Navegación inferior
+### 5.2. Pasos
 
-## Tareas
-
--   Mis Tareas
--   Tareas del Hogar
--   Añadir Tarea
-
-## Añadir Tarea
-
-Formulario: - Nombre - Tarea - Estado
-
-## Historial
-
--   Tabla con estado
--   Buscador
-
-## Perfil
-
-Campos: - Nombre completo - Teléfono - Fecha de nacimiento - Correo
-Acciones: - Editar - Cambiar contraseña - Cerrar sesión
-
-## Notificaciones
-
--   Lista de notificaciones
-
-------------------------------------------------------------------------
-
-# 6. Flujo del Usuario
-
-1.  Inicio
-2.  Registro o Login
-3.  Home
-4.  Gestión de tareas
-5.  Registro en historial
-6.  Gestión de perfil
-7.  Notificaciones
-
-------------------------------------------------------------------------
-
-# 7. Instalación
-
-Requisitos: - Node.js \>= 18 - npm \>= 9
-
-Instalación:
-
-git clone https://github.com/Mateo-OZ/Entrega_2-App_hibrida.git\
-cd Entrega_2-App_hibrida/OikosFlow_Project\
-npm install\
+```bash
+git clone https://github.com/Mateo-OZ/Entrega_2-App_hibrida.git
+cd Entrega_2-App_hibrida/OikosFlow_Project
+npm install
 npm run dev
+```
 
-Build producción:
+La aplicación se abrirá en modo desarrollo (por defecto en `http://localhost:5173` o el puerto configurado por Vite).
 
+### 5.3. Build de producción
+
+```bash
+cd Entrega_2-App_hibrida/OikosFlow_Project
 npm run build
+```
 
-------------------------------------------------------------------------
+Para previsualizar el build:
 
-# 8. Estado Actual
+```bash
+npm run preview
+```
 
-Nivel: MVP funcional académico
+---
 
-Implementado: - Navegación básica - Formularios - Simulación de datos -
-Interfaz completa - Estructura modular
+## 6. Estado actual del proyecto
 
-Pendiente: - Backend real - Base de datos - Autenticación persistente -
-Notificaciones push reales - Multiusuario real
+- **Nivel**: MVP funcional académico.
+- **Implementado**:
+  - Navegación básica por vistas.
+  - Formularios de autenticación y gestión de datos.
+  - Simulación de datos con JSON y `localStorage`.
+  - Interfaz completa con diseño basado en prototipo.
+  - Estructura modular por pantallas.
+- **Pendiente**:
+  - Backend real (API REST / GraphQL).
+  - Base de datos persistente.
+  - Autenticación persistente y robusta (tokens, sesiones, etc.).
+  - Notificaciones push reales (p. ej. FCM).
+  - Multiusuario real con sincronización entre dispositivos.
 
-------------------------------------------------------------------------
+---
 
-# 9. Créditos
+## 7. Créditos
 
-Carlos Danilo Vélez Castro\
-Mateo Ortiz Zapata\
-Nicolás Mantilla Gelves
+Proyecto académico de aplicación móvil híbrida desarrollado por:
 
-Proyecto académico de aplicación móvil híbrida.
+- Carlos Danilo Vélez Castro  
+- Mateo Ortiz Zapata  
+- Nicolás Mantilla Gelves  
+
