@@ -18,6 +18,7 @@ const Home = () => {
         setTareas(tareasData);
         setUsuarios(usuariosData);
         setCategoriaSeleccionada("Todas");
+        setPaginaActual(1);
         window.location.reload();
     };
 
@@ -31,8 +32,9 @@ const Home = () => {
         return saved ? JSON.parse(saved) : usuariosData;
     });
 
-    const [visibleCount, setVisibleCount] = useState(6);
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
+    const [paginaActual, setPaginaActual] = useState(1);
+    const tareasPorPagina = 10;
 
     useEffect(() => {
         localStorage.setItem("tareas", JSON.stringify(tareas));
@@ -80,12 +82,17 @@ const Home = () => {
         ? tareas
         : tareas.filter(t => t.version === categoriaSeleccionada);
 
-    const handleToggleView = () => {
-        if (visibleCount >= tareas.length) {
-            setVisibleCount(6);
-        } else {
-            setVisibleCount(tareas.length);
-        }
+    // Calcular paginación
+    const indexUltimaTarea = paginaActual * tareasPorPagina;
+    const indexPrimeraTarea = indexUltimaTarea - tareasPorPagina;
+    const tareasPaginadas = tareasFiltradas.slice(indexPrimeraTarea, indexUltimaTarea);
+    const totalPaginas = Math.ceil(tareasFiltradas.length / tareasPorPagina);
+
+    // Cambiar de página
+    const handlePageChange = (nuevaPagina) => {
+        setPaginaActual(nuevaPagina);
+        // Scroll suave hacia arriba para mejor experiencia
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleDownloadJSON = () => {
@@ -104,7 +111,7 @@ const Home = () => {
 
         const link = document.createElement("a");
         link.href = url;
-        link.download = "home_backup.json";
+        link.download = "Tareas_backup.json";
         link.click();
 
         URL.revokeObjectURL(url);
@@ -132,6 +139,7 @@ const Home = () => {
                 setTareas(parsedData); // Cambiado de setMembers
                 setCategoriaSeleccionada("Todas"); // Resetear filtro al cargar nuevos datos
                 toast.success("Datos cargados correctamente");
+                setPaginaActual(1);
             } catch (error) {
                 toast.error("Archivo JSON inválido");
                 console.error(error);
@@ -167,7 +175,7 @@ const Home = () => {
                     value={categoriaSeleccionada}
                     onChange={(e) => {
                         setCategoriaSeleccionada(e.target.value);
-                        setVisibleCount(6); // Resetear vista al cambiar filtro
+                        setPaginaActual(1); // Reset a primera página al cambiar filtro
                     }}
                     className="filtro-select"
                 >
@@ -175,6 +183,9 @@ const Home = () => {
                         <option key={cat} value={cat}>{cat}</option>
                     ))}
                 </select>
+                <span className="resultados-count">
+                    {tareasFiltradas.length} tareas • Página {paginaActual} de {totalPaginas || 1}
+                </span>
             </div>
 
             {/* Indicador de scroll horizontal para móviles */}
@@ -193,7 +204,7 @@ const Home = () => {
                     <span>Categoría</span>
                 </div>
 
-                {tareasFiltradas.slice(0, visibleCount).map((tarea) => (
+                {tareasPaginadas.map((tarea) => (
                     <div className="table__row" key={tarea.id}>
                         <span>{tarea.id}</span>
                         <span>{getNombreUsuario(tarea.id_usuario)}</span>
@@ -212,14 +223,41 @@ const Home = () => {
                 )}
             </section>
 
-            <div className="home__controls">
-                <div className="home__more">
-                    {tareasFiltradas.length > 10 && (
-                        <button onClick={handleToggleView}>
-                            {visibleCount >= tareasFiltradas.length ? "Ver Menos..." : "Ver Más..."}
-                        </button>
-                    )}
+
+            {/* Paginación */}
+            {totalPaginas > 1 && (
+                <div className="home__paginacion">
+                    <button
+                        onClick={() => handlePageChange(paginaActual - 1)}
+                        disabled={paginaActual === 1}
+                        className="paginacion-btn"
+                    >
+                        ← Anterior
+                    </button>
+
+                    <div className="paginacion-numeros">
+                        {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(num => (
+                            <button
+                                key={num}
+                                onClick={() => handlePageChange(num)}
+                                className={`paginacion-numero ${paginaActual === num ? 'activo' : ''}`}
+                            >
+                                {num}
+                            </button>
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={() => handlePageChange(paginaActual + 1)}
+                        disabled={paginaActual === totalPaginas}
+                        className="paginacion-btn"
+                    >
+                        Siguiente →
+                    </button>
                 </div>
+            )}
+
+            <div className="home__controls">
 
                 <div className="home__export-import">
                     <button onClick={handleDownloadJSON} className="btn-add">

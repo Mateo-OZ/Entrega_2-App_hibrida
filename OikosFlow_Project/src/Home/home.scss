@@ -329,3 +329,158 @@
         display: none;
     }
 }
+
+// Paginación
+// Paginación
+.home__paginacion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+
+    .paginacion-btn {
+        padding: 0.6rem 1rem;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        background: white;
+        color: #4f5d75;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+        white-space: nowrap;
+
+        &:hover:not(:disabled) {
+            background: #4f5d75;
+            color: white;
+            border-color: #4f5d75;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f5f5f5;
+        }
+
+        &:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+    }
+
+    .paginacion-numeros {
+        display: flex;
+        gap: 0.3rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .paginacion-numero {
+        min-width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        background: white;
+        color: #4f5d75;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        font-size: 0.9rem;
+
+        &:hover:not(.activo) {
+            background: #f0f0f0;
+            border-color: #4f5d75;
+        }
+
+        &.activo {
+            background: #4f5d75;
+            color: white;
+            border-color: #4f5d75;
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+    }
+}
+
+// Ajuste para los botones de control
+.home__controls {
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    // En web (pantallas grandes)
+    @media (min-width: 481px) {
+        flex-direction: row;
+        justify-content: center; // Centrar los botones
+        align-items: center;
+    }
+
+    // En móvil (pantallas pequeñas)
+    @media (max-width: 480px) {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+.home__export-import {
+    display: flex;
+    gap: 1rem;
+
+    // En web
+    @media (min-width: 481px) {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    // En móvil
+    @media (max-width: 480px) {
+        flex-direction: column;
+        width: 100%;
+
+        button {
+            width: 100%;
+        }
+    }
+
+    button {
+        min-width: 140px;
+        font-size: 0.9rem;
+        padding: 0.7rem 1.2rem;
+
+        @media (max-width: 480px) {
+            min-width: auto;
+            width: 100%;
+        }
+    }
+}
+
+// El botón de Reset
+.home__controls>button:last-child {
+    @media (min-width: 481px) {
+        min-width: 140px;
+    }
+
+    @media (max-width: 480px) {
+        width: 100%;
+    }
+}
+
+// Actualizar el contador de resultados
+.home__filtros .resultados-count {
+    color: #666;
+    font-size: 0.85rem;
+    background: #f0f0f0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+
+    @media (min-width: 480px) {
+        margin-left: auto;
+    }
+}
