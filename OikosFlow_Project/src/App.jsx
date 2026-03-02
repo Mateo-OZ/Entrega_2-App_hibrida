@@ -10,6 +10,7 @@ import Login from "./Auth/Login.jsx";
 import RecuperarSms from "./Auth/RecuperarSms.jsx";
 import RecuperarCorreo from "./Auth/RecuperarCorreo.jsx";
 import Perfil from "./Perfil/perfil.jsx";
+import Notificaciones from "./Notificaciones/notificaciones.jsx";
 import "./App.css";
 import "./Auth/auth.scss";
 
@@ -96,6 +97,7 @@ function App() {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/recuperar-sms" element={<RecuperarSms />} />
         <Route path="/auth/recuperar-correo" element={<RecuperarCorreo />} />
+        <Route path="/notificaciones" element={<Notificaciones />} />
       </Routes>
     </>
   );
