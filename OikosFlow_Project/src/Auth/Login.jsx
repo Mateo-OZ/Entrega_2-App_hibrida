@@ -27,7 +27,7 @@ const Login = () => {
     }
 
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
-    localStorage.setItem("usuarioActivo", encontrado.nombre_completo);
+    localStorage.setItem("usuarioActivo", JSON.stringify(encontrado));
 
     toast.success("Sesión iniciada correctamente.");
     navigate("/home");

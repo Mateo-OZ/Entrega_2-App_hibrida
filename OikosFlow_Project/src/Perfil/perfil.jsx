@@ -45,22 +45,62 @@ const Perfil = () => {
     }
   }, []);
 
-  const handleEdit = (e) => {
-    e.preventDefault();
+const handleEdit = (e) => {
+  e.preventDefault();
 
-    const stored = localStorage.getItem("usuarios");
-    const usuarios = stored ? JSON.parse(stored) : usuariosBase;
+  const nombreAnterior = usuario.nombre_completo;
+  const nombreNuevo = formData.nombre_completo;
 
-    const actualizados = usuarios.map((u) =>
-      u.correo === usuario.correo ? { ...u, ...formData } : u
+  // ===== ACTUALIZAR USUARIOS =====
+  const stored = localStorage.getItem("usuarios");
+  const usuarios = stored ? JSON.parse(stored) : usuariosBase;
+
+  const actualizados = usuarios.map((u) =>
+    u.correo === usuario.correo ? { ...u, ...formData } : u
+  );
+
+  localStorage.setItem("usuarios", JSON.stringify(actualizados));
+  localStorage.setItem("usuarioActivo", JSON.stringify(formData));
+
+  // ===== ACTUALIZAR TAREAS =====
+  const tareasStored = localStorage.getItem("tareas");
+  if (tareasStored) {
+    const tareas = JSON.parse(tareasStored);
+    const tareasActualizadas = tareas.map((t) =>
+      t.nombre_encargado === nombreAnterior
+        ? { ...t, nombre_encargado: nombreNuevo }
+        : t
     );
+    localStorage.setItem("tareas", JSON.stringify(tareasActualizadas));
+  }
 
-    localStorage.setItem("usuarios", JSON.stringify(actualizados));
-    localStorage.setItem("usuarioActivo", JSON.stringify(formData));
+  // ===== ACTUALIZAR HISTORIAL =====
+  const historialStored = localStorage.getItem("historial");
+  if (historialStored) {
+    const historial = JSON.parse(historialStored);
+    const historialActualizado = historial.map((h) =>
+      h.nombre_encargado === nombreAnterior
+        ? { ...h, nombre_encargado: nombreNuevo }
+        : h
+    );
+    localStorage.setItem("historial", JSON.stringify(historialActualizado));
+  }
 
-    setUsuario(formData);
-    setShowModal(false);
-  };
+  // ===== ACTUALIZAR HOME (members) =====
+  const membersStored = localStorage.getItem("members");
+  if (membersStored) {
+    const members = JSON.parse(membersStored);
+    const membersActualizados = members.map((m) =>
+      m.nombre_encargado === nombreAnterior
+        ? { ...m, nombre_encargado: nombreNuevo }
+        : m
+    );
+    localStorage.setItem("members", JSON.stringify(membersActualizados));
+  }
+
+  setUsuario(formData);
+  setShowModal(false);
+};
 
   const handleCloseModal = () => {
     setShowModal(false);

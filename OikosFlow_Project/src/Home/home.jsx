@@ -26,7 +26,17 @@ const Home = () => {
         localStorage.setItem("members", JSON.stringify(members));
     }, [members]);
 
-    const currenUser = localStorage.getItem("usuarioActivo") || "Tiago";
+    let currenUser = "Invitado";
+    const storedUser = localStorage.getItem("usuarioActivo");
+
+    if (storedUser) {
+        try {
+            const parsed = JSON.parse(storedUser);
+            currenUser = parsed.nombre_completo || "Invitado";
+        } catch (error) {
+            console.error("usuarioActivo inválido");
+        }
+    }
 
     const fileInputRef = useRef(null);
 

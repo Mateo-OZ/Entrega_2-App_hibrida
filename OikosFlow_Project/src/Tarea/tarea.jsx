@@ -6,8 +6,16 @@ import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 const Tareas = () => {
-    const usuarioActivo =
-        localStorage.getItem("usuarioActivo") || "Tiago";
+    let usuarioActivo = "Invitado";
+    const storedUser = localStorage.getItem("usuarioActivo");
+    if (storedUser) {
+        try {
+            const parsed = JSON.parse(storedUser);
+            usuarioActivo = parsed.nombre_completo || "Invitado";
+        } catch (error) {
+            console.error("usuarioActivo inválido");
+        }
+    }
 
     const [tareas, setTareas] = useState(() => {
         const saved = localStorage.getItem("tareas");

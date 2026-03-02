@@ -9,6 +9,7 @@ import Registro from "./Auth/Registro.jsx";
 import Login from "./Auth/Login.jsx";
 import RecuperarSms from "./Auth/RecuperarSms.jsx";
 import RecuperarCorreo from "./Auth/RecuperarCorreo.jsx";
+import Perfil from "./Perfil/perfil.jsx";
 import "./App.css";
 import "./Auth/auth.scss";
 
@@ -85,6 +86,7 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route path="/perfil" element={<Perfil />} />
         <Route path="/auth" element={<Inicio />} />
         <Route path="/auth/registro" element={<Registro />} />
         <Route path="/auth/login" element={<Login />} />
