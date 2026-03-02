@@ -47,9 +47,19 @@
         .table__header,
         .table__row {
             display: grid;
-            grid-template-columns: 40px 1fr 1fr 100px;
+            grid-template-columns: 40px 1fr 2fr auto;
             padding: 0.8rem;
             align-items: center;
+        }
+
+        .table__header span:nth-child(2),
+        .table__row span:nth-child(2) {
+            padding-right: 1rem;
+        }
+
+        .table__header span:nth-child(3),
+        .table__row span:nth-child(3) {
+            padding-right: 1rem;
         }
 
         .table__header {

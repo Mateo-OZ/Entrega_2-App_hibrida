@@ -26,9 +26,24 @@
         .table__header,
         .table__row {
             display: grid;
-            grid-template-columns: 40px 1fr 2fr 120px;
+            grid-template-columns: 40px 1fr 2fr auto;
             padding: 0.8rem;
             align-items: center;
+        }
+
+        .table__header span:nth-child(2),
+        .table__row span:nth-child(2) {
+            padding-right: 1rem;
+        }
+
+        .table__header span:nth-child(3),
+        .table__row span:nth-child(3) {
+            padding-right: 1rem;
+        }
+
+        .table__row span:last-child {
+            display: flex;
+            justify-content: center;
         }
 
         .table__header {
@@ -50,6 +65,8 @@
     text-align: center;
     font-size: 0.75rem;
     text-transform: capitalize;
+    white-space: nowrap;
+    max-width: 100px;
 }
 
 .estado.activo {
