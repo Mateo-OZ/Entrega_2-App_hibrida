@@ -86,7 +86,11 @@ function App() {
             </RequireAuth>
           }
         />
-        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/perfil" element={
+          <RequireAuth>
+            <Perfil />
+          </RequireAuth>
+        } />
         <Route path="/auth" element={<Inicio />} />
         <Route path="/auth/registro" element={<Registro />} />
         <Route path="/auth/login" element={<Login />} />
