@@ -45,7 +45,7 @@ const Registro = () => {
     localStorage.setItem("usuarioActivo", nombreCompleto);
 
     toast.success("Cuenta creada correctamente");
-    navigate("/home");
+    navigate("/auth/login");
   };
 
   return (
