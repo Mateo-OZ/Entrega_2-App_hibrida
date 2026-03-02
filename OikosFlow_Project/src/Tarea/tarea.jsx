@@ -72,6 +72,24 @@ const Tareas = () => {
         };
 
         setTareas([...tareas, nuevaTarea]);
+        if (
+            nuevaTarea.nombre_encargado.trim().toLowerCase() ===
+            usuarioActivo.trim().toLowerCase()
+        ) {
+            const storedNoti = localStorage.getItem("notificaciones");
+            const notificaciones = storedNoti ? JSON.parse(storedNoti) : [];
+
+            const nuevaNotificacion = {
+                id: Date.now(),
+                mensaje: `Te han asignado una tarea: ${nuevaTarea.trabajo_a_realizar}`,
+                fecha: new Date().toISOString()
+            };
+
+            localStorage.setItem(
+                "notificaciones",
+                JSON.stringify([nuevaNotificacion, ...notificaciones])
+            );
+        }
         toast.success("Tarea añadida correctamente");
         setShowModal(false);
         setNuevoTrabajo("");
