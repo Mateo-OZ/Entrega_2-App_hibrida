@@ -17,6 +17,7 @@ const Home = () => {
         localStorage.clear();
         setTareas(tareasData);
         setUsuarios(usuariosData);
+        setCategoriaSeleccionada("Todas");
         window.location.reload();
     };
 
@@ -31,6 +32,7 @@ const Home = () => {
     });
 
     const [visibleCount, setVisibleCount] = useState(6);
+    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
 
     useEffect(() => {
         localStorage.setItem("tareas", JSON.stringify(tareas));
@@ -69,6 +71,14 @@ const Home = () => {
                 return "Estado Pendiente";
         }
     };
+
+    // Obtener categorías únicas
+    const categoriasUnicas = ["Todas", ...new Set(tareas.map(t => t.version).filter(Boolean))];
+
+    // Filtrar tareas por categoría
+    const tareasFiltradas = categoriaSeleccionada === "Todas"
+        ? tareas
+        : tareas.filter(t => t.version === categoriaSeleccionada);
 
     const handleToggleView = () => {
         if (visibleCount >= tareas.length) {
@@ -120,6 +130,7 @@ const Home = () => {
                     return;
                 }
                 setTareas(parsedData); // Cambiado de setMembers
+                setCategoriaSeleccionada("Todas"); // Resetear filtro al cargar nuevos datos
                 toast.success("Datos cargados correctamente");
             } catch (error) {
                 toast.error("Archivo JSON inválido");
@@ -148,6 +159,25 @@ const Home = () => {
                 </div>
             </header>
 
+            {/* Filtro por categoría */}
+            <div className="home__filtros">
+                <label htmlFor="categoria">Filtrar por categoría: </label>
+                <select
+                    id="categoria"
+                    value={categoriaSeleccionada}
+                    onChange={(e) => {
+                        setCategoriaSeleccionada(e.target.value);
+                        setVisibleCount(6); // Resetear vista al cambiar filtro
+                    }}
+                    className="filtro-select"
+                >
+                    {categoriasUnicas.map(cat => (
+                        <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                </select>
+            </div>
+
+
             {/*Table*/}
             <section className="home__table">
                 <div className="table__header">
@@ -158,7 +188,7 @@ const Home = () => {
                     <span>Categoría</span>
                 </div>
 
-                {tareas.slice(0, visibleCount).map((tarea) => (
+                {tareasFiltradas.slice(0, visibleCount).map((tarea) => (
                     <div className="table__row" key={tarea.id}>
                         <span>{tarea.id}</span>
                         <span>{getNombreUsuario(tarea.id_usuario)}</span>
@@ -169,23 +199,29 @@ const Home = () => {
                         <span>{tarea.version || "General"}</span>
                     </div>
                 ))}
+
+                {tareasFiltradas.length === 0 && (
+                    <div className="table__empty">
+                        No hay tareas en esta categoría
+                    </div>
+                )}
             </section>
 
             <div className="home__controls">
                 <div className="home__more">
-                    {tareas.length > 10 && (
+                    {tareasFiltradas.length > 10 && (
                         <button onClick={handleToggleView}>
-                            {visibleCount >= tareas.length ? "Ver Menos..." : "Ver Mas..."}
+                            {visibleCount >= tareasFiltradas.length ? "Ver Menos..." : "Ver Más..."}
                         </button>
                     )}
                 </div>
 
                 <div className="home__export-import">
-                    <button onClick={handleDownloadJSON} className="btn btn-add">
+                    <button onClick={handleDownloadJSON} className="btn-add">
                         Descargar JSON
                     </button>
 
-                    <button onClick={handleOpenFilePicker} className="btn btn-add">
+                    <button onClick={handleOpenFilePicker} className="btn-add">
                         Subir JSON
                     </button>
 
