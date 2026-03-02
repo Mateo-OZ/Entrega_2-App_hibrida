@@ -161,7 +161,7 @@ const Home = () => {
 
             {/* Filtro por categoría */}
             <div className="home__filtros">
-                <label htmlFor="categoria">Filtrar por categoría: </label>
+                <label htmlFor="categoria">Filtrar por: </label>
                 <select
                     id="categoria"
                     value={categoriaSeleccionada}
@@ -177,13 +177,18 @@ const Home = () => {
                 </select>
             </div>
 
+            {/* Indicador de scroll horizontal para móviles */}
+            <div className="scroll-hint">
+                <span>← Desliza para ver más →</span>
+            </div>
+
 
             {/*Table*/}
             <section className="home__table">
                 <div className="table__header">
                     <span>#</span>
-                    <span>Nombre Encargado</span>
-                    <span>Trabajo a Realizar</span>
+                    <span>Encargado</span>
+                    <span>Tarea</span>
                     <span>Estado</span>
                     <span>Categoría</span>
                 </div>
