@@ -73,13 +73,13 @@
     },
     {
         "id": 13,
-        "nombre_encargado": "Tiago",
+        "nombre_encargado": "trump",
         "trabajo_a_realizar": "Revisar estado del sistema eléctrico",
         "estado": "Inactivo"
     },
     {
         "id": 14,
-        "nombre_encargado": "Tiago",
+        "nombre_encargado": "albert",
         "trabajo_a_realizar": "Organizar manuales de usuario",
         "estado": "Deshabilitado"
     },
