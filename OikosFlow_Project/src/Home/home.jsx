@@ -1,27 +1,18 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import { FaBell, FaUserCircle } from "react-icons/fa"
+import { useState, useEffect, useRef } from "react";
+import { FaBell, FaUserCircle } from "react-icons/fa";
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import tareasData from "../data/datos_tareas_unificados.json";
 import usuariosData from "../data/usuarios.json";
-import { useRef } from "react";
-import "../Home/home.scss"
+import "../Home/home.scss";
 
 const Home = () => {
-
     const navigate = useNavigate();
+    const fileInputRef = useRef(null);
+    const tareasPorPagina = 10;
 
-    const handleFullReset = () => {
-        localStorage.clear();
-        setTareas(tareasData);
-        setUsuarios(usuariosData);
-        setCategoriaSeleccionada("Todas");
-        setPaginaActual(1);
-        window.location.reload();
-    };
-
+    // Estados
     const [tareas, setTareas] = useState(() => {
         const saved = localStorage.getItem("tareas");
         return saved ? JSON.parse(saved) : tareasData;
@@ -34,8 +25,8 @@ const Home = () => {
 
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
     const [paginaActual, setPaginaActual] = useState(1);
-    const tareasPorPagina = 10;
 
+    // Efectos para guardar en localStorage
     useEffect(() => {
         localStorage.setItem("tareas", JSON.stringify(tareas));
     }, [tareas]);
@@ -44,20 +35,21 @@ const Home = () => {
         localStorage.setItem("usuarios", JSON.stringify(usuarios));
     }, [usuarios]);
 
-    let currenUser = "Invitado";
-    const storedUser = localStorage.getItem("usuarioActivo");
-
-    if (storedUser) {
-        try {
-            const parsed = JSON.parse(storedUser);
-            currenUser = parsed.nombre_completo || "Invitado";
-        } catch (error) {
-            console.error("usuarioActivo inválido");
+    // Obtener usuario actual
+    const getCurrentUser = () => {
+        const storedUser = localStorage.getItem("usuarioActivo");
+        if (storedUser) {
+            try {
+                const parsed = JSON.parse(storedUser);
+                return parsed.nombre_completo || "Invitado";
+            } catch {
+                console.error("usuarioActivo inválido");
+            }
         }
-    }
+        return "Invitado";
+    };
 
-    const fileInputRef = useRef(null);
-
+    // Funciones de utilidad
     const getNombreUsuario = (id_usuario) => {
         const usuario = usuarios.find(u => u.id === id_usuario);
         return usuario ? usuario.nombre_completo : "Usuario no encontrado";
@@ -66,11 +58,11 @@ const Home = () => {
     const getStatusClass = (status) => {
         switch (status) {
             case "Pendiente":
-                return "Estado Pendiente";
+                return "estado-pendiente";
             case "En Proceso":
-                return "Estado EnProceso";
+                return "estado-proceso";
             default:
-                return "Estado Pendiente";
+                return "estado-pendiente";
         }
     };
 
@@ -88,39 +80,41 @@ const Home = () => {
     const tareasPaginadas = tareasFiltradas.slice(indexPrimeraTarea, indexUltimaTarea);
     const totalPaginas = Math.ceil(tareasFiltradas.length / tareasPorPagina);
 
-    // Cambiar de página
+    // Manejadores de eventos
     const handlePageChange = (nuevaPagina) => {
         setPaginaActual(nuevaPagina);
-        // Scroll suave hacia arriba para mejor experiencia
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleCategoryChange = (e) => {
+        setCategoriaSeleccionada(e.target.value);
+        setPaginaActual(1);
+    };
+
+    const handleFullReset = () => {
+        localStorage.clear();
+        setTareas(tareasData);
+        setUsuarios(usuariosData);
+        setCategoriaSeleccionada("Todas");
+        setPaginaActual(1);
+        window.location.reload();
     };
 
     const handleDownloadJSON = () => {
         const dataToDownload = localStorage.getItem("tareas");
-
         if (!dataToDownload) {
             toast.error("No hay datos para descargar");
             return;
         }
 
-        const blob = new Blob([dataToDownload], {
-            type: "application/json",
-        });
-
+        const blob = new Blob([dataToDownload], { type: "application/json" });
         const url = URL.createObjectURL(blob);
-
         const link = document.createElement("a");
         link.href = url;
         link.download = "Tareas_backup.json";
         link.click();
-
         URL.revokeObjectURL(url);
-
         toast.success("JSON descargado correctamente");
-    };
-
-    const handleOpenFilePicker = () => {
-        fileInputRef.current.click();
     };
 
     const handleUploadJSON = (event) => {
@@ -128,21 +122,19 @@ const Home = () => {
         if (!file) return;
 
         const reader = new FileReader();
-
         reader.onload = (e) => {
             try {
                 const parsedData = JSON.parse(e.target.result);
                 if (!Array.isArray(parsedData)) {
-                    alert("El archivo debe contener un array válido.");
+                    toast.error("El archivo debe contener un array válido");
                     return;
                 }
-                setTareas(parsedData); // Cambiado de setMembers
-                setCategoriaSeleccionada("Todas"); // Resetear filtro al cargar nuevos datos
-                toast.success("Datos cargados correctamente");
+                setTareas(parsedData);
+                setCategoriaSeleccionada("Todas");
                 setPaginaActual(1);
-            } catch (error) {
+                toast.success("Datos cargados correctamente");
+            } catch {
                 toast.error("Archivo JSON inválido");
-                console.error(error);
             }
         };
         reader.readAsText(file);
@@ -150,16 +142,13 @@ const Home = () => {
 
     return (
         <div className="home">
-            {/*Header*/}
             <header className="home__header">
                 <h1 className="home__title">OikosFlow</h1>
-
                 <div className="home__top">
                     <div>
-                        <h2>Hola, {currenUser}.</h2>
+                        <h2>Hola, {getCurrentUser()}.</h2>
                         <p>Grupo Casa</p>
                     </div>
-
                     <div className="home__icons">
                         <FaBell onClick={() => navigate("/notificaciones")} />
                         <FaUserCircle onClick={() => navigate("/perfil")} />
@@ -173,10 +162,7 @@ const Home = () => {
                 <select
                     id="categoria"
                     value={categoriaSeleccionada}
-                    onChange={(e) => {
-                        setCategoriaSeleccionada(e.target.value);
-                        setPaginaActual(1); // Reset a primera página al cambiar filtro
-                    }}
+                    onChange={handleCategoryChange}
                     className="filtro-select"
                 >
                     {categoriasUnicas.map(cat => (
@@ -193,8 +179,7 @@ const Home = () => {
                 <span>← Desliza para ver más →</span>
             </div>
 
-
-            {/*Table*/}
+            {/* Tabla */}
             <section className="home__table">
                 <div className="table__header">
                     <span>#</span>
@@ -222,7 +207,6 @@ const Home = () => {
                     </div>
                 )}
             </section>
-
 
             {/* Paginación */}
             {totalPaginas > 1 && (
@@ -257,17 +241,15 @@ const Home = () => {
                 </div>
             )}
 
+            {/* Botones de control */}
             <div className="home__controls">
-
                 <div className="home__export-import">
                     <button onClick={handleDownloadJSON} className="btn-add">
                         Descargar JSON
                     </button>
-
-                    <button onClick={handleOpenFilePicker} className="btn-add">
+                    <button onClick={() => fileInputRef.current.click()} className="btn-add">
                         Subir JSON
                     </button>
-
                     <input
                         type="file"
                         accept=".json"
@@ -276,29 +258,26 @@ const Home = () => {
                         style={{ display: "none" }}
                     />
                 </div>
-
-                <button onClick={handleFullReset}>
+                <button onClick={handleFullReset} className="btn-add">
                     Restaurar sistema
                 </button>
             </div>
 
+            {/* Barra de navegación inferior */}
             <nav className="home__bottom-nav">
-                <NavLink to="/home" end>
+                <NavLink to="/home" end className={({ isActive }) => isActive ? "active" : ""}>
                     <FaHome />
                     <span>Home</span>
                 </NavLink>
-
-                <NavLink to="/tareas">
+                <NavLink to="/tareas" className={({ isActive }) => isActive ? "active" : ""}>
                     <FaTasks />
                     <span>Tareas</span>
                 </NavLink>
-
-                <NavLink to="/historial">
+                <NavLink to="/historial" className={({ isActive }) => isActive ? "active" : ""}>
                     <FaHistory />
                     <span>Historial</span>
                 </NavLink>
-
-                <NavLink to="/perfil">
+                <NavLink to="/perfil" className={({ isActive }) => isActive ? "active" : ""}>
                     <FaUser />
                     <span>Perfil</span>
                 </NavLink>
