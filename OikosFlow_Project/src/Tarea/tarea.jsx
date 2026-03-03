@@ -22,7 +22,7 @@ const Tareas = () => {
         return saved ? JSON.parse(saved) : usuariosData;
     });
 
-    const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
+    const [categoriaFiltro, setCategoriaFiltro] = useState("Todas");
     const [paginaActual, setPaginaActual] = useState(1);
     const [modoVista, setModoVista] = useState("mis"); // "mis" o "todas"
     const [showModal, setShowModal] = useState(false);
@@ -31,6 +31,7 @@ const Tareas = () => {
     const [nuevoTrabajo, setNuevoTrabajo] = useState("");
     const [encargadoSeleccionado, setEncargadoSeleccionado] = useState("");
     const [estadoSeleccionado, setEstadoSeleccionado] = useState("Pendiente");
+    const [categoriaFormulario, setCategoriaFormulario] = useState("Todas");
 
     // Efectos para guardar en localStorage
     useEffect(() => {
@@ -90,9 +91,9 @@ const Tareas = () => {
     // Filtrar tareas por categoría y modo de vista (excluyendo Completadas)
     const tareasActivas = tareas.filter(t => t.estado !== "Completado");
 
-    const tareasFiltradasPorCategoria = categoriaSeleccionada === "Todas"
+    const tareasFiltradasPorCategoria = categoriaFiltro === "Todas"
         ? tareasActivas
-        : tareasActivas.filter(t => t.version === categoriaSeleccionada);
+        : tareasActivas.filter(t => t.version === categoriaFiltro);
 
     const tareasFiltradas = modoVista === "mis" && currentUserId
         ? tareasFiltradasPorCategoria.filter(t => t.id_usuario === currentUserId)
@@ -111,7 +112,7 @@ const Tareas = () => {
     };
 
     const handleCategoryChange = (e) => {
-        setCategoriaSeleccionada(e.target.value);
+        setCategoriaFiltro(e.target.value);
         setPaginaActual(1);
     };
 
@@ -125,6 +126,7 @@ const Tareas = () => {
         setNuevoTrabajo("");
         setEncargadoSeleccionado("");
         setEstadoSeleccionado("Pendiente");
+        setCategoriaFormulario("Todas");
     };
 
     const handleAddTask = (e) => {
@@ -146,7 +148,7 @@ const Tareas = () => {
             id_usuario: parseInt(encargadoSeleccionado),
             trabajo_a_realizar: nuevoTrabajo,
             estado: estadoSeleccionado,
-            version: categoriaSeleccionada === "Todas" ? "General" : categoriaSeleccionada
+            version: categoriaFormulario === "Todas" ? "General" : categoriaFormulario
         };
 
         setTareas([...tareas, nuevaTarea]);
@@ -264,7 +266,7 @@ const Tareas = () => {
                     <label htmlFor="categoria">Filtrar por: </label>
                     <select
                         id="categoria"
-                        value={categoriaSeleccionada}
+                        value={categoriaFiltro}
                         onChange={handleCategoryChange}
                         className="filtro-select"
                     >
@@ -428,8 +430,8 @@ const Tareas = () => {
                             <div className="form-group">
                                 <label>Categoría</label>
                                 <select
-                                    value={categoriaSeleccionada}
-                                    onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+                                    value={categoriaFormulario}
+                                    onChange={(e) => setCategoriaFormulario(e.target.value)}
                                 >
                                     {categoriasUnicas.map(cat => (
                                         <option key={cat} value={cat}>{cat}</option>
