@@ -14,8 +14,6 @@ import Notificaciones from "./Notificaciones/notificaciones.jsx";
 import "./App.css";
 import "./Auth/auth.scss";
 
-import PruebaColor from "./prueba-color/prueba-color.jsx";
-import PruebaColorHome from "./prueba-color/prueba-color-home.jsx"
 
 const RequireAuth = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem("usuarioActivo");
@@ -102,8 +100,6 @@ function App() {
         <Route path="/auth/recuperar-correo" element={<RecuperarCorreo />} />
         <Route path="/notificaciones" element={<Notificaciones />} />
 
-        <Route path="/prueba-color" element={<PruebaColor />} />
-        <Route path="/prueba-color-home" element={<PruebaColorHome />} />
       </Routes>
     </>
   );
