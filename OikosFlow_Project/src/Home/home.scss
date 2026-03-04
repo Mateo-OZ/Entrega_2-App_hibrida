@@ -1,7 +1,65 @@
+// ===== OPCIÓN 2: AZUL NOCHE (Enfoque productividad/profesional) =====
+:root {
+    // Base Neutros (fríos)
+    --bg-primary: #F5F8FA; // Azul muy claro
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #E9EFF3; // Azul grisáceo
+
+    // Bordes
+    --border-light: #DAE3E9;
+    --border-medium: #BFCBD4;
+
+    // Texto
+    --text-primary: #1A2B3C; // Azul noche
+    --text-secondary: #405B6E; // Azul gris
+    --text-tertiary: #6F8A9C; // Azul claro
+    --text-inverse: #FFFFFF;
+
+    // Brand Principal (Azul denim)
+    --brand-primary: #2C5F8A; // Azul medio
+    --brand-hover: #1F4A6F; // Azul más oscuro
+    --brand-soft: #E7F0F8; // Azul muy suave
+    --brand-light: #C9DDEB; // Azul claro
+
+    // Estados
+    --success-main: #2E7A6B; // Verde azulado
+    --success-soft: #E8F3F0;
+    --success-border: #B8D9D2;
+
+    --warning-main: #E68A5C; // Naranja quemado
+    --warning-soft: #FEF2EA;
+    --warning-border: #FADAC8;
+
+    --error-main: #C24F4F; // Rojo apagado
+    --error-soft: #FEEEEF;
+    --error-border: #F8CFD2;
+
+    --info-main: #2C5F8A; // Mismo azul brand
+    --info-soft: #E7F0F8;
+    --info-border: #C9DDEB;
+
+    // Categorías
+    --category-purple: #6F7A9C; // Azul lavanda
+    --category-purple-soft: #EDF0F8;
+    --category-yellow: #D9A846; // Mostaza
+    --category-yellow-soft: #FDF4E0;
+    --category-blue: #2C5F8A; // Azul brand
+    --category-blue-soft: #E7F0F8;
+    --category-coral: #D9786F; // Coral apagado
+    --category-coral-soft: #FCEFED;
+
+    // Sombras (neutras)
+    --shadow-sm: 0 1px 3px rgba(26, 43, 60, 0.05), 0 1px 2px rgba(26, 43, 60, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(26, 43, 60, 0.05), 0 2px 4px -1px rgba(26, 43, 60, 0.03);
+    --shadow-lg: 0 10px 15px -3px rgba(26, 43, 60, 0.05), 0 4px 6px -2px rgba(26, 43, 60, 0.02);
+}
+
+// ===== ESTILOS DEL HOME =====
+// (Mismo código de estilos que en Opción 1, solo cambian las variables arriba)
 .home {
     padding: 1rem;
-    font-family: Arial, sans-serif;
-    background-color: #f5f6fa;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-primary);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -15,9 +73,10 @@
 
     &__title {
         text-align: center;
-        font-weight: bold;
+        font-weight: 600;
         margin-bottom: 0.8rem;
         font-size: 1.3rem;
+        color: var(--brand-primary);
     }
 
     &__top {
@@ -28,11 +87,12 @@
         h2 {
             margin: 0;
             font-size: 1.1rem;
+            color: var(--text-primary);
         }
 
         p {
             margin: 0;
-            color: #666;
+            color: var(--text-secondary);
             font-size: 0.8rem;
         }
     }
@@ -44,18 +104,26 @@
 
         svg {
             cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.2s;
+
+            &:hover {
+                color: var(--brand-primary);
+            }
         }
     }
 
     // Filtros responsive
     &__filtros {
-        background: white;
+        background: var(--bg-secondary);
         padding: 0.8rem;
-        border-radius: 8px;
+        border-radius: 12px;
         margin-bottom: 1rem;
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-light);
 
         @media (min-width: 480px) {
             flex-direction: row;
@@ -64,16 +132,17 @@
         }
 
         label {
-            font-weight: bold;
-            color: #4f5d75;
+            font-weight: 600;
+            color: var(--text-primary);
             font-size: 0.9rem;
         }
 
         .filtro-select {
             padding: 0.6rem;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-            background-color: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-medium);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             cursor: pointer;
             width: 100%;
             font-size: 0.9rem;
@@ -84,20 +153,20 @@
             }
 
             &:hover {
-                border-color: #4f5d75;
+                border-color: var(--brand-primary);
             }
 
             &:focus {
                 outline: none;
-                border-color: #4f5d75;
-                box-shadow: 0 0 0 2px rgba(79, 93, 117, 0.2);
+                border-color: var(--brand-primary);
+                box-shadow: 0 0 0 3px var(--brand-soft);
             }
         }
 
         .resultados-count {
-            color: #666;
+            color: var(--text-secondary);
             font-size: 0.85rem;
-            background: #f0f0f0;
+            background: var(--bg-tertiary);
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
 
@@ -108,23 +177,25 @@
     }
 
     &__table {
-        background: white;
-        border-radius: 8px;
+        background: var(--bg-secondary);
+        border-radius: 12px;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         margin-bottom: 1rem;
         width: 100%;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-light);
 
         &::-webkit-scrollbar {
             height: 4px;
         }
 
         &::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: var(--bg-tertiary);
         }
 
         &::-webkit-scrollbar-thumb {
-            background: #4f5d75;
+            background: var(--brand-primary);
             border-radius: 4px;
         }
 
@@ -148,6 +219,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                color: var(--text-primary);
             }
 
             span:nth-child(3) {
@@ -158,24 +230,32 @@
         }
 
         .table__header {
-            font-weight: bold;
-            border-bottom: 1px solid #ddd;
-            background-color: #f0f0f0;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-light);
+            background-color: var(--bg-tertiary);
             position: sticky;
             top: 0;
             z-index: 10;
+
+            span {
+                color: var(--text-primary);
+            }
         }
 
         .table__row {
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-light);
+
+            &:hover {
+                background-color: var(--bg-tertiary);
+            }
         }
 
         .table__empty {
             padding: 2rem;
             text-align: center;
-            color: #999;
+            color: var(--text-tertiary);
             font-style: italic;
-            background: #f9f9f9;
+            background: var(--bg-tertiary);
             border-radius: 4px;
             min-width: 100%;
         }
@@ -190,10 +270,10 @@
         justify-content: space-around;
         align-items: center;
         padding: 0.6rem 0;
-        background-color: white;
-        border-top: 1px solid #ddd;
+        background-color: var(--bg-secondary);
+        border-top: 1px solid var(--border-light);
         z-index: 1000;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow-lg);
 
         a {
             display: flex;
@@ -201,19 +281,33 @@
             align-items: center;
             justify-content: center;
             text-decoration: none;
-            color: #888;
+            color: var(--text-tertiary);
             font-size: 0.7rem;
             gap: 2px;
-            transition: 0.2s ease;
+            transition: all 0.2s ease;
             padding: 0.3rem;
 
             svg {
                 font-size: 1.2rem;
+                color: var(--text-tertiary);
+                transition: color 0.2s;
             }
 
             &.active {
-                color: #4f5d75;
+                color: var(--brand-primary);
                 font-weight: 600;
+
+                svg {
+                    color: var(--brand-primary);
+                }
+            }
+
+            &:hover {
+                color: var(--brand-primary);
+
+                svg {
+                    color: var(--brand-primary);
+                }
             }
         }
     }
@@ -266,44 +360,37 @@
         @media (max-width: 480px) {
             flex-direction: column;
             width: 100%;
-
-            button {
-                width: 100%;
-            }
-        }
-
-        button {
-            min-width: 140px;
-            font-size: 0.9rem;
-            padding: 0.7rem 1.2rem;
-
-            @media (max-width: 480px) {
-                min-width: auto;
-                width: 100%;
-            }
         }
     }
 }
 
-// Estilos globales
+// Estilos globales para botones
 .btn-add {
     align-self: center;
     padding: 0.6rem 1rem;
     border-radius: 8px;
-    background-color: #4f5d75;
-    color: white;
+    background-color: var(--brand-primary);
+    color: var(--text-inverse);
     border: none;
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: all 0.2s ease;
     font-size: 0.9rem;
     width: 100%;
+    font-weight: 500;
 
     @media (min-width: 480px) {
         width: auto;
+        min-width: 140px;
+    }
+
+    @media (max-width: 480px) {
+        width: 100%;
     }
 
     &:hover {
-        opacity: 0.9;
+        background-color: var(--brand-hover);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-sm);
     }
 
     &:active {
@@ -312,7 +399,21 @@
 }
 
 // Estados de las tareas
-.estado-pendiente,
+.estado-pendiente {
+    padding: 0.25rem 0.4rem;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    display: inline-block;
+    white-space: nowrap;
+    width: fit-content;
+    min-width: 70px;
+    background-color: var(--warning-soft);
+    color: var(--warning-main);
+    border: 1px solid var(--warning-border);
+    font-weight: 500;
+}
+
 .estado-proceso {
     padding: 0.25rem 0.4rem;
     border-radius: 20px;
@@ -322,16 +423,10 @@
     white-space: nowrap;
     width: fit-content;
     min-width: 70px;
-}
-
-.estado-pendiente {
-    background-color: #ffc107;
-    color: #000;
-}
-
-.estado-proceso {
-    background-color: #17a2b8;
-    color: #fff;
+    background-color: var(--info-soft);
+    color: var(--info-main);
+    border: 1px solid var(--info-border);
+    font-weight: 500;
 }
 
 // Scroll hint
@@ -340,7 +435,7 @@
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    color: #4f5d75;
+    color: var(--brand-primary);
     font-size: 0.75rem;
     margin-bottom: 0.5rem;
 
@@ -361,9 +456,9 @@
     .paginacion-btn {
         padding: 0.6rem 1rem;
         border-radius: 6px;
-        border: 1px solid #ddd;
-        background: white;
-        color: #4f5d75;
+        border: 1px solid var(--border-medium);
+        background: var(--bg-secondary);
+        color: var(--text-primary);
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -371,15 +466,16 @@
         white-space: nowrap;
 
         &:hover:not(:disabled) {
-            background: #4f5d75;
-            color: white;
-            border-color: #4f5d75;
+            background: var(--brand-primary);
+            color: var(--text-inverse);
+            border-color: var(--brand-primary);
         }
 
         &:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            background: #f5f5f5;
+            background: var(--bg-tertiary);
+            color: var(--text-tertiary);
         }
 
         &:active:not(:disabled) {
@@ -398,9 +494,9 @@
         min-width: 36px;
         height: 36px;
         border-radius: 6px;
-        border: 1px solid #ddd;
-        background: white;
-        color: #4f5d75;
+        border: 1px solid var(--border-medium);
+        background: var(--bg-secondary);
+        color: var(--text-primary);
         font-weight: 500;
         cursor: pointer;
         display: flex;
@@ -410,18 +506,53 @@
         font-size: 0.9rem;
 
         &:hover:not(.activo) {
-            background: #f0f0f0;
-            border-color: #4f5d75;
+            background: var(--bg-tertiary);
+            border-color: var(--brand-primary);
+            color: var(--brand-primary);
         }
 
         &.activo {
-            background: #4f5d75;
-            color: white;
-            border-color: #4f5d75;
+            background: var(--brand-primary);
+            color: var(--text-inverse);
+            border-color: var(--brand-primary);
         }
 
         &:active {
             transform: scale(0.95);
         }
+    }
+}
+
+// Al final del archivo, después de los estilos existentes
+
+// Botones con iconos
+.btn-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    svg {
+        font-size: 1rem;
+    }
+}
+
+// Ajustes para los toasts (si no los tienes ya de Tareas-prueba)
+.toaster-container {
+    z-index: 9999 !important;
+}
+
+// Animación para spinner
+.fa-spin {
+    animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(359deg);
     }
 }
