@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { FaBell, FaUserCircle } from "react-icons/fa";
-import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
+import { FaBell, FaUserCircle, FaHome, FaTasks, FaHistory, FaUser, FaCheckCircle, FaExclamationTriangle, FaSpinner, FaTimes, FaClock, FaDownload, FaUpload, FaSyncAlt } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import tareasData from "../data/datos_tareas_unificados.json";
 import usuariosData from "../data/usuarios.json";
 import "../Home/home.scss";
@@ -26,7 +26,7 @@ const Home = () => {
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
     const [paginaActual, setPaginaActual] = useState(1);
 
-    // Efectos para guardar en localStorage
+    // Efectos
     useEffect(() => {
         localStorage.setItem("tareas", JSON.stringify(tareas));
     }, [tareas]);
@@ -35,7 +35,7 @@ const Home = () => {
         localStorage.setItem("usuarios", JSON.stringify(usuarios));
     }, [usuarios]);
 
-    // Obtener usuario actual
+    // Utilidades
     const getCurrentUser = () => {
         const storedUser = localStorage.getItem("usuarioActivo");
         if (storedUser) {
@@ -49,38 +49,94 @@ const Home = () => {
         return "Invitado";
     };
 
-    // Funciones de utilidad
     const getNombreUsuario = (id_usuario) => {
         const usuario = usuarios.find(u => u.id === id_usuario);
         return usuario ? usuario.nombre_completo : "Usuario no encontrado";
     };
 
     const getStatusClass = (status) => {
-        switch (status) {
-            case "Pendiente":
-                return "estado-pendiente";
-            case "En Proceso":
-                return "estado-proceso";
-            default:
-                return "estado-pendiente";
-        }
+        const statusMap = {
+            "Pendiente": "estado-pendiente",
+            "En Proceso": "estado-proceso",
+            "Completado": "estado-completado"
+        };
+        return statusMap[status] || "estado-pendiente";
     };
 
-    // Obtener categorías únicas
     const categoriasUnicas = ["Todas", ...new Set(tareas.map(t => t.version).filter(Boolean))];
 
-    // Filtrar tareas por categoría
     const tareasFiltradas = categoriaSeleccionada === "Todas"
         ? tareas
         : tareas.filter(t => t.version === categoriaSeleccionada);
 
-    // Calcular paginación
     const indexUltimaTarea = paginaActual * tareasPorPagina;
     const indexPrimeraTarea = indexUltimaTarea - tareasPorPagina;
     const tareasPaginadas = tareasFiltradas.slice(indexPrimeraTarea, indexUltimaTarea);
     const totalPaginas = Math.ceil(tareasFiltradas.length / tareasPorPagina);
 
-    // Manejadores de eventos
+    // ===== TOAST PERSONALIZADOS =====
+    const mostrarToastExito = (mensaje, icono = <FaCheckCircle />) => {
+        toast.custom((t) => (
+            <div className={`toast-exito-personalizado ${t.visible ? 'toast-enter' : 'toast-exit'}`}>
+                <div className="toast-exito-icon">{icono}</div>
+                <div className="toast-exito-contenido">
+                    <div className="toast-exito-titulo">{mensaje}</div>
+                </div>
+            </div>
+        ), {
+            duration: 2000,
+            position: 'top-center',
+        });
+    };
+
+    const mostrarToastAdvertencia = (mensaje, errores = []) => {
+        toast.custom((t) => (
+            <div className={`toast-advertencia-personalizado ${t.visible ? 'toast-enter' : 'toast-exit'}`}>
+                <FaExclamationTriangle className="toast-advertencia-icon" />
+                <div className="toast-advertencia-contenido">
+                    <div className="toast-advertencia-titulo">{mensaje}</div>
+                    <div className="toast-advertencia-detalles">
+                        {errores.map((error, index) => (
+                            <p key={index}>• {error}</p>
+                        ))}
+                    </div>
+                    <div className="toast-advertencia-footer">
+                        <FaClock className="toast-advertencia-time-icon" />
+                        <span className="toast-advertencia-time">Verifica los datos</span>
+                    </div>
+                </div>
+                <button onClick={() => toast.dismiss(t.id)} className="toast-advertencia-cerrar">
+                    <FaTimes />
+                </button>
+            </div>
+        ), {
+            duration: 4000,
+            position: 'top-center',
+        });
+    };
+
+    const simularCarga = async (mensaje, duracion = 1000) => {
+        const toastId = toast.custom(
+            <div className="toast-carga-personalizado">
+                <FaSpinner className="toast-carga-icon fa-spin" />
+                <div className="toast-carga-contenido">
+                    <div className="toast-carga-titulo">{mensaje}</div>
+                    <div className="toast-carga-barra">
+                        <div className="toast-carga-progreso"></div>
+                    </div>
+                </div>
+            </div>,
+            {
+                duration: Infinity,
+                position: 'top-center',
+            }
+        );
+
+        await new Promise((resolve) => setTimeout(resolve, duracion));
+        toast.dismiss(toastId);
+    };
+
+    // Manejadores
     const handlePageChange = (nuevaPagina) => {
         setPaginaActual(nuevaPagina);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -91,57 +147,128 @@ const Home = () => {
         setPaginaActual(1);
     };
 
-    const handleFullReset = () => {
-        localStorage.clear();
-        setTareas(tareasData);
-        setUsuarios(usuariosData);
-        setCategoriaSeleccionada("Todas");
-        setPaginaActual(1);
-        window.location.reload();
+    const handleFullReset = async () => {
+        const errores = [];
+
+        try {
+            await simularCarga("Restaurando sistema...", 1500);
+
+            localStorage.clear();
+            setTareas(tareasData);
+            setUsuarios(usuariosData);
+            setCategoriaSeleccionada("Todas");
+            setPaginaActual(1);
+
+            mostrarToastExito("Sistema restaurado correctamente", <FaSyncAlt />);
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        } catch (error) {
+            errores.push("Error al restaurar el sistema");
+            mostrarToastAdvertencia("Error en la operación", errores);
+        }
     };
 
-    const handleDownloadJSON = () => {
+    const handleDownloadJSON = async () => {
         const dataToDownload = localStorage.getItem("tareas");
+
         if (!dataToDownload) {
-            toast.error("No hay datos para descargar");
+            mostrarToastAdvertencia("Error al descargar", ["No hay datos para descargar"]);
             return;
         }
 
-        const blob = new Blob([dataToDownload], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "Tareas_backup.json";
-        link.click();
-        URL.revokeObjectURL(url);
-        toast.success("JSON descargado correctamente");
+        try {
+            await simularCarga("Preparando descarga...", 800);
+
+            const blob = new Blob([dataToDownload], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = `Tareas_backup_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+
+            mostrarToastExito("JSON descargado correctamente", <FaDownload />);
+        } catch (error) {
+            mostrarToastAdvertencia("Error al descargar", ["No se pudo completar la descarga"]);
+        }
     };
 
-    const handleUploadJSON = (event) => {
+    const handleUploadJSON = async (event) => {
         const file = event.target.files[0];
+
         if (!file) return;
 
+        const errores = [];
+
+        // Validar tipo de archivo
+        if (file.type !== "application/json") {
+            errores.push("El archivo debe ser de tipo JSON");
+            mostrarToastAdvertencia("Archivo inválido", errores);
+            return;
+        }
+
+        // Validar tamaño (máximo 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            errores.push("El archivo no puede ser mayor a 5MB");
+            mostrarToastAdvertencia("Archivo demasiado grande", errores);
+            return;
+        }
+
         const reader = new FileReader();
-        reader.onload = (e) => {
+
+        reader.onload = async (e) => {
             try {
+                await simularCarga("Cargando datos...", 1200);
+
                 const parsedData = JSON.parse(e.target.result);
+
                 if (!Array.isArray(parsedData)) {
-                    toast.error("El archivo debe contener un array válido");
+                    errores.push("El archivo debe contener un array de tareas");
+                    mostrarToastAdvertencia("Formato inválido", errores);
                     return;
                 }
+
+                // Validar estructura básica
+                const tieneFormatoValido = parsedData.every(tarea =>
+                    tarea.id && tarea.id_usuario && tarea.trabajo_a_realizar && tarea.estado
+                );
+
+                if (!tieneFormatoValido) {
+                    errores.push("El archivo no tiene la estructura correcta de tareas");
+                    mostrarToastAdvertencia("Estructura inválida", errores);
+                    return;
+                }
+
                 setTareas(parsedData);
                 setCategoriaSeleccionada("Todas");
                 setPaginaActual(1);
-                toast.success("Datos cargados correctamente");
+
+                mostrarToastExito(
+                    `${parsedData.length} tareas cargadas correctamente`,
+                    <FaUpload />
+                );
             } catch {
-                toast.error("Archivo JSON inválido");
+                errores.push("El archivo JSON no es válido");
+                mostrarToastAdvertencia("Error al procesar", errores);
             }
         };
+
         reader.readAsText(file);
+        event.target.value = ''; // Resetear input
     };
 
     return (
         <div className="home">
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName="toaster-container"
+                toastOptions={{ duration: 3000 }}
+            />
+
             <header className="home__header">
                 <h1 className="home__title">OikosFlow</h1>
                 <div className="home__top">
@@ -156,7 +283,7 @@ const Home = () => {
                 </div>
             </header>
 
-            {/* Filtro por categoría */}
+            {/* Filtros */}
             <div className="home__filtros">
                 <label htmlFor="categoria">Filtrar por: </label>
                 <select
@@ -174,7 +301,7 @@ const Home = () => {
                 </span>
             </div>
 
-            {/* Indicador de scroll horizontal para móviles */}
+            {/* Scroll hint */}
             <div className="scroll-hint">
                 <span>← Desliza para ver más →</span>
             </div>
@@ -244,11 +371,11 @@ const Home = () => {
             {/* Botones de control */}
             <div className="home__controls">
                 <div className="home__export-import">
-                    <button onClick={handleDownloadJSON} className="btn-add">
-                        Descargar JSON
+                    <button onClick={handleDownloadJSON} className="btn-add btn-with-icon">
+                        <FaDownload /> Descargar JSON
                     </button>
-                    <button onClick={() => fileInputRef.current.click()} className="btn-add">
-                        Subir JSON
+                    <button onClick={() => fileInputRef.current.click()} className="btn-add btn-with-icon">
+                        <FaUpload /> Subir JSON
                     </button>
                     <input
                         type="file"
@@ -258,12 +385,12 @@ const Home = () => {
                         style={{ display: "none" }}
                     />
                 </div>
-                <button onClick={handleFullReset} className="btn-add">
-                    Restaurar sistema
+                <button onClick={handleFullReset} className="btn-add btn-with-icon">
+                    <FaSyncAlt /> Restaurar sistema
                 </button>
             </div>
 
-            {/* Barra de navegación inferior */}
+            {/* Barra de navegación */}
             <nav className="home__bottom-nav">
                 <NavLink to="/home" end className={({ isActive }) => isActive ? "active" : ""}>
                     <FaHome />

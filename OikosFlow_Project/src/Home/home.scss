@@ -522,3 +522,37 @@
         }
     }
 }
+
+// Al final del archivo, después de los estilos existentes
+
+// Botones con iconos
+.btn-with-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    svg {
+        font-size: 1rem;
+    }
+}
+
+// Ajustes para los toasts (si no los tienes ya de Tareas-prueba)
+.toaster-container {
+    z-index: 9999 !important;
+}
+
+// Animación para spinner
+.fa-spin {
+    animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(359deg);
+    }
+}
