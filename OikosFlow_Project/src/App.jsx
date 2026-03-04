@@ -14,7 +14,6 @@ import Notificaciones from "./Notificaciones/notificaciones.jsx";
 import "./App.css";
 import "./Auth/auth.scss";
 
-
 const RequireAuth = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem("usuarioActivo");
   return isAuthenticated ? children : <Navigate to="/auth" replace />;

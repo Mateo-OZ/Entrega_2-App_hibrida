@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { FaBell, FaUserCircle } from "react-icons/fa";
 import { FaHome, FaTasks, FaHistory, FaUser, FaCheckCircle } from "react-icons/fa";
+import { FaExclamationTriangle, FaSpinner, FaTimes, FaClock, FaSyncAlt, FaStar } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import tareasData from "../data/datos_tareas_unificados.json";
 import usuariosData from "../data/usuarios.json";
-import "../Tarea/tarea.scss";
+import "./tarea.scss";
 
-const Tareas = () => {
+const TareasPrueba = () => {
     const navigate = useNavigate();
     const tareasPorPagina = 10;
 
-    // Estados
+    // ===== ESTADOS =====
     const [tareas, setTareas] = useState(() => {
         const saved = localStorage.getItem("tareas");
         return saved ? JSON.parse(saved) : tareasData;
@@ -24,16 +26,20 @@ const Tareas = () => {
 
     const [categoriaFiltro, setCategoriaFiltro] = useState("Todas");
     const [paginaActual, setPaginaActual] = useState(1);
-    const [modoVista, setModoVista] = useState("mis"); // "mis" o "todas"
+    const [modoVista, setModoVista] = useState("mis");
     const [showModal, setShowModal] = useState(false);
     const [showCompleteModal, setShowCompleteModal] = useState(false);
     const [tareaSeleccionada, setTareaSeleccionada] = useState(null);
-    const [nuevoTrabajo, setNuevoTrabajo] = useState("");
-    const [encargadoSeleccionado, setEncargadoSeleccionado] = useState("");
-    const [estadoSeleccionado, setEstadoSeleccionado] = useState("Pendiente");
-    const [categoriaFormulario, setCategoriaFormulario] = useState("Todas");
 
-    // Efectos para guardar en localStorage
+    // Estado del formulario
+    const [formData, setFormData] = useState({
+        nuevoTrabajo: "",
+        encargadoSeleccionado: "",
+        estadoSeleccionado: "Pendiente",
+        categoriaFormulario: "Todas"
+    });
+
+    // ===== EFECTOS =====
     useEffect(() => {
         localStorage.setItem("tareas", JSON.stringify(tareas));
     }, [tareas]);
@@ -42,7 +48,7 @@ const Tareas = () => {
         localStorage.setItem("usuarios", JSON.stringify(usuarios));
     }, [usuarios]);
 
-    // Obtener usuario actual
+    // ===== FUNCIONES DE UTILIDAD =====
     const getCurrentUser = () => {
         const storedUser = localStorage.getItem("usuarioActivo");
         if (storedUser) {
@@ -57,38 +63,26 @@ const Tareas = () => {
     };
 
     const usuarioActivo = getCurrentUser();
+    const currentUserId = usuarios.find(u => u.nombre_completo === usuarioActivo)?.id || null;
 
-    // Obtener ID del usuario actual
-    const getCurrentUserId = () => {
-        const usuario = usuarios.find(u => u.nombre_completo === usuarioActivo);
-        return usuario ? usuario.id : null;
-    };
-
-    const currentUserId = getCurrentUserId();
-
-    // Funciones de utilidad
     const getNombreUsuario = (id_usuario) => {
         const usuario = usuarios.find(u => u.id === id_usuario);
         return usuario ? usuario.nombre_completo : "Usuario no encontrado";
     };
 
     const getStatusClass = (status) => {
-        switch (status) {
-            case "Pendiente":
-                return "estado-pendiente";
-            case "En Proceso":
-                return "estado-proceso";
-            case "Completado":
-                return "estado-completado";
-            default:
-                return "estado-pendiente";
-        }
+        const statusMap = {
+            "Pendiente": "estado-pendiente",
+            "En Proceso": "estado-proceso",
+            "Completado": "estado-completado"
+        };
+        return statusMap[status] || "estado-pendiente";
     };
 
     // Obtener categorías únicas
     const categoriasUnicas = ["Todas", ...new Set(tareas.map(t => t.version).filter(Boolean))];
 
-    // Filtrar tareas por categoría y modo de vista (excluyendo Completadas)
+    // Filtrar tareas
     const tareasActivas = tareas.filter(t => t.estado !== "Completado");
 
     const tareasFiltradasPorCategoria = categoriaFiltro === "Todas"
@@ -99,13 +93,78 @@ const Tareas = () => {
         ? tareasFiltradasPorCategoria.filter(t => t.id_usuario === currentUserId)
         : tareasFiltradasPorCategoria;
 
-    // Calcular paginación
+    // Paginación
     const indexUltimaTarea = paginaActual * tareasPorPagina;
     const indexPrimeraTarea = indexUltimaTarea - tareasPorPagina;
     const tareasPaginadas = tareasFiltradas.slice(indexPrimeraTarea, indexUltimaTarea);
     const totalPaginas = Math.ceil(tareasFiltradas.length / tareasPorPagina);
 
-    // Manejadores de eventos
+    // ===== VALIDACIONES =====
+    const validarSoloTexto = (texto) => /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(texto);
+
+    // ===== TOAST PERSONALIZADOS =====
+    const mostrarToastExito = (mensaje) => {
+        toast.custom((t) => (
+            <div className={`toast-exito-personalizado ${t.visible ? 'toast-enter' : 'toast-exit'}`}>
+                <FaCheckCircle className="toast-exito-icon" />
+                <div className="toast-exito-contenido">
+                    <div className="toast-exito-titulo">{mensaje}</div>
+                </div>
+            </div>
+        ), {
+            duration: 2000,
+            position: 'top-center',
+        });
+    };
+
+    const mostrarToastAdvertencia = (mensaje, errores = []) => {
+        toast.custom((t) => (
+            <div className={`toast-advertencia-personalizado ${t.visible ? 'toast-enter' : 'toast-exit'}`}>
+                <FaExclamationTriangle className="toast-advertencia-icon" />
+                <div className="toast-advertencia-contenido">
+                    <div className="toast-advertencia-titulo">{mensaje}</div>
+                    <div className="toast-advertencia-detalles">
+                        {errores.map((error, index) => (
+                            <p key={index}>• {error}</p>
+                        ))}
+                    </div>
+                    <div className="toast-advertencia-footer">
+                        <FaClock className="toast-advertencia-time-icon" />
+                        <span className="toast-advertencia-time">Revisa los campos</span>
+                    </div>
+                </div>
+                <button onClick={() => toast.dismiss(t.id)} className="toast-advertencia-cerrar">
+                    <FaTimes />
+                </button>
+            </div>
+        ), {
+            duration: 4000,
+            position: 'top-center',
+        });
+    };
+
+    const simularCarga = async (mensaje = "Guardando tarea...") => {
+        const toastId = toast.custom(
+            <div className="toast-carga-personalizado">
+                <FaSpinner className="toast-carga-icon fa-spin" />
+                <div className="toast-carga-contenido">
+                    <div className="toast-carga-titulo">{mensaje}</div>
+                    <div className="toast-carga-barra">
+                        <div className="toast-carga-progreso"></div>
+                    </div>
+                </div>
+            </div>,
+            {
+                duration: Infinity,
+                position: 'top-center',
+            }
+        );
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        toast.dismiss(toastId);
+    };
+
+    // ===== MANEJADORES DE EVENTOS =====
     const handlePageChange = (nuevaPagina) => {
         setPaginaActual(nuevaPagina);
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -121,40 +180,63 @@ const Tareas = () => {
         setPaginaActual(1);
     };
 
-    const handleCloseModal = () => {
-        setShowModal(false);
-        setNuevoTrabajo("");
-        setEncargadoSeleccionado("");
-        setEstadoSeleccionado("Pendiente");
-        setCategoriaFormulario("Todas");
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
-    const handleAddTask = (e) => {
+    const resetForm = () => {
+        setFormData({
+            nuevoTrabajo: "",
+            encargadoSeleccionado: "",
+            estadoSeleccionado: "Pendiente",
+            categoriaFormulario: "Todas"
+        });
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        resetForm();
+    };
+
+    const handleAddTask = async (e) => {
         e.preventDefault();
-        if (!nuevoTrabajo.trim()) {
-            toast.error("La tarea no puede estar vacía");
+
+        const errores = [];
+
+        if (!formData.nuevoTrabajo.trim()) {
+            errores.push("La descripción de la tarea está vacía");
+        } else if (!validarSoloTexto(formData.nuevoTrabajo)) {
+            errores.push("La tarea solo puede contener letras y espacios (sin números)");
+        }
+
+        if (!formData.encargadoSeleccionado) {
+            errores.push("No has seleccionado un encargado");
+        }
+
+        if (errores.length > 0) {
+            mostrarToastAdvertencia("Campos incompletos o inválidos", errores);
             return;
         }
 
-        if (!encargadoSeleccionado) {
-            toast.error("Debes seleccionar un encargado");
-            return;
-        }
-
-        const ultimoId = tareas.length > 0 ? Math.max(...tareas.map((t) => t.id)) : 0;
+        const ultimoId = tareas.length > 0 ? Math.max(...tareas.map(t => t.id)) : 0;
 
         const nuevaTarea = {
             id: ultimoId + 1,
-            id_usuario: parseInt(encargadoSeleccionado),
-            trabajo_a_realizar: nuevoTrabajo,
-            estado: estadoSeleccionado,
-            version: categoriaFormulario === "Todas" ? "General" : categoriaFormulario
+            id_usuario: parseInt(formData.encargadoSeleccionado),
+            trabajo_a_realizar: formData.nuevoTrabajo,
+            estado: formData.estadoSeleccionado,
+            version: formData.categoriaFormulario === "Todas" ? "General" : formData.categoriaFormulario
         };
+
+        await simularCarga();
 
         setTareas([...tareas, nuevaTarea]);
 
-        // Crear notificación para el usuario asignado
-        if (encargadoSeleccionado === currentUserId?.toString()) {
+        if (formData.encargadoSeleccionado === currentUserId?.toString()) {
             const storedNoti = localStorage.getItem("notificaciones");
             const notificaciones = storedNoti ? JSON.parse(storedNoti) : [];
 
@@ -171,72 +253,125 @@ const Tareas = () => {
             );
         }
 
-        toast.success("Tarea añadida correctamente");
+        mostrarToastExito("¡Tarea guardada!");
         handleCloseModal();
     };
 
     // Funciones para completar tarea
     const handleOpenCompleteModal = (tarea) => {
         setTareaSeleccionada(tarea);
-        setEstadoSeleccionado(tarea.estado);
+        setFormData(prev => ({ ...prev, estadoSeleccionado: tarea.estado }));
         setShowCompleteModal(true);
     };
 
     const handleCloseCompleteModal = () => {
         setShowCompleteModal(false);
         setTareaSeleccionada(null);
-        setEstadoSeleccionado("Pendiente");
+        setFormData(prev => ({ ...prev, estadoSeleccionado: "Pendiente" }));
     };
 
-    const handleUpdateTaskStatus = (e) => {
+    const handleUpdateTaskStatus = async (e) => {
         e.preventDefault();
 
         if (!tareaSeleccionada) return;
 
-        const tareasActualizadas = tareas.map(t =>
-            t.id === tareaSeleccionada.id
-                ? { ...t, estado: estadoSeleccionado }
-                : t
+        const promesa = new Promise((resolve) => {
+            setTimeout(() => resolve(tareaSeleccionada), 1000);
+        });
+
+        toast.promise(
+            promesa,
+            {
+                loading: (
+                    <div className="toast-carga-personalizado">
+                        <FaSpinner className="toast-carga-icon fa-spin" />
+                        <div className="toast-carga-contenido">
+                            <div className="toast-carga-titulo">Actualizando tarea...</div>
+                            <div className="toast-carga-barra">
+                                <div className="toast-carga-progreso"></div>
+                            </div>
+                        </div>
+                    </div>
+                ),
+                success: () => {
+                    const tareasActualizadas = tareas.map(t =>
+                        t.id === tareaSeleccionada.id
+                            ? { ...t, estado: formData.estadoSeleccionado }
+                            : t
+                    );
+                    setTareas(tareasActualizadas);
+
+                    if (formData.estadoSeleccionado === "Completado") {
+                        const storedNoti = localStorage.getItem("notificaciones");
+                        const notificaciones = storedNoti ? JSON.parse(storedNoti) : [];
+
+                        const nuevaNotificacion = {
+                            id: Date.now(),
+                            mensaje: `La tarea "${tareaSeleccionada.trabajo_a_realizar}" ha sido completada`,
+                            fecha: new Date().toISOString(),
+                            leida: false
+                        };
+
+                        localStorage.setItem(
+                            "notificaciones",
+                            JSON.stringify([nuevaNotificacion, ...notificaciones])
+                        );
+
+                        return (
+                            <div className="toast-exito-personalizado toast-exito-carga">
+                                <FaStar className="toast-exito-icon" />
+                                <div className="toast-exito-contenido">
+                                    <div className="toast-exito-titulo">¡Tarea completada!</div>
+                                    <div className="toast-exito-detalles">
+                                        <p>✨ {tareaSeleccionada.trabajo_a_realizar}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    } else {
+                        return (
+                            <div className="toast-exito-personalizado toast-exito-carga">
+                                <FaSyncAlt className="toast-exito-icon" />
+                                <div className="toast-exito-contenido">
+                                    <div className="toast-exito-titulo">Estado actualizado</div>
+                                    <div className="toast-exito-detalles">
+                                        <p>📊 Nuevo estado: {formData.estadoSeleccionado}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    }
+                }
+            },
+            {
+                success: { duration: 2000 },
+                loading: { duration: Infinity },
+                position: 'top-center',
+            }
         );
-
-        setTareas(tareasActualizadas);
-
-        // Si la tarea se completó, crear notificación
-        if (estadoSeleccionado === "Completado") {
-            const storedNoti = localStorage.getItem("notificaciones");
-            const notificaciones = storedNoti ? JSON.parse(storedNoti) : [];
-
-            const nuevaNotificacion = {
-                id: Date.now(),
-                mensaje: `La tarea "${tareaSeleccionada.trabajo_a_realizar}" ha sido completada`,
-                fecha: new Date().toISOString(),
-                leida: false
-            };
-
-            localStorage.setItem(
-                "notificaciones",
-                JSON.stringify([nuevaNotificacion, ...notificaciones])
-            );
-
-            toast.success("¡Tarea completada! 🎉");
-        } else {
-            toast.success(`Estado actualizado a: ${estadoSeleccionado}`);
-        }
-
         handleCloseCompleteModal();
     };
 
+    // ===== RENDER =====
     return (
-        <div className="tareas">
+        <div className="tareas-prueba">
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName="toaster-container"
+                toastOptions={{ duration: 3000 }}
+            />
+
             {/* Header */}
-            <header className="tareas__header">
-                <h1 className="tareas__title">OikosFlow</h1>
-                <div className="tareas__top">
+            <header className="tareas-prueba__header">
+                <h1 className="tareas-prueba__title">OikosFlow</h1>
+                <div className="tareas-prueba__top">
                     <div>
                         <h2>Hola, {usuarioActivo}.</h2>
                         <p>Gestión de Tareas</p>
                     </div>
-                    <div className="tareas__icons">
+                    <div className="tareas-prueba__icons">
                         <FaBell onClick={() => navigate("/notificaciones")} />
                         <FaUserCircle onClick={() => navigate("/perfil")} />
                     </div>
@@ -244,9 +379,8 @@ const Tareas = () => {
             </header>
 
             {/* Filtros */}
-            <div className="tareas__filtros-container">
-                {/* Filtro de modo (Mis tareas / Todas) */}
-                <div className="tareas__modo-filtro">
+            <div className="tareas-prueba__filtros-container">
+                <div className="tareas-prueba__modo-filtro">
                     <button
                         className={modoVista === "mis" ? "active" : ""}
                         onClick={() => handleModoVistaChange("mis")}
@@ -261,8 +395,7 @@ const Tareas = () => {
                     </button>
                 </div>
 
-                {/* Filtro por categoría */}
-                <div className="tareas__filtros">
+                <div className="tareas-prueba__filtros">
                     <label htmlFor="categoria">Filtrar por: </label>
                     <select
                         id="categoria"
@@ -280,20 +413,20 @@ const Tareas = () => {
                 </div>
             </div>
 
-            {/* Indicador de scroll horizontal para móviles */}
+            {/* Indicador de scroll */}
             <div className="scroll-hint">
                 <span>← Desliza para ver más →</span>
             </div>
 
             {/* Tabla */}
-            <section className="tareas__table">
+            <section className="tareas-prueba__table">
                 <div className="table__header">
                     <span>#</span>
                     <span>Encargado</span>
                     <span>Tarea</span>
                     <span>Estado</span>
                     <span>Categoría</span>
-                    <span>Acciones</span> {/* Esto ahora se verá completo */}
+                    <span>Acciones</span>
                 </div>
 
                 {tareasPaginadas.map((tarea) => (
@@ -325,13 +458,13 @@ const Tareas = () => {
             </section>
 
             {/* Botón Añadir Tarea */}
-            <button className="btn-add tareas__add-btn" onClick={() => setShowModal(true)}>
+            <button className="btn-add tareas-prueba__add-btn" onClick={() => setShowModal(true)}>
                 + Añadir Tarea
             </button>
 
             {/* Paginación */}
             {totalPaginas > 1 && (
-                <div className="tareas__paginacion">
+                <div className="tareas-prueba__paginacion">
                     <button
                         onClick={() => handlePageChange(paginaActual - 1)}
                         disabled={paginaActual === 1}
@@ -362,8 +495,8 @@ const Tareas = () => {
                 </div>
             )}
 
-            {/* Barra de navegación inferior fija */}
-            <nav className="tareas__bottom-nav">
+            {/* Barra de navegación */}
+            <nav className="tareas-prueba__bottom-nav">
                 <NavLink to="/home" end className={({ isActive }) => isActive ? "active" : ""}>
                     <FaHome />
                     <span>Home</span>
@@ -382,7 +515,7 @@ const Tareas = () => {
                 </NavLink>
             </nav>
 
-            {/* Modal para añadir tarea */}
+            {/* Modal Añadir Tarea */}
             {showModal && (
                 <div className="modal-overlay">
                     <div className="modal-card">
@@ -392,8 +525,9 @@ const Tareas = () => {
                             <div className="form-group">
                                 <label>Encargado</label>
                                 <select
-                                    value={encargadoSeleccionado}
-                                    onChange={(e) => setEncargadoSeleccionado(e.target.value)}
+                                    name="encargadoSeleccionado"
+                                    value={formData.encargadoSeleccionado}
+                                    onChange={handleInputChange}
                                     required
                                 >
                                     <option value="">Seleccionar encargado</option>
@@ -409,9 +543,10 @@ const Tareas = () => {
                                 <label>Tarea</label>
                                 <input
                                     type="text"
-                                    value={nuevoTrabajo}
-                                    onChange={(e) => setNuevoTrabajo(e.target.value)}
-                                    placeholder="Descripción de la tarea"
+                                    name="nuevoTrabajo"
+                                    value={formData.nuevoTrabajo}
+                                    onChange={handleInputChange}
+                                    placeholder="Descripción de la tarea (solo letras)"
                                     required
                                 />
                             </div>
@@ -419,8 +554,9 @@ const Tareas = () => {
                             <div className="form-group">
                                 <label>Estado</label>
                                 <select
-                                    value={estadoSeleccionado}
-                                    onChange={(e) => setEstadoSeleccionado(e.target.value)}
+                                    name="estadoSeleccionado"
+                                    value={formData.estadoSeleccionado}
+                                    onChange={handleInputChange}
                                 >
                                     <option>Pendiente</option>
                                     <option>En Proceso</option>
@@ -430,8 +566,9 @@ const Tareas = () => {
                             <div className="form-group">
                                 <label>Categoría</label>
                                 <select
-                                    value={categoriaFormulario}
-                                    onChange={(e) => setCategoriaFormulario(e.target.value)}
+                                    name="categoriaFormulario"
+                                    value={formData.categoriaFormulario}
+                                    onChange={handleInputChange}
                                 >
                                     {categoriasUnicas.map(cat => (
                                         <option key={cat} value={cat}>{cat}</option>
@@ -452,7 +589,7 @@ const Tareas = () => {
                 </div>
             )}
 
-            {/* Modal para completar/actualizar tarea */}
+            {/* Modal Actualizar Estado */}
             {showCompleteModal && tareaSeleccionada && (
                 <div className="modal-overlay">
                     <div className="modal-card">
@@ -463,8 +600,9 @@ const Tareas = () => {
                             <div className="form-group">
                                 <label>Estado</label>
                                 <select
-                                    value={estadoSeleccionado}
-                                    onChange={(e) => setEstadoSeleccionado(e.target.value)}
+                                    name="estadoSeleccionado"
+                                    value={formData.estadoSeleccionado}
+                                    onChange={handleInputChange}
                                 >
                                     <option>Pendiente</option>
                                     <option>En Proceso</option>
@@ -488,4 +626,4 @@ const Tareas = () => {
     );
 };
 
-export default Tareas;
+export default TareasPrueba;
