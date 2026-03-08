@@ -1,7 +1,7 @@
 .perfil {
   padding: 1.5rem;
   font-family: Arial, sans-serif;
-  background-color: #f5f6fa;
+  background-color: var(--bg-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -41,8 +41,8 @@
       input {
         padding: 0.8rem;
         border-radius: 8px;
-        border: 1px solid #ddd;
-        background-color: white;
+        border: 1px solid var(--border-light);
+        background-color: var(--bg-secondary);
       }
     }
   }
@@ -65,8 +65,8 @@
     justify-content: space-around;
     align-items: center;
     padding: 0.8rem 0;
-    background-color: white;
-    border-top: 1px solid #ddd;
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-light);
 
     a {
       display: flex;
@@ -84,7 +84,7 @@
     }
 
     a.active {
-      color: #4f5d75;
+      color: var(--brand-primary);
       font-weight: 600;
     }
   }

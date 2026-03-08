@@ -1,0 +1,83 @@
+/* ===== TEMA GLOBAL ===== */
+:root,
+[data-theme="light-blue"] {
+  --bg-primary: #f5f8fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e9eff3;
+  --border-light: #dae3e9;
+  --border-medium: #bfcbd4;
+  --text-primary: #1a2b3c;
+  --text-secondary: #405b6e;
+  --text-tertiary: #6f8a9c;
+  --text-inverse: #ffffff;
+  --brand-primary: #2c5f8a;
+  --brand-hover: #1f4a6f;
+  --brand-soft: #e7f0f8;
+  --success-main: #2e7a6b;
+  --success-soft: #e8f3f0;
+  --warning-main: #e68a5c;
+  --warning-soft: #fef2ea;
+  --info-main: #2c5f8a;
+  --info-soft: #e7f0f8;
+  --shadow-sm: 0 1px 3px rgba(26, 43, 60, 0.05), 0 1px 2px rgba(26, 43, 60, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(26, 43, 60, 0.05), 0 2px 4px -1px rgba(26, 43, 60, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(26, 43, 60, 0.05), 0 4px 6px -2px rgba(26, 43, 60, 0.02);
+}
+
+[data-theme="light-green"] {
+  --brand-primary: #2e7a6b;
+  --brand-hover: #1f5a4e;
+  --brand-soft: #e8f3f0;
+  --info-main: #2e7a6b;
+  --info-soft: #e8f3f0;
+}
+
+[data-theme="light-orange"] {
+  --brand-primary: #e68a5c;
+  --brand-hover: #cc6b4a;
+  --brand-soft: #fef2ea;
+  --info-main: #e68a5c;
+  --info-soft: #fef2ea;
+}
+
+[data-theme="dark-green"],
+[data-theme="dark-orange"],
+[data-theme="dark-blue"] {
+  --bg-primary: #1a1a2e;
+  --bg-secondary: #16213e;
+  --bg-tertiary: #0f3460;
+  --border-light: #2a2a4a;
+  --border-medium: #3a3a5c;
+  --text-primary: #e8e8e8;
+  --text-secondary: #b8b8c8;
+  --text-tertiary: #8a8a9a;
+  --text-inverse: #1a1a2e;
+  --brand-soft: rgba(44, 95, 138, 0.2);
+}
+
+[data-theme="dark-blue"] {
+  --brand-primary: #4a90c4;
+  --brand-hover: #6ba8d9;
+  --info-main: #4a90c4;
+  --info-soft: rgba(74, 144, 196, 0.2);
+}
+
+[data-theme="dark-green"] {
+  --brand-primary: #3d9b8a;
+  --brand-hover: #52b5a3;
+  --info-main: #3d9b8a;
+  --info-soft: rgba(61, 155, 138, 0.2);
+}
+
+[data-theme="dark-orange"] {
+  --brand-primary: #e89a6c;
+  --brand-hover: #f0b088;
+  --info-main: #e89a6c;
+  --info-soft: rgba(232, 154, 108, 0.2);
+}
+
+/* Transición suave del fondo al cambiar tema */
+body {
+  background-color: var(--bg-primary);
+  transition: background-color 0.4s ease;
+}

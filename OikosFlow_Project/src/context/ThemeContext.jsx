@@ -1,0 +1,45 @@
+import { createContext, useContext, useState, useEffect } from "react";
+
+const THEMES = [
+  "light-green",
+  "light-orange",
+  "light-blue",
+  "dark-green",
+  "dark-orange",
+  "dark-blue",
+];
+
+const STORAGE_KEY = "oikosflow-theme";
+
+const ThemeContext = createContext(null);
+
+export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved && THEMES.includes(saved) ? saved : "light-blue";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem(STORAGE_KEY, theme);
+  }, [theme]);
+
+  const cycleTheme = () => {
+    setTheme((prev) => {
+      const idx = THEMES.indexOf(prev);
+      return THEMES[(idx + 1) % THEMES.length];
+    });
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, cycleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export const useTheme = () => {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
+  return ctx;
+};

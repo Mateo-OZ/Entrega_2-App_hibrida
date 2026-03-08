@@ -1,7 +1,7 @@
 .notificaciones {
     padding: 1.5rem;
     font-family: Arial, sans-serif;
-    background-color: #f5f6fa;
+    background-color: var(--bg-primary);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -18,7 +18,7 @@
     &__back {
         position: absolute;
         left: 0;
-        background: #e6e6e6;
+        background: var(--bg-tertiary);
         border: none;
         width: 35px;
         height: 35px;
@@ -32,7 +32,7 @@
     &__title {
         font-weight: bold;
         font-size: 1.5rem;
-        color: #4f5d75;
+        color: var(--brand-primary);
     }
 
     /* LISTA */
@@ -43,12 +43,12 @@
     }
 
     &__card {
-        background-color: #dcdde1;
+        background-color: var(--bg-tertiary);
         padding: 1.5rem;
         border-radius: 20px;
         font-size: 1.1rem;
         font-weight: 500;
-        color: #4f5d75;
+        color: var(--brand-primary);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
 
@@ -59,8 +59,8 @@
         justify-content: space-around;
         align-items: center;
         padding: 0.8rem 0;
-        background-color: white;
-        border-top: 1px solid #ddd;
+        background-color: var(--bg-secondary);
+        border-top: 1px solid var(--border-light);
 
         a {
             display: flex;
@@ -79,7 +79,7 @@
         }
 
         a.active {
-            color: #4f5d75;
+            color: var(--brand-primary);
             font-weight: 600;
         }
     }

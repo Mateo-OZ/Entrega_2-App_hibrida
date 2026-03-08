@@ -13,12 +13,23 @@ const Historial = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [busqueda, setBusqueda] = useState("");
+  const [paginaActual, setPaginaActual] = useState(1);
 
-  const [visibleCount, setVisibleCount] = useState(6);
+  const registrosPorPagina = 10;
 
   useEffect(() => {
     localStorage.setItem("historial", JSON.stringify(members));
   }, [members]);
+
+  const indexUltimo = paginaActual * registrosPorPagina;
+  const indexPrimero = indexUltimo - registrosPorPagina;
+  const registrosPaginados = members.slice(indexPrimero, indexUltimo);
+  const totalPaginas = Math.ceil(members.length / registrosPorPagina);
+
+  const handlePageChange = (nuevaPagina) => {
+    setPaginaActual(nuevaPagina);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const getStatusClass = (status) => {
     switch (status) {
@@ -33,16 +44,6 @@ const Historial = () => {
     }
   };
 
-  // Alternar entre mostrar solo 6 registros o mostrar todos (ver más)
-  const handleToggleView = () => {
-    if (visibleCount >= members.length) {
-      setVisibleCount(6);
-    } else {
-      setVisibleCount(members.length);
-    }
-  };
-
-  // Filtra los encargos por coincidencia en el nombre
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -53,11 +54,11 @@ const Historial = () => {
     );
 
     setMembers(filtrados);
+    setPaginaActual(1);
     setShowModal(false);
     setBusqueda("");
   };
 
-  // Cierra el modal y limpia la búsqueda
   const handleCloseModal = () => {
     setShowModal(false);
     setBusqueda("");
@@ -68,6 +69,16 @@ const Historial = () => {
 
       <h1 className="historial__title">OikosFlow</h1>
 
+      <div className="historial__filtros">
+        <span className="resultados-count">
+          {members.length} registros • Página {paginaActual} de {totalPaginas || 1}
+        </span>
+      </div>
+
+      <div className="scroll-hint">
+        <span>← Desliza para ver más →</span>
+      </div>
+
       <section className="historial__table">
         <div className="table__header">
           <span>#</span>
@@ -76,9 +87,7 @@ const Historial = () => {
           <span>Estado</span>
         </div>
 
-        {/* Muestra solo la cantidad definida por visibleCount */}
-        {/* Recorre los datos y genera una fila por cada registro */}
-        {members.slice(0, visibleCount).map((member) => (
+        {registrosPaginados.map((member) => (
           <div className="table__row" key={member.id}>
             <span>{member.id}</span>
             <span>{member.nombre_encargado}</span>
@@ -88,31 +97,55 @@ const Historial = () => {
             </span>
           </div>
         ))}
+
+        {members.length === 0 && (
+          <div className="table__empty">
+            No hay registros
+          </div>
+        )}
       </section>
 
-      {/* CONTROLES */}
-      <div className="historial__controls">
+      {totalPaginas > 1 && (
+        <div className="historial__paginacion">
+          <button
+            onClick={() => handlePageChange(paginaActual - 1)}
+            disabled={paginaActual === 1}
+            className="paginacion-btn"
+          >
+            ← Anterior
+          </button>
 
-        <div className="historial__more">
-          {members.length > 6 && (
-            <button onClick={handleToggleView}>
-              {visibleCount >= members.length
-                ? "Ver Menos..."
-                : "Ver Más..."}
-            </button>
-          )}
+          <div className="paginacion-numeros">
+            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((num) => (
+              <button
+                key={num}
+                onClick={() => handlePageChange(num)}
+                className={`paginacion-numero ${paginaActual === num ? "activo" : ""}`}
+              >
+                {num}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => handlePageChange(paginaActual + 1)}
+            disabled={paginaActual === totalPaginas}
+            className="paginacion-btn"
+          >
+            Siguiente →
+          </button>
         </div>
+      )}
 
+      <div className="historial__controls">
         <button
           className="btn btn-add"
           onClick={() => setShowModal(true)}
         >
           Buscar
         </button>
-
       </div>
 
-      {/* BOTTOM NAV */}
       <nav className="historial__bottom-nav">
         <NavLink to="/home" end>
           <FaHome />
@@ -135,7 +168,6 @@ const Historial = () => {
         </NavLink>
       </nav>
 
-      {/* MODAL */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-card">
