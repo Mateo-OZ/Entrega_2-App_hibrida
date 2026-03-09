@@ -6,6 +6,8 @@ import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
 
 const Historial = () => {
 
+  const tareasPorPagina = 10;
+
   const [members, setMembers] = useState(() => {
     const saved = localStorage.getItem("historial");
     return saved ? JSON.parse(saved) : historialData;
@@ -13,8 +15,7 @@ const Historial = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [busqueda, setBusqueda] = useState("");
-
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [paginaActual, setPaginaActual] = useState(1);
 
   useEffect(() => {
     localStorage.setItem("historial", JSON.stringify(members));
@@ -33,16 +34,18 @@ const Historial = () => {
     }
   };
 
-  // Alternar entre mostrar solo 6 registros o mostrar todos (ver más)
-  const handleToggleView = () => {
-    if (visibleCount >= members.length) {
-      setVisibleCount(6);
-    } else {
-      setVisibleCount(members.length);
-    }
+  // ===== PAGINACIÓN =====
+  const indexUltimo = paginaActual * tareasPorPagina;
+  const indexPrimero = indexUltimo - tareasPorPagina;
+  const membersPaginados = members.slice(indexPrimero, indexUltimo);
+  const totalPaginas = Math.ceil(members.length / tareasPorPagina);
+
+  const handlePageChange = (nuevaPagina) => {
+    setPaginaActual(nuevaPagina);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Filtra los encargos por coincidencia en el nombre
+  // ===== BÚSQUEDA =====
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -53,11 +56,11 @@ const Historial = () => {
     );
 
     setMembers(filtrados);
+    setPaginaActual(1);
     setShowModal(false);
     setBusqueda("");
   };
 
-  // Cierra el modal y limpia la búsqueda
   const handleCloseModal = () => {
     setShowModal(false);
     setBusqueda("");
@@ -76,9 +79,7 @@ const Historial = () => {
           <span>Estado</span>
         </div>
 
-        {/* Muestra solo la cantidad definida por visibleCount */}
-        {/* Recorre los datos y genera una fila por cada registro */}
-        {members.slice(0, visibleCount).map((member) => (
+        {membersPaginados.map((member) => (
           <div className="table__row" key={member.id}>
             <span>{member.id}</span>
             <span>{member.nombre_encargado}</span>
@@ -88,20 +89,46 @@ const Historial = () => {
             </span>
           </div>
         ))}
+
       </section>
+
+      {/* PAGINACIÓN */}
+      {totalPaginas > 1 && (
+        <div className="historial__paginacion">
+
+          <button
+            onClick={() => handlePageChange(paginaActual - 1)}
+            disabled={paginaActual === 1}
+            className="paginacion-btn"
+          >
+            ← Anterior
+          </button>
+
+          <div className="paginacion-numeros">
+            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map(num => (
+              <button
+                key={num}
+                onClick={() => handlePageChange(num)}
+                className={`paginacion-numero ${paginaActual === num ? "activo" : ""}`}
+              >
+                {num}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => handlePageChange(paginaActual + 1)}
+            disabled={paginaActual === totalPaginas}
+            className="paginacion-btn"
+          >
+            Siguiente →
+          </button>
+
+        </div>
+      )}
 
       {/* CONTROLES */}
       <div className="historial__controls">
-
-        <div className="historial__more">
-          {members.length > 6 && (
-            <button onClick={handleToggleView}>
-              {visibleCount >= members.length
-                ? "Ver Menos..."
-                : "Ver Más..."}
-            </button>
-          )}
-        </div>
 
         <button
           className="btn btn-add"

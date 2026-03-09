@@ -5,7 +5,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-bottom: 80px; // espacio para navbar fija
+    padding-bottom: 80px;
 
     /* HEADER */
     &__header {
@@ -53,6 +53,62 @@
         }
     }
 
+    /* ===== PAGINACIÓN (MISMO ESTILO QUE HOME) ===== */
+    &__paginacion {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .paginacion-btn {
+        background-color: white;
+        border: 1px solid #ddd;
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: 0.2s ease;
+    }
+
+    .paginacion-btn:hover:not(:disabled) {
+        background-color: #f0f0f0;
+    }
+
+    .paginacion-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    .paginacion-numeros {
+        display: flex;
+        gap: 0.3rem;
+    }
+
+    .paginacion-numero {
+        background-color: white;
+        border: 1px solid #ddd;
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: 0.2s ease;
+    }
+
+    .paginacion-numero:hover {
+        background-color: #f0f0f0;
+    }
+
+    .paginacion-numero.activo {
+        background-color: #4f5d75;
+        color: white;
+        border-color: #4f5d75;
+        font-weight: bold;
+    }
+
     /* CONTROLES */
     &__controls {
         margin: 1rem 0;
@@ -61,26 +117,11 @@
         align-items: center;
     }
 
-    /* Ver Más alineado a la izquierda */
-    &__more {
-        justify-self: start;
-
-        button {
-            background: none;
-            border: none;
-            color: #4f5d75;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-    }
-
-    /* Botón Buscar centrado */
     .btn-add {
         justify-self: center;
     }
 
-    /* BOTTOM NAV (FIJA) */
+    /* BOTTOM NAV */
     &__bottom-nav {
         position: fixed;
         bottom: 0;
