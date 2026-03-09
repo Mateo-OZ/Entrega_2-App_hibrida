@@ -5,6 +5,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-bottom: 80px; // espacio para navbar fija
 
     /* HEADER */
     &__header {
@@ -79,9 +80,14 @@
         justify-self: center;
     }
 
-    /* BOTTOM NAV */
+    /* BOTTOM NAV (FIJA) */
     &__bottom-nav {
-        margin-top: auto;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+
         display: flex;
         justify-content: space-around;
         align-items: center;
