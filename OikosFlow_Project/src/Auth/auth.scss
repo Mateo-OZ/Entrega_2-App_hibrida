@@ -174,3 +174,141 @@
   margin-bottom: 0;
 }
 
+// Ajustes para los toasts (si no los tienes ya de Tareas-prueba)
+.toaster-container {
+  z-index: 9999 !important;
+}
+
+// Animación para spinner
+.fa-spin {
+  animation: fa-spin 2s infinite linear;
+}
+
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+
+// ===== TOASTS PERSONALIZADOS PARA LOGIN =====
+.toast-exito-personalizado {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 12px 20px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  min-width: 300px;
+  border-left: 4px solid #2E7A6B;
+  z-index: 9999 !important;
+  position: relative;
+}
+
+.toast-advertencia-personalizado {
+  display: flex;
+  align-items: flex-start;
+  background: white;
+  border-radius: 12px;
+  padding: 12px 20px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  min-width: 300px;
+  border-left: 4px solid #C24F4F;
+  z-index: 9999 !important;
+  position: relative;
+}
+
+.toast-exito-icon {
+  margin-right: 12px;
+  font-size: 20px;
+  color: #2E7A6B;
+  display: flex;
+  align-items: center;
+}
+
+.toast-advertencia-icon {
+  margin-right: 12px;
+  font-size: 20px;
+  color: #C24F4F;
+  flex-shrink: 0;
+}
+
+.toast-exito-contenido,
+.toast-advertencia-contenido {
+  flex: 1;
+}
+
+.toast-exito-titulo,
+.toast-advertencia-titulo {
+  font-weight: 600;
+  font-size: 14px;
+  color: #1A2B3C;
+}
+
+.toast-advertencia-footer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: #6F8A9C;
+}
+
+.toast-advertencia-time-icon {
+  font-size: 11px;
+}
+
+.toast-advertencia-cerrar {
+  background: none;
+  border: none;
+  color: #6F8A9C;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.toast-advertencia-cerrar:hover {
+  background: #F5F8FA;
+  color: #C24F4F;
+}
+
+.toast-enter {
+  animation: toast-slide-in 0.3s ease forwards;
+}
+
+.toast-exit {
+  animation: toast-slide-out 0.2s ease forwards;
+}
+
+@keyframes toast-slide-in {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-slide-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}

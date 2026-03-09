@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { FaCheckCircle, FaExclamationTriangle, FaTimes, FaClock } from "react-icons/fa";
 import usuariosBase from "../Data/usuarios.json";
 
 const Login = () => {
@@ -9,8 +10,63 @@ const Login = () => {
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
 
+  // Toast de éxito (exactamente igual al del Home)
+  const mostrarToastExito = (mensaje) => {
+    toast.custom((t) => (
+      <div className={`toast-exito-personalizado ${t.visible ? 'toast-enter' : 'toast-exit'}`}>
+        <div className="toast-exito-icon">
+          <FaCheckCircle />
+        </div>
+        <div className="toast-exito-contenido">
+          <div className="toast-exito-titulo">{mensaje}</div>
+        </div>
+      </div>
+    ), {
+      duration: 2000,
+      position: 'top-center',
+    });
+  };
+
+  // Toast de error (exactamente igual al del Home)
+  const mostrarToastError = (mensaje) => {
+    toast.custom((t) => (
+      <div className={`toast-advertencia-personalizado ${t.visible ? 'toast-enter' : 'toast-exit'}`}>
+        <FaExclamationTriangle className="toast-advertencia-icon" />
+        <div className="toast-advertencia-contenido">
+          <div className="toast-advertencia-titulo">{mensaje}</div>
+          <div className="toast-advertencia-footer">
+            <FaClock className="toast-advertencia-time-icon" />
+            <span className="toast-advertencia-time">Verifica tus datos</span>
+          </div>
+        </div>
+        <button onClick={() => toast.dismiss(t.id)} className="toast-advertencia-cerrar">
+          <FaTimes />
+        </button>
+      </div>
+    ), {
+      duration: 3000,
+      position: 'top-center',
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validaciones
+    if (!correo || !contrasena) {
+      mostrarToastError("Por favor completa todos los campos");
+      return;
+    }
+
+    if (!correo.includes("@") || !correo.includes(".")) {
+      mostrarToastError("El correo no tiene un formato válido");
+      return;
+    }
+
+    if (contrasena.length < 6) {
+      mostrarToastError("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
 
     const stored = localStorage.getItem("usuarios");
     const usuarios = stored ? JSON.parse(stored) : usuariosBase;
@@ -22,15 +78,21 @@ const Login = () => {
     );
 
     if (!encontrado) {
-      toast.error("Correo o contraseña incorrectos");
+      mostrarToastError("Correo o contraseña incorrectos");
       return;
     }
 
+    // Guardar en localStorage
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
     localStorage.setItem("usuarioActivo", JSON.stringify(encontrado));
 
-    toast.success("Sesión iniciada correctamente.");
-    navigate("/home");
+    // Mostrar toast de éxito (IGUAL al del Home)
+    mostrarToastExito("¡Sesión iniciada correctamente!");
+
+    // Redirigir después del toast
+    setTimeout(() => {
+      navigate("/home");
+    }, 1500);
   };
 
   return (
@@ -91,4 +153,3 @@ const Login = () => {
 };
 
 export default Login;
-
