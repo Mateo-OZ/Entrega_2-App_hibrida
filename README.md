@@ -210,3 +210,35 @@ Proyecto académico de aplicación móvil híbrida desarrollado por:
 - Mateo Ortiz Zapata  
 - Nicolás Mantilla Gelves  
 
+---
+
+## 8. Scripts de npm disponibles
+
+Desde la carpeta `OikosFlow_Project` puedes utilizar los siguientes scripts:
+
+- `npm run dev`: levanta el servidor de desarrollo con Vite.
+- `npm run build`: genera el build de producción.
+- `npm run preview`: sirve localmente el build de producción para pruebas.
+- `npm run lint`: ejecuta ESLint sobre el proyecto.
+
+---
+
+## 9. Soporte híbrido con Capacitor
+
+El proyecto incluye dependencias de **Capacitor** (`@capacitor/core`, `@capacitor/android`) para facilitar la generación de builds híbridos (Android, iOS) a partir de la SPA en React.
+
+- Para más detalles sobre la configuración de plataformas nativas, consulta la documentación oficial de Capacitor: `https://capacitorjs.com/docs`.
+- El flujo típico consiste en:
+  - Configurar `capacitor.config.*` según el entorno.
+  - Ejecutar los comandos de sincronización (`npx cap sync`) y apertura del proyecto nativo (Android Studio, Xcode).
+
+> Nota: Actualmente el foco principal del proyecto es el **MVP web híbrido**; la publicación en tiendas (Play Store / App Store) no forma parte del alcance académico básico.
+
+---
+
+## 10. Notas para desarrollo local
+
+- **Recomendado** trabajar siempre sobre una rama por funcionalidad para mantener el historial del repositorio limpio.
+- Antes de subir cambios, ejecutar `npm run lint` para verificar que no existan problemas básicos de estilo o errores comunes.
+- Si el estado de la app parece inconsistente, limpiar `localStorage` desde las herramientas de desarrollo del navegador o usando la opción de **Restaurar el sistema** disponible en la pantalla Home.
+- Mantener sincronizados los datos simulados en `src/Data` con los flujos descritos en `DIAGRAMA_FLUJO_OIKOSFLOW.md` para evitar desalineaciones entre UI y lógica.
