@@ -76,6 +76,23 @@
   --info-soft: rgba(232, 154, 108, 0.2);
 }
 
+/* Ajustes de chips de estado en modo oscuro */
+[data-theme="dark-green"] .estado-pendiente,
+[data-theme="dark-orange"] .estado-pendiente,
+[data-theme="dark-blue"] .estado-pendiente {
+  background-color: var(--bg-secondary);
+  color: var(--warning-main);
+  border: 1px solid var(--warning-main);
+}
+
+[data-theme="dark-green"] .estado-completado,
+[data-theme="dark-orange"] .estado-completado,
+[data-theme="dark-blue"] .estado-completado {
+  background-color: var(--bg-secondary);
+  color: var(--success-main);
+  border: 1px solid var(--success-main);
+}
+
 /* Transición suave del fondo al cambiar tema */
 body {
   background-color: var(--bg-primary);

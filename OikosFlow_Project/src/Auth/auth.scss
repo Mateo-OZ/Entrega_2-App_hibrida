@@ -215,6 +215,11 @@
   font-size: 1.1rem;
   cursor: pointer;
   margin-bottom: 0;
+  color: var(--text-primary);
+
+  &:hover {
+    color: var(--text-secondary);
+  }
 }
 
 /* Botón tema: abajo en esquina, color de botones primarios */

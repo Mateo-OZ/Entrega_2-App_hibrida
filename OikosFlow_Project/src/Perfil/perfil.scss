@@ -1,7 +1,7 @@
 .perfil {
   padding: 1.5rem;
   font-family: Arial, sans-serif;
-  background-color: #f5f6fa;
+  background-color: var(--bg-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -11,6 +11,7 @@
     text-align: center;
     font-weight: bold;
     margin-bottom: 1.5rem;
+    color: var(--brand-primary);
   }
 
   &__image {
@@ -42,8 +43,9 @@
       input {
         padding: 0.8rem;
         border-radius: 8px;
-        border: 1px solid #ddd;
-        background-color: white;
+        border: 1px solid var(--border-light);
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
       }
     }
   }
@@ -66,14 +68,14 @@
       padding: 0.8rem;
       border-radius: 8px;
       border: none;
-      background-color: #3a6288;
-      color: white;
+      background-color: var(--brand-primary);
+      color: var(--text-inverse);
       font-weight: 500;
       cursor: pointer;
       transition: 0.2s ease;
 
       &:hover {
-        background-color: #2f4f6d;
+        background-color: var(--brand-hover);
       }
     }
   }
