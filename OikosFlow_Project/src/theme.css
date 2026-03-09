@@ -93,6 +93,29 @@
   border: 1px solid var(--success-main);
 }
 
+/* Toasts en modo oscuro: fondo más oscuro y menos brillo */
+[data-theme="dark-green"] .toast-exito-personalizado,
+[data-theme="dark-orange"] .toast-exito-personalizado,
+[data-theme="dark-blue"] .toast-exito-personalizado {
+  background: rgba(15, 52, 96, 0.9);
+  border-color: var(--success-main);
+  color: var(--success-soft);
+}
+
+[data-theme="dark-green"] .toast-advertencia-personalizado,
+[data-theme="dark-orange"] .toast-advertencia-personalizado,
+[data-theme="dark-blue"] .toast-advertencia-personalizado {
+  background: rgba(15, 52, 96, 0.9);
+  border-color: var(--warning-main);
+}
+
+[data-theme="dark-green"] .toast-carga-personalizado,
+[data-theme="dark-orange"] .toast-carga-personalizado,
+[data-theme="dark-blue"] .toast-carga-personalizado {
+  background: rgba(15, 52, 96, 0.9);
+  border-color: var(--info-main);
+}
+
 /* Transición suave del fondo al cambiar tema */
 body {
   background-color: var(--bg-primary);

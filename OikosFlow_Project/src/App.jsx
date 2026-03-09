@@ -38,15 +38,16 @@ function App() {
         toastOptions={{
           duration: 3000,
           style: {
-            background: "#ffffff",
-            color: "#2c2c2c",
+            background: "var(--bg-secondary)",
+            color: "var(--text-primary)",
             padding: "16px 24px",
             borderRadius: "16px",
             fontSize: "15px",
             fontWeight: "500",
             minWidth: "320px",
             textAlign: "center",
-            boxShadow: "0 8px 20px rgba(0,0,0,0.12)"
+            boxShadow: "var(--shadow-lg)",
+            border: "1px solid var(--border-light)",
           },
           success: {
             iconTheme: {
