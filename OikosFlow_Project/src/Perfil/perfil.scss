@@ -5,6 +5,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-bottom: 100px;
 
   &__title {
     text-align: center;
@@ -56,12 +57,12 @@
   /* ===== BOTONES INFERIORES ===== */
   &__actions {
     display: flex;
-    gap: 1rem;                 // separación entre botones
+    gap: 1rem; // separación entre botones
     margin-bottom: 1rem;
     justify-content: center;
 
     button {
-      flex: 1;                  // ambos ocupan el mismo ancho
+      flex: 1; // ambos ocupan el mismo ancho
       padding: 0.8rem;
       border-radius: 8px;
       border: none;
@@ -78,32 +79,71 @@
   }
 
   &__bottom-nav {
-    margin-top: auto;
+    position: fixed;
+    /* ← Fija en la pantalla */
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 0.8rem 0;
-    background-color: white;
-    border-top: 1px solid #ddd;
+    padding: 0.6rem 0;
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-light);
+    z-index: 1000;
+    box-shadow: var(--shadow-lg);
 
     a {
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       text-decoration: none;
-      color: #888;
-      font-size: 0.75rem;
-      gap: 4px;
-      transition: 0.2s ease;
+      color: var(--text-tertiary);
+      font-size: 0.7rem;
+      gap: 2px;
+      transition: all 0.2s ease;
+      padding: 0.3rem;
 
       svg {
         font-size: 1.2rem;
+        color: var(--text-tertiary);
+        transition: color 0.2s;
+      }
+
+      &.active {
+        color: var(--brand-primary);
+        font-weight: 600;
+
+        svg {
+          color: var(--brand-primary);
+        }
+      }
+
+      &:hover {
+        color: var(--brand-primary);
+
+        svg {
+          color: var(--brand-primary);
+        }
       }
     }
+  }
 
-    a.active {
-      color: #4f5d75;
-      font-weight: 600;
+  // Ajuste responsive para móviles
+  @media (max-width: 480px) {
+    padding-bottom: 70px;
+
+    &__bottom-nav {
+      padding: 0.5rem 0;
+
+      a {
+        font-size: 0.65rem;
+
+        svg {
+          font-size: 1.1rem;
+        }
+      }
     }
   }
 }
