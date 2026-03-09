@@ -4,7 +4,6 @@ import { FaHome, FaTasks, FaHistory, FaUser, FaCheckCircle } from "react-icons/f
 import { FaExclamationTriangle, FaSpinner, FaTimes, FaClock, FaSyncAlt, FaStar } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
 import tareasData from "../data/datos_tareas_unificados.json";
 import usuariosData from "../data/usuarios.json";
 import "./tarea.scss";
@@ -355,13 +354,6 @@ const TareasPrueba = () => {
     // ===== RENDER =====
     return (
         <div className="tareas-prueba">
-            <Toaster
-                position="top-center"
-                reverseOrder={false}
-                gutter={8}
-                containerClassName="toaster-container"
-                toastOptions={{ duration: 3000 }}
-            />
 
             {/* Header */}
             <header className="tareas-prueba__header">

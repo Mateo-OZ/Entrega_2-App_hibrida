@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { FaBell, FaUserCircle, FaHome, FaTasks, FaHistory, FaUser, FaCheckCircle, FaExclamationTriangle, FaSpinner, FaTimes, FaClock, FaDownload, FaUpload, FaSyncAlt } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
 import tareasData from "../data/datos_tareas_unificados.json";
 import usuariosData from "../data/usuarios.json";
 import "../Home/home.scss";
@@ -261,13 +260,6 @@ const Home = () => {
 
     return (
         <div className="home">
-            <Toaster
-                position="top-center"
-                reverseOrder={false}
-                gutter={8}
-                containerClassName="toaster-container"
-                toastOptions={{ duration: 3000 }}
-            />
 
             <header className="home__header">
                 <h1 className="home__title">OikosFlow</h1>

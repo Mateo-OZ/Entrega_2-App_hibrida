@@ -4,27 +4,36 @@ import { useState } from "react";
 import { FaCheckCircle, FaExclamationTriangle, FaTimes, FaClock } from "react-icons/fa";
 import usuariosBase from "../Data/usuarios.json";
 
+const LOGIN_SUCCESS_TOAST_ID = "login-success";
+
 const Login = () => {
   const navigate = useNavigate();
 
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
 
-  // Toast de éxito (exactamente igual al del Home)
+  // Toast de éxito (personalizado, único y de 2s)
   const mostrarToastExito = (mensaje) => {
-    toast.custom((t) => (
-      <div className={`toast-exito-personalizado ${t.visible ? 'toast-enter' : 'toast-exit'}`}>
-        <div className="toast-exito-icon">
-          <FaCheckCircle />
+    // Cerrar cualquier toast de éxito previo del login
+    toast.dismiss(LOGIN_SUCCESS_TOAST_ID);
+
+    toast.custom(
+      (t) => (
+        <div className={`toast-exito-personalizado ${t.visible ? "toast-enter" : "toast-exit"}`}>
+          <div className="toast-exito-icon">
+            <FaCheckCircle />
+          </div>
+          <div className="toast-exito-contenido">
+            <div className="toast-exito-titulo">{mensaje}</div>
+          </div>
         </div>
-        <div className="toast-exito-contenido">
-          <div className="toast-exito-titulo">{mensaje}</div>
-        </div>
-      </div>
-    ), {
-      duration: 2000,
-      position: 'top-center',
-    });
+      ),
+      {
+        id: LOGIN_SUCCESS_TOAST_ID,
+        duration: 2000,
+        position: "top-center",
+      }
+    );
   };
 
   // Toast de error (exactamente igual al del Home)

@@ -14,7 +14,6 @@ import Notificaciones from "./Notificaciones/notificaciones.jsx";
 import "./App.css";
 import "./Auth/auth.scss";
 
-import TareasP from "./toast-pruebas/toast-prueba-tareas.jsx"
 
 const RequireAuth = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem("usuarioActivo");
@@ -100,8 +99,6 @@ function App() {
         <Route path="/auth/recuperar-sms" element={<RecuperarSms />} />
         <Route path="/auth/recuperar-correo" element={<RecuperarCorreo />} />
         <Route path="/notificaciones" element={<Notificaciones />} />
-
-        <Route path="/tareasp" element={<TareasP />} />
 
       </Routes>
     </>
