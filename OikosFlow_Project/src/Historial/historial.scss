@@ -18,42 +18,60 @@
         margin-bottom: 0.5rem;
     }
 
-    /*  TABLA */
+    /* ===== TABLA ===== */
     &__table {
         background: white;
-        border-radius: 8px;
-        overflow: hidden;
+        border-radius: 12px;
+        overflow-x: auto;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 
         .table__header,
         .table__row {
             display: grid;
-            grid-template-columns: 40px 1fr 2fr auto;
+            grid-template-columns: 50px 1.2fr 2.5fr 120px 1fr;
             padding: 0.8rem;
             align-items: center;
-        }
-        
-        .table__header span:nth-child(2),
-        .table__row span:nth-child(2) {
-            padding-right: 1rem;
-        }
-
-        .table__header span:nth-child(3),
-        .table__row span:nth-child(3) {
-            padding-right: 1rem;
+            min-width: 650px;
+            column-gap: 10px;
         }
 
         .table__header {
             font-weight: bold;
             border-bottom: 1px solid #ddd;
             background-color: #f0f0f0;
+            font-size: 0.85rem;
+            color: #555;
         }
 
         .table__row {
             border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+
+        .table__row:hover {
+            background-color: #f7f8fb;
+        }
+
+        .table__row:last-child {
+            border-bottom: none;
+        }
+
+        .table__header span:nth-child(4),
+        .table__row span:nth-child(4) {
+            display: flex;
+            justify-content: center;
+        }
+
+        .table__empty {
+            padding: 1rem;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
         }
     }
 
-    /* ===== PAGINACIÓN (MISMO ESTILO QUE HOME) ===== */
+    /* ===== PAGINACIÓN ===== */
     &__paginacion {
         margin-top: 1rem;
         display: flex;
@@ -109,19 +127,26 @@
         font-weight: bold;
     }
 
-    /* CONTROLES */
+    /* ===== CONTROLES ===== */
     &__controls {
         margin: 1rem 0;
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
+        display: flex;
+        justify-content: center;
         align-items: center;
     }
 
+    /* BOTÓN BUSCAR IGUAL QUE AÑADIR TAREAS */
     .btn-add {
-        justify-self: center;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+        width: fit-content;
+        align-self: center;
     }
 
-    /* BOTTOM NAV */
+    /* ===== BOTTOM NAV ===== */
     &__bottom-nav {
         position: fixed;
         bottom: 0;
@@ -159,26 +184,46 @@
     }
 }
 
-.Estado {
-    padding: 0.3rem 0.6rem;
+/* ===== ESTADOS ===== */
+
+.estado-pendiente {
+    padding: 0.25rem 0.4rem;
     border-radius: 20px;
     text-align: center;
-    font-size: 0.8rem;
-    text-transform: capitalize;
+    font-size: 0.75rem;
+    display: inline-block;
+    white-space: nowrap;
+    min-width: 70px;
+    background-color: var(--warning-soft);
+    color: black;
+    border: 1px solid var(--warning-border);
+    font-weight: bold;
+}
 
-    &.Activo {
-        background-color: #4f5d75;
-        color: white;
-    }
+.estado-proceso {
+    padding: 0.25rem 0.4rem;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    display: inline-block;
+    white-space: nowrap;
+    min-width: 70px;
+    background-color: var(--info-soft);
+    color: var(--info-main);
+    border: 1px solid var(--info-border);
+    font-weight: 500;
+}
 
-    &.Inactivo {
-        background-color: #dcdde1;
-        color: #333;
-    }
-
-    &.Deshabilitado {
-        background-color: transparent;
-        border: 1px solid #4f5d75;
-        color: #4f5d75;
-    }
+.estado-completado {
+    padding: 0.25rem 0.4rem;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    display: inline-block;
+    white-space: nowrap;
+    min-width: 70px;
+    background-color: var(--success-soft);
+    color: var(--success-main);
+    border: 1px solid var(--success-border);
+    font-weight: 500;
 }

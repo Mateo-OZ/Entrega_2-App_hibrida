@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import historialData from "../data/datos_tareas_unificados.json";
+import usuariosData from "../data/usuarios.json";
 import "./historial.scss";
 import { NavLink } from "react-router-dom";
 import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
@@ -8,9 +9,14 @@ const Historial = () => {
 
   const tareasPorPagina = 10;
 
-  const [members, setMembers] = useState(() => {
-    const saved = localStorage.getItem("historial");
+  const [tareas, setTareas] = useState(() => {
+    const saved = localStorage.getItem("tareas");
     return saved ? JSON.parse(saved) : historialData;
+  });
+
+  const [usuarios, setUsuarios] = useState(() => {
+    const saved = localStorage.getItem("usuarios");
+    return saved ? JSON.parse(saved) : usuariosData;
   });
 
   const [showModal, setShowModal] = useState(false);
@@ -18,27 +24,34 @@ const Historial = () => {
   const [paginaActual, setPaginaActual] = useState(1);
 
   useEffect(() => {
-    localStorage.setItem("historial", JSON.stringify(members));
-  }, [members]);
+    localStorage.setItem("tareas", JSON.stringify(tareas));
+  }, [tareas]);
+
+  useEffect(() => {
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+  }, [usuarios]);
+
+  // ===== OBTENER NOMBRE DEL USUARIO =====
+  const getNombreUsuario = (id_usuario) => {
+    const usuario = usuarios.find(u => u.id === id_usuario);
+    return usuario ? usuario.nombre_completo : "Usuario no encontrado";
+  };
 
   const getStatusClass = (status) => {
-    switch (status) {
-      case "Activo":
-        return "Estado Activo";
-      case "Inactivo":
-        return "Estado Inactivo";
-      case "Deshabilitado":
-        return "Estado Deshabilitado";
-      default:
-        return "";
-    }
+    const statusMap = {
+      "Pendiente": "estado-pendiente",
+      "En Proceso": "estado-proceso",
+      "Completado": "estado-completado"
+    };
+
+    return statusMap[status] || "estado-pendiente";
   };
 
   // ===== PAGINACIÓN =====
   const indexUltimo = paginaActual * tareasPorPagina;
   const indexPrimero = indexUltimo - tareasPorPagina;
-  const membersPaginados = members.slice(indexPrimero, indexUltimo);
-  const totalPaginas = Math.ceil(members.length / tareasPorPagina);
+  const tareasPaginadas = tareas.slice(indexPrimero, indexUltimo);
+  const totalPaginas = Math.ceil(tareas.length / tareasPorPagina);
 
   const handlePageChange = (nuevaPagina) => {
     setPaginaActual(nuevaPagina);
@@ -49,13 +62,13 @@ const Historial = () => {
   const handleSearch = (e) => {
     e.preventDefault();
 
-    const filtrados = historialData.filter((member) =>
-      member.nombre_encargado
+    const filtrados = historialData.filter((tarea) =>
+      tarea.trabajo_a_realizar
         .toLowerCase()
         .includes(busqueda.toLowerCase())
     );
 
-    setMembers(filtrados);
+    setTareas(filtrados);
     setPaginaActual(1);
     setShowModal(false);
     setBusqueda("");
@@ -72,23 +85,32 @@ const Historial = () => {
       <h1 className="historial__title">OikosFlow</h1>
 
       <section className="historial__table">
+
         <div className="table__header">
           <span>#</span>
-          <span>Nombre Encargado</span>
-          <span>Trabajo a Realizar</span>
+          <span>Nombre</span>
+          <span>Tarea</span>
           <span>Estado</span>
+          <span>Categoría</span>
         </div>
 
-        {membersPaginados.map((member) => (
-          <div className="table__row" key={member.id}>
-            <span>{member.id}</span>
-            <span>{member.nombre_encargado}</span>
-            <span>{member.trabajo_a_realizar}</span>
-            <span className={getStatusClass(member.estado)}>
-              {member.estado}
+        {tareasPaginadas.map((tarea) => (
+          <div className="table__row" key={tarea.id}>
+            <span>{tarea.id}</span>
+            <span>{getNombreUsuario(tarea.id_usuario)}</span>
+            <span>{tarea.trabajo_a_realizar}</span>
+            <span className={getStatusClass(tarea.estado)}>
+              {tarea.estado}
             </span>
+            <span>{tarea.version || "General"}</span>
           </div>
         ))}
+
+        {tareas.length === 0 && (
+          <div className="table__empty">
+            No hay resultados
+          </div>
+        )}
 
       </section>
 
@@ -141,6 +163,7 @@ const Historial = () => {
 
       {/* BOTTOM NAV */}
       <nav className="historial__bottom-nav">
+
         <NavLink to="/home" end>
           <FaHome />
           <span>Home</span>
@@ -160,6 +183,7 @@ const Historial = () => {
           <FaUser />
           <span>Perfil</span>
         </NavLink>
+
       </nav>
 
       {/* MODAL */}
@@ -167,21 +191,22 @@ const Historial = () => {
         <div className="modal-overlay">
           <div className="modal-card">
 
-            <h2 className="modal-title">Buscar Encargado</h2>
+            <h2 className="modal-title">Buscar Tarea</h2>
 
             <form onSubmit={handleSearch} className="modal-form">
 
               <div className="form-group">
-                <label>Nombre</label>
+                <label>Tarea</label>
                 <input
                   type="text"
                   value={busqueda}
                   onChange={(e) => setBusqueda(e.target.value)}
-                  placeholder="Ej: Tiago"
+                  placeholder="Ej: Limpiar"
                 />
               </div>
 
               <div className="modal-buttons">
+
                 <button
                   type="button"
                   className="btn-cancel"
@@ -193,9 +218,11 @@ const Historial = () => {
                 <button type="submit" className="btn-add-task">
                   Buscar
                 </button>
+
               </div>
 
             </form>
+
           </div>
         </div>
       )}
