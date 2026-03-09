@@ -53,10 +53,28 @@
     justify-content: center;
   }
 
+  /* ===== BOTONES INFERIORES ===== */
   &__actions {
     display: flex;
-    justify-content: space-between;
+    gap: 1rem;                 // separación entre botones
     margin-bottom: 1rem;
+    justify-content: center;
+
+    button {
+      flex: 1;                  // ambos ocupan el mismo ancho
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: none;
+      background-color: #3a6288;
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s ease;
+
+      &:hover {
+        background-color: #2f4f6d;
+      }
+    }
   }
 
   &__bottom-nav {

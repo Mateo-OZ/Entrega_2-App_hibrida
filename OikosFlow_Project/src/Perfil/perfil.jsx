@@ -25,14 +25,14 @@ const Perfil = () => {
     correo: ""
   });
 
-  // Carga el usuarioActivo desde localStorage y lo asigna al estado
+  // Carga el usuarioActivo desde localStorage
   useEffect(() => {
     const stored = localStorage.getItem("usuarioActivo");
 
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        // Actualiza el usuario mostrado
+
         setUsuario({
           nombre_completo: parsed.nombre_completo || "",
           telefono: parsed.telefono || "",
@@ -41,13 +41,14 @@ const Perfil = () => {
         });
 
         setFormData(parsed);
+
       } catch (error) {
         console.error("Error leyendo usuarioActivo:", error);
       }
     }
   }, []);
 
-  // Actualiza usuario, tareas, historial y miembros en localStorage
+  // Actualiza usuario, tareas, historial y miembros
   const handleEdit = (e) => {
     e.preventDefault();
 
@@ -64,47 +65,49 @@ const Perfil = () => {
     localStorage.setItem("usuarios", JSON.stringify(actualizados));
     localStorage.setItem("usuarioActivo", JSON.stringify(formData));
 
-    // Actualiza en las tareas el nombre del usuario
     const tareasStored = localStorage.getItem("tareas");
     if (tareasStored) {
       const tareas = JSON.parse(tareasStored);
+
       const tareasActualizadas = tareas.map((t) =>
         t.nombre_encargado === nombreAnterior
           ? { ...t, nombre_encargado: nombreNuevo }
           : t
       );
+
       localStorage.setItem("tareas", JSON.stringify(tareasActualizadas));
     }
 
-    // actualiza en historial el nombre del usuario
     const historialStored = localStorage.getItem("historial");
     if (historialStored) {
       const historial = JSON.parse(historialStored);
+
       const historialActualizado = historial.map((h) =>
         h.nombre_encargado === nombreAnterior
           ? { ...h, nombre_encargado: nombreNuevo }
           : h
       );
+
       localStorage.setItem("historial", JSON.stringify(historialActualizado));
     }
 
-    // Actualizar en home los nommbres de los miembros
     const membersStored = localStorage.getItem("members");
     if (membersStored) {
       const members = JSON.parse(membersStored);
+
       const membersActualizados = members.map((m) =>
         m.nombre_encargado === nombreAnterior
           ? { ...m, nombre_encargado: nombreNuevo }
           : m
       );
+
       localStorage.setItem("members", JSON.stringify(membersActualizados));
     }
-    // Actualiza el estado y cierra el modal
+
     setUsuario(formData);
     setShowModal(false);
   };
 
-  // Cierra el modal de edición sin hacer cambios
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -122,7 +125,6 @@ const Perfil = () => {
       {/* Campos */}
       <div className="perfil__form">
 
-        {/* Inputs en modo para que el usuario solo pueda ver la información sin editar */}
         <div className="form-group">
           <label>Nombre Completo</label>
           <input type="text" value={usuario.nombre_completo} readOnly />
@@ -145,7 +147,7 @@ const Perfil = () => {
 
       </div>
 
-      {/* BOTONES */}
+      {/* BOTÓN EDITAR */}
       <div className="perfil__edit">
         <button
           className="btn btn-add"
@@ -155,24 +157,26 @@ const Perfil = () => {
         </button>
       </div>
 
+      {/* BOTONES INFERIORES */}
       <div className="perfil__actions">
+
         <button
           className="btn btn-add"
           onClick={() => navigate("/auth/recuperar-sms")}
         >
-          Cambiar <br /> Contraseña
+          Cambiar Clave
         </button>
 
         <button
           className="btn btn-add"
           onClick={() => {
-            //borra el usuario activo del local storage
             localStorage.removeItem("usuarioActivo");
             navigate("/auth");
           }}
         >
           Cerrar Sesión
         </button>
+
       </div>
 
       {/* BOTTOM NAV */}
@@ -241,6 +245,7 @@ const Perfil = () => {
               </div>
 
               <div className="modal-buttons">
+
                 <button
                   type="button"
                   className="btn-cancel"
@@ -252,6 +257,7 @@ const Perfil = () => {
                 <button type="submit" className="btn-add-task">
                   Guardar
                 </button>
+
               </div>
 
             </form>
