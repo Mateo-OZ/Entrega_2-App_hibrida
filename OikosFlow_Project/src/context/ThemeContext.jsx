@@ -9,19 +9,13 @@ const THEMES = [
   "dark-blue",
 ];
 
-const STORAGE_KEY = "oikosflow-theme";
-
 const ThemeContext = createContext(null);
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved && THEMES.includes(saved) ? saved : "light-blue";
-  });
+  const [theme, setTheme] = useState("light-blue");
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
 
   const cycleTheme = () => {
@@ -32,7 +26,7 @@ export const ThemeProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, cycleTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, cycleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

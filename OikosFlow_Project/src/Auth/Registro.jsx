@@ -64,13 +64,16 @@ const Registro = () => {
 
         <h2 className="auth__form-title">Crea una cuenta</h2>
         <p className="auth__form-subtitle">
-          Ingresa los datos de tu cuenta o{" "}
+          Ingresa los datos de tu cuenta para empezar a organizar tu hogar.
+        </p>
+        <p className="auth__form-subtitle auth__form-subtitle--muted">
+          ¿Ya tienes una cuenta?{" "}
           <button
             type="button"
             className="auth__link-button"
             onClick={() => navigate("/auth/login")}
           >
-            inicia sesión
+            Inicia sesión aquí
           </button>
         </p>
 

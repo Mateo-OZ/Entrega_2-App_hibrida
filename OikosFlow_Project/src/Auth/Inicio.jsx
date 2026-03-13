@@ -1,15 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useTheme } from "../context/ThemeContext";
-import { FaPalette } from "react-icons/fa";
-
-const DARK_THEMES = ["dark-green", "dark-orange", "dark-blue"];
-
 const Inicio = () => {
   const navigate = useNavigate();
-  const { theme, cycleTheme } = useTheme();
-  const isDark = DARK_THEMES.includes(theme);
-  const glassWallSrc = isDark ? "/images/glass-wall-dark.jpeg" : "/images/glass-wall.jpeg";
 
   useEffect(() => {
     const usuarioActivo = localStorage.getItem("usuarioActivo");
@@ -20,10 +12,10 @@ const Inicio = () => {
 
   return (
     <div className="auth">
-      <div className="auth__card">
+      <div className="auth__card auth__card--inicio">
         <div className="auth__brand">
           <div className="auth__image">
-            <img key={glassWallSrc} src={glassWallSrc} alt="OikosFlow" />
+            <img src="/images/glass-wall.jpeg" alt="OikosFlow" />
           </div>
           <div className="auth__logo-circle">
             <img src="/images/logo-oikosflow.png" alt="Logo OikosFlow" />
@@ -32,6 +24,15 @@ const Inicio = () => {
 
         <h1 className="auth__title">OikosFlow</h1>
         <p className="auth__subtitle">Tu hogar, tu equipo, tu tarea</p>
+        <p className="auth__form-subtitle auth__form-subtitle--muted">
+          Organiza las tareas, comparte responsabilidades y mantén todo bajo control.
+        </p>
+
+        <div className="auth__highlights">
+          <div className="auth__highlight-pill">✔ Tareas compartidas</div>
+          <div className="auth__highlight-pill">✔ Historial claro</div>
+          <div className="auth__highlight-pill">✔ Recordatorios rápidos</div>
+        </div>
 
         <div className="auth__actions">
           <button
@@ -49,15 +50,6 @@ const Inicio = () => {
         </div>
       </div>
 
-      <button
-        type="button"
-        className="auth__theme-toggle"
-        onClick={cycleTheme}
-        aria-label="Cambiar tema"
-        title="Cambiar tema (color y modo claro/oscuro)"
-      >
-        <FaPalette />
-      </button>
     </div>
   );
 };

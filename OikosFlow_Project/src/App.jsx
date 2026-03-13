@@ -1,3 +1,4 @@
+// App.jsx (modificado)
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
@@ -11,9 +12,10 @@ import RecuperarSms from "./Auth/RecuperarSms.jsx";
 import RecuperarCorreo from "./Auth/RecuperarCorreo.jsx";
 import Perfil from "./Perfil/perfil.jsx";
 import Notificaciones from "./Notificaciones/notificaciones.jsx";
+import ThemeSelector from "./ThemeSelector/ThemeSelector.jsx"
 import "./App.css";
 import "./Auth/auth.scss";
-
+import "./ThemeSelector/ThemeSelector.scss"
 
 const RequireAuth = ({ children }) => {
   const isAuthenticated = !!localStorage.getItem("usuarioActivo");
@@ -51,18 +53,22 @@ function App() {
           },
           success: {
             iconTheme: {
-              primary: "#22c55e",   // Verde moderno
+              primary: "#22c55e",
               secondary: "#ffffff"
             }
           },
           error: {
             iconTheme: {
-              primary: "#ef4444",   // Rojo moderno
+              primary: "#ef4444",
               secondary: "#ffffff"
             }
           }
         }}
       />
+
+      {/* ThemeSelector visible en todas las rutas */}
+      <ThemeSelector />
+
       <Routes>
         <Route path="/" element={<Inicio />} />
         <Route
@@ -100,7 +106,6 @@ function App() {
         <Route path="/auth/recuperar-sms" element={<RecuperarSms />} />
         <Route path="/auth/recuperar-correo" element={<RecuperarCorreo />} />
         <Route path="/notificaciones" element={<Notificaciones />} />
-
       </Routes>
     </>
   );

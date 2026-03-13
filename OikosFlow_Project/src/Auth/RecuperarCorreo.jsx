@@ -25,7 +25,9 @@ const RecuperarCorreo = () => {
 
         <h2 className="auth__form-title">Recuperar Contraseña</h2>
         <p className="auth__form-subtitle">Verificación por Gmail</p>
-        <p className="auth__form-subtitle">Ingresa tu correo electrónico</p>
+        <p className="auth__form-subtitle auth__form-subtitle--muted">
+          Ingresa el correo asociado a tu cuenta y te enviaremos instrucciones.
+        </p>
 
         <form className="auth__form" onSubmit={handleSubmit}>
           <label className="auth__label">
@@ -37,18 +39,21 @@ const RecuperarCorreo = () => {
             />
           </label>
 
+          <button className="auth__button auth__button--primary" type="submit">
+            Enviar correo
+          </button>
+        </form>
+
+        <div className="auth__form-footer">
+          <span>¿Prefieres SMS?</span>
           <button
             type="button"
-            className="auth__button auth__button--secondary"
+            className="auth__link-button auth__link-button--small"
             onClick={() => navigate("/auth/recuperar-sms")}
           >
             Recuperar por SMS
           </button>
-
-          <button className="auth__button auth__button--primary" type="submit">
-            Enviar
-          </button>
-        </form>
+        </div>
       </div>
     </div>
   );
