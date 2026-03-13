@@ -7,17 +7,19 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: var(--bg-primary);
+  background:
+    radial-gradient(circle at top left, rgba(44, 95, 138, 0.14), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(230, 138, 92, 0.12), transparent 55%),
+    var(--bg-primary);
   font-family: Arial, sans-serif;
   box-sizing: border-box;
-  transition: background-color 0.4s ease;
+  transition: background 0.4s ease;
 }
 
 .auth__card {
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   margin: 0 auto;
-  flex: 1;
 }
 
 .auth__card--form {
@@ -131,6 +133,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
 }
 
 .auth__button--primary {
@@ -141,6 +144,23 @@
 .auth__button--secondary {
   background-color: var(--bg-tertiary);
   color: var(--text-secondary);
+}
+
+.auth__button--primary:hover {
+  background-color: var(--brand-hover);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.auth__button--secondary:hover {
+  background-color: var(--brand-soft);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.auth__button:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .auth__form-title {
@@ -221,6 +241,12 @@
   color: var(--brand-primary);
   font-size: 0.85rem;
   cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--brand-hover);
+    text-decoration: underline;
+  }
 }
 
 .auth__link-button--small {
@@ -238,6 +264,55 @@
 
   &:hover {
     color: var(--text-secondary);
+  }
+}
+
+/* Ajustes responsivos suaves */
+@media (max-width: 480px) {
+  .auth {
+    padding-inline: 0.9rem;
+  }
+
+  .auth__card--form {
+    margin-top: 0.75rem;
+    padding: 1rem 1rem 1.25rem;
+    border-radius: 14px;
+  }
+
+  .auth__title {
+    font-size: 20px;
+  }
+
+  .auth__form-title {
+    font-size: 1rem;
+  }
+
+  .auth__form-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Layout para pantallas medias / grandes (como 1024x576) */
+@media (min-width: 768px) {
+  .auth {
+    justify-content: center;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .auth__card--form {
+    margin-top: 0;
+    max-height: 90vh;
+    overflow: hidden;
+  }
+
+  .auth__title {
+    font-size: 24px;
+  }
+
+  .auth__form-title {
+    font-size: 1.15rem;
   }
 }
 
