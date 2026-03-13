@@ -12,7 +12,7 @@ const Inicio = () => {
 
   return (
     <div className="auth">
-      <div className="auth__card">
+      <div className="auth__card auth__card--inicio">
         <div className="auth__brand">
           <div className="auth__image">
             <img src="/images/glass-wall.jpeg" alt="OikosFlow" />
@@ -27,6 +27,12 @@ const Inicio = () => {
         <p className="auth__form-subtitle auth__form-subtitle--muted">
           Organiza las tareas, comparte responsabilidades y mantén todo bajo control.
         </p>
+
+        <div className="auth__highlights">
+          <div className="auth__highlight-pill">✔ Tareas compartidas</div>
+          <div className="auth__highlight-pill">✔ Historial claro</div>
+          <div className="auth__highlight-pill">✔ Recordatorios rápidos</div>
+        </div>
 
         <div className="auth__actions">
           <button
