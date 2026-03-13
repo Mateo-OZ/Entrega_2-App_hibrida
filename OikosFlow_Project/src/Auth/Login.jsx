@@ -120,6 +120,9 @@ const Login = () => {
 
         <h2 className="auth__form-title">¡Bienvenido!</h2>
         <p className="auth__form-subtitle">Inicia sesión en tu cuenta</p>
+        <p className="auth__form-subtitle auth__form-subtitle--muted">
+          Accede a tus tareas pendientes, historial y notificaciones en un solo lugar.
+        </p>
 
         <form className="auth__form" onSubmit={handleSubmit}>
           <label className="auth__label">
@@ -149,13 +152,22 @@ const Login = () => {
           </button>
         </form>
 
-        <button
-          type="button"
-          className="auth__link-button auth__link-button--small"
-          onClick={() => navigate("/auth/recuperar-sms")}
-        >
-          Olvidé Contraseña
-        </button>
+        <div className="auth__form-footer">
+          <button
+            type="button"
+            className="auth__link-button auth__link-button--small"
+            onClick={() => navigate("/auth/recuperar-sms")}
+          >
+            Olvidé Contraseña
+          </button>
+          <button
+            type="button"
+            className="auth__link-button auth__link-button--small"
+            onClick={() => navigate("/auth/registro")}
+          >
+            ¿No tienes cuenta? Regístrate
+          </button>
+        </div>
       </div>
     </div>
   );

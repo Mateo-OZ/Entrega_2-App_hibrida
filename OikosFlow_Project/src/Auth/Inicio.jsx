@@ -24,6 +24,9 @@ const Inicio = () => {
 
         <h1 className="auth__title">OikosFlow</h1>
         <p className="auth__subtitle">Tu hogar, tu equipo, tu tarea</p>
+        <p className="auth__form-subtitle auth__form-subtitle--muted">
+          Organiza las tareas, comparte responsabilidades y mantén todo bajo control.
+        </p>
 
         <div className="auth__actions">
           <button
