@@ -20,28 +20,32 @@
         background: var(--bg-secondary);
         border-radius: 12px;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        overflow: hidden; /* Elimina scroll horizontal */
-        
+        overflow: hidden;
+        /* Elimina scroll horizontal */
+
         .table__header,
         .table__row {
             display: grid;
             grid-template-columns: auto 1fr auto auto;
             gap: 12px;
             padding: 0.8rem;
-            align-items: start; /* Alinea al inicio para mejor visualización */
+            align-items: start;
+            /* Alinea al inicio para mejor visualización */
         }
-        
+
         /* En desktop, tamaños fijos */
         /* Desktop */
         @media (min-width: 769px) {
+
             .table__header,
             .table__row {
                 grid-template-columns: 80px minmax(200px, 1fr) 100px 60px;
             }
         }
-        
+
         /* En móvil, más flexibles */
         @media (max-width: 768px) {
+
             .table__header,
             .table__row {
                 grid-template-columns: 60px 1fr 85px auto;
@@ -103,18 +107,18 @@
         cursor: pointer;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
         position: relative;
-        
+
         &:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            
+
             .user-tooltip {
                 display: block;
                 opacity: 1;
                 visibility: visible;
             }
         }
-        
+
         /* En móvil más pequeño */
         @media (max-width: 480px) {
             width: 32px;
@@ -138,7 +142,7 @@
         white-space: nowrap;
         z-index: 1000;
         pointer-events: none;
-        
+
         &::after {
             content: '';
             position: absolute;
@@ -160,26 +164,29 @@
         white-space: normal;
         overflow-wrap: break-word;
         hyphens: auto;
-        
+
         /* Límite de 3 líneas */
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
-        line-clamp: 3; /* ← Propiedad estándar para eliminar el warning */
+        line-clamp: 3;
+        /* ← Propiedad estándar para eliminar el warning */
         overflow: hidden;
-    
-        
+
+
         @media (max-width: 768px) {
             font-size: 0.8rem;
-            -webkit-line-clamp: 3; /* 3 líneas en móvil también */
+            -webkit-line-clamp: 3;
+            /* 3 líneas en móvil también */
         }
-        
+
         @media (max-width: 480px) {
             font-size: 0.75rem;
-            -webkit-line-clamp: 4; /* 4 líneas en móvil muy pequeño */
+            -webkit-line-clamp: 4;
+            /* 4 líneas en móvil muy pequeño */
         }
     }
-    
+
     /* Si prefieres que se muestre completo sin límite de líneas, usa esta versión */
     .task-title-full {
         color: var(--text-primary);
@@ -202,7 +209,7 @@
         display: inline-block;
         width: fit-content;
         white-space: nowrap;
-        
+
         @media (max-width: 480px) {
             font-size: 0.7rem;
             padding: 3px 6px;
@@ -222,7 +229,7 @@
         min-width: 65px;
         font-weight: 500;
         width: fit-content;
-        
+
         @media (max-width: 480px) {
             font-size: 0.65rem;
             min-width: 55px;
@@ -341,7 +348,7 @@
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.2s ease;
-        
+
         &:hover {
             transform: translateY(-2px);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -389,17 +396,19 @@
 @media (max-width: 480px) {
     .historial {
         padding: 0.6rem;
-        
+
         &__table {
+
             .table__header,
             .table__row {
                 gap: 6px;
                 padding: 0.5rem;
             }
         }
-        
+
         .task-category {
-            white-space: normal; /* Permitir wrap en categoría si es necesario */
+            white-space: normal;
+            /* Permitir wrap en categoría si es necesario */
             word-break: break-word;
         }
     }
@@ -427,25 +436,25 @@
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     position: relative;
-    
+
     &:hover {
         transform: scale(1.1);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        
+
         .category-tooltip {
             display: block;
             opacity: 1;
             visibility: visible;
         }
     }
-    
+
     /* Tamaños responsivos */
     @media (max-width: 768px) {
         width: 32px;
         height: 32px;
         font-size: 16px;
     }
-    
+
     @media (max-width: 480px) {
         width: 28px;
         height: 28px;
@@ -469,7 +478,7 @@
     white-space: nowrap;
     z-index: 1000;
     pointer-events: none;
-    
+
     &::after {
         content: '';
         position: absolute;
@@ -484,6 +493,7 @@
 
 /* ===== AJUSTES DE COLUMNAS PARA LA TABLA ===== */
 .historial__table {
+
     .table__header,
     .table__row {
         display: grid;
@@ -492,16 +502,18 @@
         padding: 0.8rem;
         align-items: center;
     }
-    
+
     @media (min-width: 769px) {
+
         .table__header,
         .table__row {
             grid-template-columns: 80px minmax(200px, 1fr) 100px 60px;
             gap: 12px;
         }
     }
-    
+
     @media (max-width: 768px) {
+
         .table__header,
         .table__row {
             grid-template-columns: 60px 1fr 85px 50px;

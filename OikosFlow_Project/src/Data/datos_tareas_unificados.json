@@ -208,5 +208,47 @@
         "trabajo_a_realizar": "Organizar manuales de usuario",
         "estado": "En Proceso",
         "version": "Organización"
+    },
+    {
+        "id": 31,
+        "id_usuario": 1,
+        "trabajo_a_realizar": "Limpiar el horno y la estufa a fondo",
+        "estado": "Completado",
+        "version": "Aseo"
+    },
+    {
+        "id": 32,
+        "id_usuario": 2,
+        "trabajo_a_realizar": "Ordenar el garaje y tirar cosas innecesarias",
+        "estado": "Completado",
+        "version": "Organización"
+    },
+    {
+        "id": 33,
+        "id_usuario": 3,
+        "trabajo_a_realizar": "Pagar el recibo de la luz",
+        "estado": "Completado",
+        "version": "Administración"
+    },
+    {
+        "id": 34,
+        "id_usuario": 4,
+        "trabajo_a_realizar": "Comprar jabón y detergente",
+        "estado": "Completado",
+        "version": "Suministros"
+    },
+    {
+        "id": 35,
+        "id_usuario": 5,
+        "trabajo_a_realizar": "Podar el césped del jardín",
+        "estado": "Completado",
+        "version": "Jardinería"
+    },
+    {
+        "id": 36,
+        "id_usuario": 6,
+        "trabajo_a_realizar": "Cambiar el foco del pasillo",
+        "estado": "Completado",
+        "version": "Mantenimiento"
     }
 ]

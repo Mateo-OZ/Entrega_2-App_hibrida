@@ -99,12 +99,20 @@ const Home = () => {
         return map[status] || "estado-pendiente";
     };
 
-    // ===== PAGINACIÓN INTELIGENTE =====
+    // ===== PAGINACIÓN INTELIGENTE - CORREGIDA =====
     const getPaginationNumbers = (currentPage, totalPages) => {
-        if (totalPages <= 3) return Array.from({ length: totalPages }, (_, i) => i + 1);
+        if (totalPages <= 5) {
+            return Array.from({ length: totalPages }, (_, i) => i + 1);
+        }
 
-        if (currentPage <= 3) return [1, 2, 3, '...', totalPages];
-        if (currentPage >= totalPages - 1) return [1, '...', totalPages - 2, totalPages - 1, totalPages];
+        if (currentPage <= 3) {
+            return [1, 2, 3, '...', totalPages];
+        }
+
+        if (currentPage >= totalPages - 2) {
+            return [1, '...', totalPages - 2, totalPages - 1, totalPages];
+        }
+
         return [1, '...', currentPage, currentPage + 1, currentPage + 2, '...', totalPages];
     };
 
@@ -381,7 +389,8 @@ const Home = () => {
                     <button onClick={() => handlePageChange(paginaActual - 1)} disabled={paginaActual === 1} className="paginacion-btn">← Anterior</button>
                     <div className="paginacion-numeros">
                         {getPaginationNumbers(paginaActual, totalPaginas).map((num, idx) => (
-                            num === '...' ? <span key={`dots-${idx}`} className="paginacion-puntos">...</span> :
+                            num === '...' ?
+                                <span key={`dots-${idx}`} className="paginacion-puntos">...</span> :
                                 <button key={num} onClick={() => handlePageChange(num)} className={`paginacion-numero ${paginaActual === num ? 'activo' : ''}`}>{num}</button>
                         ))}
                     </div>
