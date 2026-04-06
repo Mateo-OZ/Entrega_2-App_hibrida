@@ -1,5 +1,5 @@
 .historial {
-    padding: 1.5rem;
+    padding: 1rem;
     font-family: Arial, sans-serif;
     background-color: var(--bg-primary);
     min-height: 100vh;
@@ -15,20 +15,39 @@
         color: var(--brand-primary);
     }
 
-    /* ===== TABLA ===== */
+    /* ===== TABLA - SIN SCROLL HORIZONTAL ===== */
     &__table {
         background: var(--bg-secondary);
         border-radius: 12px;
-        overflow-x: auto;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-
+        overflow: hidden; /* Elimina scroll horizontal */
+        
         .table__header,
         .table__row {
             display: grid;
-            grid-template-columns: 60px 1fr 120px 100px;
-            padding: 0.8rem 1rem;
-            align-items: center;
-            gap: 15px;
+            grid-template-columns: auto 1fr auto auto;
+            gap: 12px;
+            padding: 0.8rem;
+            align-items: start; /* Alinea al inicio para mejor visualización */
+        }
+        
+        /* En desktop, tamaños fijos */
+        /* Desktop */
+        @media (min-width: 769px) {
+            .table__header,
+            .table__row {
+                grid-template-columns: 80px minmax(200px, 1fr) 100px 60px;
+            }
+        }
+        
+        /* En móvil, más flexibles */
+        @media (max-width: 768px) {
+            .table__header,
+            .table__row {
+                grid-template-columns: 60px 1fr 85px auto;
+                gap: 8px;
+                padding: 0.6rem;
+            }
         }
 
         .table__header {
@@ -54,14 +73,14 @@
         }
 
         .table__empty {
-            padding: 1rem;
+            padding: 2rem;
             text-align: center;
             color: var(--text-tertiary);
             font-size: 0.9rem;
         }
     }
 
-    /* ===== USER INFO CON AVATAR Y TOOLTIP ===== */
+    /* ===== USER INFO CON AVATAR ===== */
     .user-info {
         display: flex;
         align-items: center;
@@ -76,7 +95,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: bold;
         color: white;
         flex-shrink: 0;
@@ -84,63 +103,147 @@
         cursor: pointer;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
         position: relative;
+        
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            
+            .user-tooltip {
+                display: block;
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+        
+        /* En móvil más pequeño */
+        @media (max-width: 480px) {
+            width: 32px;
+            height: 32px;
+            font-size: 11px;
+        }
     }
 
-    .user-avatar:hover .user-tooltip {
-        display: block;
-        opacity: 1;
-        visibility: visible;
-    }
-
-    /* Tooltip personalizado */
     .user-tooltip {
         display: none;
         position: absolute;
         bottom: 100%;
         left: 50%;
         transform: translateX(-50%);
-        margin-bottom: 10px;
-        background-color: #333;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 12px;
+        margin-bottom: 8px;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
         white-space: nowrap;
         z-index: 1000;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease;
         pointer-events: none;
+        
+        &::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 4px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+        }
     }
 
-    /* Flecha del tooltip */
-    .user-tooltip::after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 5px;
-        border-style: solid;
-        border-color: #333 transparent transparent transparent;
-    }
-
+    /* ===== TAREA - CON SALTOS DE LÍNEA ===== */
     .task-title {
         color: var(--text-primary);
+        font-size: 0.85rem;
+        line-height: 1.4;
+        word-break: break-word; /* Rompe palabras largas */
+        white-space: normal; /* Permite saltos de línea */
+        overflow-wrap: break-word; /* Wrap para palabras largas */
+        hyphens: auto; /* Guiones automáticos cuando sea posible */
+        
+        /* Máximo de líneas antes de truncar (opcional) */
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Máximo 3 líneas */
+        -webkit-box-orient: vertical;
         overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        
+        @media (max-width: 768px) {
+            font-size: 0.8rem;
+            -webkit-line-clamp: 3; /* 3 líneas en móvil también */
+        }
+        
+        @media (max-width: 480px) {
+            font-size: 0.75rem;
+            -webkit-line-clamp: 4; /* 4 líneas en móvil muy pequeño */
+        }
+    }
+    
+    /* Si prefieres que se muestre completo sin límite de líneas, usa esta versión */
+    .task-title-full {
+        color: var(--text-primary);
+        font-size: 0.85rem;
+        line-height: 1.4;
+        word-break: break-word;
+        white-space: normal;
+        overflow-wrap: break-word;
+        hyphens: auto;
     }
 
+    /* ===== CATEGORÍA ===== */
     .task-category {
         color: var(--text-secondary);
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         background-color: var(--bg-tertiary);
         padding: 4px 8px;
         border-radius: 12px;
         text-align: center;
         display: inline-block;
         width: fit-content;
+        white-space: nowrap;
+        
+        @media (max-width: 480px) {
+            font-size: 0.7rem;
+            padding: 3px 6px;
+        }
+    }
+
+    /* ===== ESTADO ===== */
+    .estado-pendiente,
+    .estado-proceso,
+    .estado-completado {
+        padding: 0.25rem 0.4rem;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 0.7rem;
+        display: inline-block;
+        white-space: nowrap;
+        min-width: 65px;
+        font-weight: 500;
+        width: fit-content;
+        
+        @media (max-width: 480px) {
+            font-size: 0.65rem;
+            min-width: 55px;
+            padding: 0.2rem 0.3rem;
+        }
+    }
+
+    .estado-pendiente {
+        background-color: var(--warning-soft);
+        color: var(--warning-main);
+        border: 1px solid var(--warning-main);
+    }
+
+    .estado-proceso {
+        background-color: var(--info-soft);
+        color: var(--info-main);
+        border: 1px solid var(--info-main);
+    }
+
+    .estado-completado {
+        background-color: var(--success-soft);
+        color: var(--success-main);
+        border: 1px solid var(--success-main);
     }
 
     /* ===== PAGINACIÓN ===== */
@@ -154,7 +257,7 @@
     }
 
     .paginacion-btn {
-        padding: 0.6rem 1rem;
+        padding: 0.5rem 1rem;
         border-radius: 6px;
         border: 1px solid var(--border-medium);
         background: var(--bg-secondary);
@@ -162,7 +265,7 @@
         font-weight: 500;
         cursor: pointer;
         transition: all 0.2s ease;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         white-space: nowrap;
 
         &:hover:not(:disabled) {
@@ -187,8 +290,8 @@
     }
 
     .paginacion-numero {
-        min-width: 36px;
-        height: 36px;
+        min-width: 34px;
+        height: 34px;
         border-radius: 6px;
         border: 1px solid var(--border-medium);
         background: var(--bg-secondary);
@@ -199,7 +302,7 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s ease;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
 
         &:hover:not(.activo) {
             background: var(--bg-tertiary);
@@ -226,10 +329,21 @@
         display: inline-flex;
         justify-content: center;
         align-items: center;
-        padding: 0.8rem 2rem;
-        font-size: 1rem;
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
         width: fit-content;
         align-self: center;
+        background-color: var(--brand-primary);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
     }
 
     /* ===== BOTTOM NAV ===== */
@@ -242,7 +356,7 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-        padding: 0.8rem 0;
+        padding: 0.6rem 0;
         background-color: var(--bg-secondary);
         border-top: 1px solid var(--border-light);
 
@@ -253,7 +367,7 @@
             justify-content: center;
             text-decoration: none;
             color: var(--text-tertiary);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             gap: 4px;
             transition: 0.2s ease;
 
@@ -269,73 +383,133 @@
     }
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
+/* ===== RESPONSIVE EXTRA PARA PANTALLAS MUY PEQUEÑAS ===== */
+@media (max-width: 480px) {
     .historial {
+        padding: 0.6rem;
+        
         &__table {
             .table__header,
             .table__row {
-                grid-template-columns: 50px 1fr 100px 85px;
-                gap: 8px;
-                padding: 0.6rem 0.8rem;
+                gap: 6px;
+                padding: 0.5rem;
             }
         }
-
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            font-size: 12px;
-        }
-
-        .task-title {
-            font-size: 0.85rem;
-        }
-
-        .user-tooltip {
-            display: none;
+        
+        .task-category {
+            white-space: normal; /* Permitir wrap en categoría si es necesario */
+            word-break: break-word;
         }
     }
 }
 
-/* ===== ESTADOS ===== */
-.estado-pendiente {
-    padding: 0.25rem 0.4rem;
-    border-radius: 20px;
-    text-align: center;
-    font-size: 0.75rem;
-    display: inline-block;
-    white-space: nowrap;
-    min-width: 70px;
-    background-color: var(--warning-soft);
-    color: var(--warning-main);
-    border: 1px solid var(--warning-main);
-    font-weight: bold;
+/* ===== CATEGORÍA CON ICONOS ===== */
+.category-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    position: relative;
 }
 
-.estado-proceso {
-    padding: 0.25rem 0.4rem;
-    border-radius: 20px;
-    text-align: center;
-    font-size: 0.75rem;
-    display: inline-block;
-    white-space: nowrap;
-    min-width: 70px;
-    background-color: var(--info-soft);
-    color: var(--info-main);
-    border: 1px solid var(--info-main);
-    font-weight: 500;
+.category-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: white;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        
+        .category-tooltip {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+    
+    /* Tamaños responsivos */
+    @media (max-width: 768px) {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+    
+    @media (max-width: 480px) {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
 }
 
-.estado-completado {
-    padding: 0.25rem 0.4rem;
-    border-radius: 20px;
-    text-align: center;
-    font-size: 0.75rem;
-    display: inline-block;
+/* Tooltip para la categoría */
+.category-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
     white-space: nowrap;
-    min-width: 70px;
-    background-color: var(--success-soft);
-    color: var(--success-main);
-    border: 1px solid var(--success-main);
-    font-weight: 500;
+    z-index: 1000;
+    pointer-events: none;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 4px;
+        border-style: solid;
+        border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+    }
+}
+
+/* ===== AJUSTES DE COLUMNAS PARA LA TABLA ===== */
+.historial__table {
+    .table__header,
+    .table__row {
+        display: grid;
+        grid-template-columns: auto 1fr auto auto;
+        gap: 12px;
+        padding: 0.8rem;
+        align-items: center;
+    }
+    
+    @media (min-width: 769px) {
+        .table__header,
+        .table__row {
+            grid-template-columns: 80px minmax(200px, 1fr) 100px 60px;
+            gap: 12px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .table__header,
+        .table__row {
+            grid-template-columns: 60px 1fr 85px 50px;
+            gap: 8px;
+            padding: 0.6rem;
+        }
+    }
+}
+
+/* Espacio extra entre Encargado y Tarea */
+.user-info {
+    margin-right: 20px;
 }

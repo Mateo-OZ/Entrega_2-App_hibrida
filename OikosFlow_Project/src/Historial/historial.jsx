@@ -3,7 +3,13 @@ import historialData from "../data/datos_tareas_unificados.json";
 import usuariosData from "../data/usuarios.json";
 import "./historial.scss";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
+import { 
+  FaHome, FaTasks, FaHistory, FaUser, 
+  FaBroom, FaFileInvoice, FaShoppingCart, FaLeaf, 
+  FaWrench, FaBoxes, FaBed, FaQuestionCircle,
+  FaClipboardList, FaPlug, FaWater, FaTools,
+  FaFireExtinguisher, FaFirstAid, FaShieldAlt
+} from "react-icons/fa";
 
 const Historial = () => {
 
@@ -56,6 +62,38 @@ const Historial = () => {
       hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
     }
     return colores[Math.abs(hash) % colores.length];
+  };
+
+  // ===== MAPA DE ICONOS POR CATEGORÍA =====
+  const getCategoryIcon = (categoria) => {
+    const iconMap = {
+      "Aseo": <FaBroom />,
+      "Administración": <FaFileInvoice />,
+      "Suministros": <FaShoppingCart />,
+      "Jardinería": <FaLeaf />,
+      "Mantenimiento": <FaWrench />,
+      "Organización": <FaBoxes />,
+      "Lencería": <FaBed />,
+      "General": <FaClipboardList />
+    };
+    
+    return iconMap[categoria] || <FaQuestionCircle />;
+  };
+
+  // ===== OBTENER COLOR DE FONDO PARA LA CATEGORÍA =====
+  const getCategoryColor = (categoria) => {
+    const colorMap = {
+      "Aseo": "#4ECDC4",
+      "Administración": "#45B7D1",
+      "Suministros": "#96CEB4",
+      "Jardinería": "#88D4AB",
+      "Mantenimiento": "#FFA07A",
+      "Organización": "#DDA0DD",
+      "Lencería": "#F7DC6F",
+      "General": "#BB8FCE"
+    };
+    
+    return colorMap[categoria] || "#95A5A6";
   };
 
   const getStatusClass = (status) => {
@@ -118,6 +156,9 @@ const Historial = () => {
           const nombreUsuario = getNombreUsuario(tarea.id_usuario);
           const iniciales = getInitials(nombreUsuario);
           const avatarColor = getAvatarColor(nombreUsuario);
+          const categoria = tarea.version || "General";
+          const CategoryIcon = getCategoryIcon(categoria);
+          const categoryColor = getCategoryColor(categoria);
           
           return (
             <div className="table__row" key={tarea.id}>
@@ -134,7 +175,16 @@ const Historial = () => {
               <span className={getStatusClass(tarea.estado)}>
                 {tarea.estado}
               </span>
-              <span className="task-category">{tarea.version || "General"}</span>
+              <div className="category-info">
+                <div 
+                  className="category-icon" 
+                  style={{ backgroundColor: categoryColor }}
+                  data-categoria={categoria}
+                >
+                  {CategoryIcon}
+                  <span className="category-tooltip">{categoria}</span>
+                </div>
+              </div>
             </div>
           );
         })}
