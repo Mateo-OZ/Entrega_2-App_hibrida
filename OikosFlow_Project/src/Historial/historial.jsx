@@ -12,10 +12,12 @@ import {
 const Historial = () => {
   const tareasPorPagina = 6;
 
+  // Cargar solo tareas completadas
   const [tareas, setTareas] = useState(() => {
     const saved = localStorage.getItem("tareas");
     const todasLasTareas = saved ? JSON.parse(saved) : historialData;
-    // Filtrar solo las tareas completadas
+    // En historial solo mostramos completadas, pero NO las
+    // volvemos a guardar en localStorage para no afectar Home/Tareas
     return todasLasTareas.filter(tarea => tarea.estado === "Completado");
   });
 
@@ -27,12 +29,6 @@ const Historial = () => {
   const [showModal, setShowModal] = useState(false);
   const [busqueda, setBusqueda] = useState("");
   const [paginaActual, setPaginaActual] = useState(1);
-
-  useEffect(() => {
-    // Guardar solo las tareas completadas en localStorage
-    const tareasCompletadas = tareas.filter(tarea => tarea.estado === "Completado");
-    localStorage.setItem("tareas", JSON.stringify(tareasCompletadas));
-  }, [tareas]);
 
   useEffect(() => {
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
@@ -81,7 +77,6 @@ const Historial = () => {
   };
 
   // ===== PAGINACIÓN INTELIGENTE =====
-  // ===== PAGINACIÓN INTELIGENTE - VERSIÓN SIMPLE =====
   const getPaginationNumbers = (currentPage, totalPages) => {
     if (totalPages <= 5) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -93,16 +88,6 @@ const Historial = () => {
 
     if (currentPage >= totalPages - 2) {
       return [1, '...', totalPages - 2, totalPages - 1, totalPages];
-    }
-
-    // Para página 4 con totalPages = 6
-    if (currentPage === 4 && totalPages === 6) {
-      return [1, '...', 4, 5, 6];
-    }
-
-    // Para página 4 con totalPages > 6
-    if (currentPage === 4 && totalPages > 6) {
-      return [1, '...', 4, 5, 6, '...', totalPages];
     }
 
     return [1, '...', currentPage, currentPage + 1, currentPage + 2, '...', totalPages];
@@ -120,7 +105,6 @@ const Historial = () => {
   // ===== BÚSQUEDA (solo dentro de tareas completadas) =====
   const handleSearch = (e) => {
     e.preventDefault();
-    // Obtener todas las tareas completadas del historial original
     const todasLasTareas = JSON.parse(localStorage.getItem("tareas")) || historialData;
     const tareasCompletadas = todasLasTareas.filter(tarea => tarea.estado === "Completado");
 
@@ -191,8 +175,8 @@ const Historial = () => {
           <div className="paginacion-numeros">
             {getPaginationNumbers(paginaActual, totalPaginas).map((num, idx) => (
               num === '...' ?
-                <span key={`dots-${idx}-${paginaActual}`} className="paginacion-puntos">...</span> :
-                <button key={`page-${num}`} onClick={() => handlePageChange(num)} className={`paginacion-numero ${paginaActual === num ? 'activo' : ''}`}>
+                <span key={`dots-${idx}`} className="paginacion-puntos">...</span> :
+                <button key={num} onClick={() => handlePageChange(num)} className={`paginacion-numero ${paginaActual === num ? 'activo' : ''}`}>
                   {num}
                 </button>
             ))}
