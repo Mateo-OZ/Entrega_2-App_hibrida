@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { FaCheckCircle, FaExclamationTriangle, FaTimes, FaClock } from "react-icons/fa";
-import usuariosBase from "../Data/usuarios.json";
+import { FaCheckCircle, FaExclamationTriangle, FaTimes, FaClock, FaEye, FaEyeSlash } from "react-icons/fa";
+import usuariosBase from "../data/usuarios.json";
 
 const LOGIN_SUCCESS_TOAST_ID = "login-success";
 
@@ -11,6 +11,7 @@ const Login = () => {
 
   const [correo, setCorreo] = useState("");
   const [contrasena, setContrasena] = useState("");
+  const [mostrarContrasena, setMostrarContrasena] = useState(false);
 
   // Toast de éxito (personalizado, único y de 2s)
   const mostrarToastExito = (mensaje) => {
@@ -104,6 +105,11 @@ const Login = () => {
     }, 1500);
   };
 
+  // Función para toggle de mostrar/ocultar contraseña
+  const toggleMostrarContrasena = () => {
+    setMostrarContrasena(!mostrarContrasena);
+  };
+
   return (
     <div className="auth">
       <div className="auth__card auth__card--form">
@@ -130,21 +136,31 @@ const Login = () => {
             <input
               className="auth__input"
               type="email"
-              placeholder="example@mail.com"
+              placeholder="Example@mail.com"
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
             />
           </label>
 
-          <label className="auth__label">
+          <label className="auth__label auth__label--password">
             Contraseña
-            <input
-              className="auth__input"
-              type="password"
-              placeholder="contraseña"
-              value={contrasena}
-              onChange={(e) => setContrasena(e.target.value)}
-            />
+            <div className="auth__password-wrapper">
+              <input
+                className="auth__input auth__input--password"
+                type={mostrarContrasena ? "text" : "password"}
+                placeholder="Contraseña"
+                value={contrasena}
+                onChange={(e) => setContrasena(e.target.value)}
+              />
+              <button
+                type="button"
+                className="auth__password-toggle"
+                onClick={toggleMostrarContrasena}
+                tabIndex={-1}
+              >
+                {mostrarContrasena ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </label>
 
           <button className="auth__button auth__button--primary" type="submit">

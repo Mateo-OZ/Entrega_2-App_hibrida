@@ -370,3 +370,75 @@
     transform: scale(0.95);
   }
 }
+
+// ===== CAMPO DE CONTRASEÑA CON OJO =====
+.auth__label--password {
+  position: relative;
+}
+
+.auth__password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.auth__input--password {
+  width: 100%;
+  padding-right: 45px !important; /* Espacio para el botón del ojo */
+}
+
+.auth__password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-tertiary);
+  font-size: 1.2rem;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+  z-index: 10;
+  
+  &:hover {
+      color: var(--brand-primary);
+  }
+  
+  &:active {
+      transform: translateY(-50%) scale(0.95);
+  }
+}
+
+/* Asegurar que el input no tenga problemas de padding en móvil */
+@media (max-width: 480px) {
+  .auth__input--password {
+      padding-right: 40px !important;
+  }
+  
+  .auth__password-toggle {
+      right: 8px;
+      padding: 6px;
+      font-size: 1.1rem;
+  }
+}
+
+.auth__input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.auth__input-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text-tertiary);
+  
+  &:hover {
+      color: var(--brand-primary);
+  }
+}
