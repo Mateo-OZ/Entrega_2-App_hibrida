@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
-import { FaBell, FaUserCircle } from "react-icons/fa";
-import { FaHome, FaTasks, FaHistory, FaUser, FaCheckCircle } from "react-icons/fa";
-import { FaExclamationTriangle, FaSpinner, FaTimes, FaClock, FaSyncAlt, FaStar } from "react-icons/fa";
+import { 
+  FaBell, FaUserCircle, FaHome, FaTasks, FaHistory, FaUser, 
+  FaCheckCircle, FaExclamationTriangle, FaSpinner, FaTimes, 
+  FaClock, FaSyncAlt, FaStar,
+  FaBroom, FaFileInvoice, FaShoppingCart, FaLeaf, 
+  FaWrench, FaBoxes, FaBed, FaQuestionCircle, FaClipboardList
+} from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import tareasData from "../data/datos_tareas_unificados.json";
@@ -76,6 +80,57 @@ const TareasPrueba = () => {
             "Completado": "estado-completado"
         };
         return statusMap[status] || "estado-pendiente";
+    };
+
+    // ===== OBTENER INICIALES =====
+    const getInitials = (nombreCompleto) => {
+        if (!nombreCompleto || nombreCompleto === "Usuario no encontrado") return "?";
+        const palabras = nombreCompleto.trim().split(" ");
+        if (palabras.length === 1) return palabras[0].charAt(0).toUpperCase();
+        return (palabras[0].charAt(0) + palabras[palabras.length - 1].charAt(0)).toUpperCase();
+    };
+
+    // ===== OBTENER COLOR DE FONDO PARA EL AVATAR =====
+    const getAvatarColor = (nombre) => {
+        const colores = [
+            "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7",
+            "#DDA0DD", "#98D8C8", "#F7DC6F", "#BB8FCE", "#85C1E2"
+        ];
+        let hash = 0;
+        for (let i = 0; i < nombre.length; i++) {
+            hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return colores[Math.abs(hash) % colores.length];
+    };
+
+    // ===== MAPA DE ICONOS POR CATEGORÍA =====
+    const getCategoryIcon = (categoria) => {
+        const iconMap = {
+            "Aseo": <FaBroom />,
+            "Administración": <FaFileInvoice />,
+            "Suministros": <FaShoppingCart />,
+            "Jardinería": <FaLeaf />,
+            "Mantenimiento": <FaWrench />,
+            "Organización": <FaBoxes />,
+            "Lencería": <FaBed />,
+            "General": <FaClipboardList />
+        };
+        return iconMap[categoria] || <FaQuestionCircle />;
+    };
+
+    // ===== OBTENER COLOR DE FONDO PARA LA CATEGORÍA =====
+    const getCategoryColor = (categoria) => {
+        const colorMap = {
+            "Aseo": "#4ECDC4",
+            "Administración": "#45B7D1",
+            "Suministros": "#96CEB4",
+            "Jardinería": "#88D4AB",
+            "Mantenimiento": "#FFA07A",
+            "Organización": "#DDA0DD",
+            "Lencería": "#F7DC6F",
+            "General": "#BB8FCE"
+        };
+        return colorMap[categoria] || "#95A5A6";
     };
 
     // Obtener categorías únicas
@@ -410,10 +465,9 @@ const TareasPrueba = () => {
                 <span>← Desliza para ver más →</span>
             </div>
 
-            {/* Tabla */}
+            {/* Tabla modificada con avatares e iconos */}
             <section className="tareas-prueba__table">
                 <div className="table__header">
-                    <span>#</span>
                     <span>Encargado</span>
                     <span>Tarea</span>
                     <span>Estado</span>
@@ -421,26 +475,50 @@ const TareasPrueba = () => {
                     <span>Acciones</span>
                 </div>
 
-                {tareasPaginadas.map((tarea) => (
-                    <div className="table__row" key={tarea.id}>
-                        <span>{tarea.id}</span>
-                        <span>{getNombreUsuario(tarea.id_usuario)}</span>
-                        <span>{tarea.trabajo_a_realizar}</span>
-                        <span className={getStatusClass(tarea.estado)}>
-                            {tarea.estado}
-                        </span>
-                        <span>{tarea.version || "General"}</span>
-                        <span>
-                            <button
-                                className="btn-completar"
-                                onClick={() => handleOpenCompleteModal(tarea)}
-                                title="Cambiar estado"
-                            >
-                                <FaCheckCircle />
-                            </button>
-                        </span>
-                    </div>
-                ))}
+                {tareasPaginadas.map((tarea) => {
+                    const nombreUsuario = getNombreUsuario(tarea.id_usuario);
+                    const iniciales = getInitials(nombreUsuario);
+                    const avatarColor = getAvatarColor(nombreUsuario);
+                    const categoria = tarea.version || "General";
+                    const CategoryIcon = getCategoryIcon(categoria);
+                    const categoryColor = getCategoryColor(categoria);
+                    
+                    return (
+                        <div className="table__row" key={tarea.id}>
+                            <div className="user-info">
+                                <div 
+                                    className="user-avatar" 
+                                    style={{ backgroundColor: avatarColor }}
+                                >
+                                    {iniciales}
+                                    <span className="user-tooltip">{nombreUsuario}</span>
+                                </div>
+                            </div>
+                            <span className="task-title">{tarea.trabajo_a_realizar}</span>
+                            <span className={getStatusClass(tarea.estado)}>
+                                {tarea.estado}
+                            </span>
+                            <div className="category-info">
+                                <div 
+                                    className="category-icon" 
+                                    style={{ backgroundColor: categoryColor }}
+                                >
+                                    {CategoryIcon}
+                                    <span className="category-tooltip">{categoria}</span>
+                                </div>
+                            </div>
+                            <span>
+                                <button
+                                    className="btn-completar"
+                                    onClick={() => handleOpenCompleteModal(tarea)}
+                                    title="Cambiar estado"
+                                >
+                                    <FaCheckCircle />
+                                </button>
+                            </span>
+                        </div>
+                    );
+                })}
 
                 {tareasFiltradas.length === 0 && (
                     <div className="table__empty">
