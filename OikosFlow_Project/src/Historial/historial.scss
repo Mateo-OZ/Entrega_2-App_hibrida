@@ -156,16 +156,18 @@
         color: var(--text-primary);
         font-size: 0.85rem;
         line-height: 1.4;
-        word-break: break-word; /* Rompe palabras largas */
-        white-space: normal; /* Permite saltos de línea */
-        overflow-wrap: break-word; /* Wrap para palabras largas */
-        hyphens: auto; /* Guiones automáticos cuando sea posible */
+        word-break: break-word;
+        white-space: normal;
+        overflow-wrap: break-word;
+        hyphens: auto;
         
-        /* Máximo de líneas antes de truncar (opcional) */
+        /* Límite de 3 líneas */
         display: -webkit-box;
-        -webkit-line-clamp: 3; /* Máximo 3 líneas */
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
+        line-clamp: 3; /* ← Propiedad estándar para eliminar el warning */
         overflow: hidden;
+    
         
         @media (max-width: 768px) {
             font-size: 0.8rem;

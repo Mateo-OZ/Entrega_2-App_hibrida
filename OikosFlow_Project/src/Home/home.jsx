@@ -1,5 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { FaBell, FaUserCircle, FaHome, FaTasks, FaHistory, FaUser, FaCheckCircle, FaExclamationTriangle, FaSpinner, FaTimes, FaClock, FaDownload, FaUpload, FaSyncAlt } from "react-icons/fa";
+import { 
+  FaBell, FaUserCircle, FaHome, FaTasks, FaHistory, FaUser, 
+  FaCheckCircle, FaExclamationTriangle, FaSpinner, FaTimes, 
+  FaClock, FaDownload, FaUpload, FaSyncAlt,
+  FaBroom, FaFileInvoice, FaShoppingCart, FaLeaf, 
+  FaWrench, FaBoxes, FaBed, FaQuestionCircle, FaClipboardList
+} from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import tareasData from "../data/datos_tareas_unificados.json";
@@ -64,6 +70,57 @@ const Home = () => {
     const getNombreUsuario = (id_usuario) => {
         const usuario = usuarios.find(u => u.id === id_usuario);
         return usuario ? usuario.nombre_completo : "Usuario no encontrado";
+    };
+
+    // ===== OBTENER INICIALES =====
+    const getInitials = (nombreCompleto) => {
+        if (!nombreCompleto || nombreCompleto === "Usuario no encontrado") return "?";
+        const palabras = nombreCompleto.trim().split(" ");
+        if (palabras.length === 1) return palabras[0].charAt(0).toUpperCase();
+        return (palabras[0].charAt(0) + palabras[palabras.length - 1].charAt(0)).toUpperCase();
+    };
+
+    // ===== OBTENER COLOR DE FONDO PARA EL AVATAR =====
+    const getAvatarColor = (nombre) => {
+        const colores = [
+            "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7",
+            "#DDA0DD", "#98D8C8", "#F7DC6F", "#BB8FCE", "#85C1E2"
+        ];
+        let hash = 0;
+        for (let i = 0; i < nombre.length; i++) {
+            hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return colores[Math.abs(hash) % colores.length];
+    };
+
+    // ===== MAPA DE ICONOS POR CATEGORÍA =====
+    const getCategoryIcon = (categoria) => {
+        const iconMap = {
+            "Aseo": <FaBroom />,
+            "Administración": <FaFileInvoice />,
+            "Suministros": <FaShoppingCart />,
+            "Jardinería": <FaLeaf />,
+            "Mantenimiento": <FaWrench />,
+            "Organización": <FaBoxes />,
+            "Lencería": <FaBed />,
+            "General": <FaClipboardList />
+        };
+        return iconMap[categoria] || <FaQuestionCircle />;
+    };
+
+    // ===== OBTENER COLOR DE FONDO PARA LA CATEGORÍA =====
+    const getCategoryColor = (categoria) => {
+        const colorMap = {
+            "Aseo": "#4ECDC4",
+            "Administración": "#45B7D1",
+            "Suministros": "#96CEB4",
+            "Jardinería": "#88D4AB",
+            "Mantenimiento": "#FFA07A",
+            "Organización": "#DDA0DD",
+            "Lencería": "#F7DC6F",
+            "General": "#BB8FCE"
+        };
+        return colorMap[categoria] || "#95A5A6";
     };
 
     const getStatusClass = (status) => {
@@ -214,14 +271,12 @@ const Home = () => {
 
         const errores = [];
 
-        // Validar tipo de archivo
         if (file.type !== "application/json") {
             errores.push("El archivo debe ser de tipo JSON");
             mostrarToastAdvertencia("Archivo inválido", errores);
             return;
         }
 
-        // Validar tamaño (máximo 5MB)
         if (file.size > 5 * 1024 * 1024) {
             errores.push("El archivo no puede ser mayor a 5MB");
             mostrarToastAdvertencia("Archivo demasiado grande", errores);
@@ -242,7 +297,6 @@ const Home = () => {
                     return;
                 }
 
-                // Validar estructura básica
                 const tieneFormatoValido = parsedData.every(tarea =>
                     tarea.id && tarea.id_usuario && tarea.trabajo_a_realizar && tarea.estado
                 );
@@ -268,12 +322,11 @@ const Home = () => {
         };
 
         reader.readAsText(file);
-        event.target.value = ''; // Resetear input
+        event.target.value = '';
     };
 
     return (
         <div className="home">
-            {/* Indicador de modo desarrollador (opcional) */}
             {isDeveloperMode() && (
                 <div className="dev-mode-banner">
                     <FaSyncAlt /> Modo Desarrollador Activado - Herramientas adicionales visibles
@@ -294,7 +347,6 @@ const Home = () => {
                 </div>
             </header>
 
-            {/* Filtros */}
             <div className="home__filtros">
                 <label htmlFor="categoria">Filtrar por: </label>
                 <select
@@ -312,12 +364,11 @@ const Home = () => {
                 </span>
             </div>
 
-            {/* Scroll hint */}
             <div className="scroll-hint">
                 <span>← Desliza para ver más →</span>
             </div>
 
-            {/* Tabla */}
+            {/* Tabla modificada con avatares e iconos */}
             <section className="home__table">
                 <div className="table__header">
                     <span>Encargado</span>
@@ -326,16 +377,41 @@ const Home = () => {
                     <span>Categoría</span>
                 </div>
 
-                {tareasPaginadas.map((tarea) => (
-                    <div className="table__row" key={tarea.id}>
-                        <span>{getNombreUsuario(tarea.id_usuario)}</span>
-                        <span>{tarea.trabajo_a_realizar}</span>
-                        <span className={getStatusClass(tarea.estado)}>
-                            {tarea.estado}
-                        </span>
-                        <span>{tarea.version || "General"}</span>
-                    </div>
-                ))}
+                {tareasPaginadas.map((tarea) => {
+                    const nombreUsuario = getNombreUsuario(tarea.id_usuario);
+                    const iniciales = getInitials(nombreUsuario);
+                    const avatarColor = getAvatarColor(nombreUsuario);
+                    const categoria = tarea.version || "General";
+                    const CategoryIcon = getCategoryIcon(categoria);
+                    const categoryColor = getCategoryColor(categoria);
+                    
+                    return (
+                        <div className="table__row" key={tarea.id}>
+                            <div className="user-info">
+                                <div 
+                                    className="user-avatar" 
+                                    style={{ backgroundColor: avatarColor }}
+                                >
+                                    {iniciales}
+                                    <span className="user-tooltip">{nombreUsuario}</span>
+                                </div>
+                            </div>
+                            <span className="task-title">{tarea.trabajo_a_realizar}</span>
+                            <span className={getStatusClass(tarea.estado)}>
+                                {tarea.estado}
+                            </span>
+                            <div className="category-info">
+                                <div 
+                                    className="category-icon" 
+                                    style={{ backgroundColor: categoryColor }}
+                                >
+                                    {CategoryIcon}
+                                    <span className="category-tooltip">{categoria}</span>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
 
                 {tareasFiltradas.length === 0 && (
                     <div className="table__empty">
@@ -344,7 +420,6 @@ const Home = () => {
                 )}
             </section>
 
-            {/* Paginación */}
             {totalPaginas > 1 && (
                 <div className="home__paginacion">
                     <button
@@ -377,7 +452,6 @@ const Home = () => {
                 </div>
             )}
 
-            {/* Botones de control - Solo visible para desarrolladores */}
             <div className="home__controls">
                 <div className="home__export-import">
                     <button onClick={handleDownloadJSON} className="btn-add btn-with-icon">
@@ -395,7 +469,6 @@ const Home = () => {
                     />
                 </div>
                 
-                {/* Botón de restaurar sistema - SOLO para desarrolladores */}
                 {isDeveloperMode() && (
                     <button onClick={handleFullReset} className="btn-add btn-with-icon dev-reset-btn">
                         <FaSyncAlt /> Restaurar sistema
@@ -403,7 +476,6 @@ const Home = () => {
                 )}
             </div>
 
-            {/* Barra de navegación */}
             <nav className="home__bottom-nav">
                 <NavLink to="/home" end className={({ isActive }) => isActive ? "active" : ""}>
                     <FaHome />
