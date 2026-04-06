@@ -37,6 +37,27 @@ const Historial = () => {
     return usuario ? usuario.nombre_completo : "Usuario no encontrado";
   };
 
+  // ===== OBTENER INICIALES =====
+  const getInitials = (nombreCompleto) => {
+    if (!nombreCompleto || nombreCompleto === "Usuario no encontrado") return "?";
+    const palabras = nombreCompleto.trim().split(" ");
+    if (palabras.length === 1) return palabras[0].charAt(0).toUpperCase();
+    return (palabras[0].charAt(0) + palabras[palabras.length - 1].charAt(0)).toUpperCase();
+  };
+
+  // ===== OBTENER COLOR DE FONDO PARA EL AVATAR =====
+  const getAvatarColor = (nombre) => {
+    const colores = [
+      "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7",
+      "#DDA0DD", "#98D8C8", "#F7DC6F", "#BB8FCE", "#85C1E2"
+    ];
+    let hash = 0;
+    for (let i = 0; i < nombre.length; i++) {
+      hash = nombre.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colores[Math.abs(hash) % colores.length];
+  };
+
   const getStatusClass = (status) => {
     const statusMap = {
       "Pendiente": "estado-pendiente",
@@ -93,16 +114,30 @@ const Historial = () => {
           <span>Categoría</span>
         </div>
 
-        {tareasPaginadas.map((tarea) => (
-          <div className="table__row" key={tarea.id}>
-            <span>{getNombreUsuario(tarea.id_usuario)}</span>
-            <span>{tarea.trabajo_a_realizar}</span>
-            <span className={getStatusClass(tarea.estado)}>
-              {tarea.estado}
-            </span>
-            <span>{tarea.version || "General"}</span>
-          </div>
-        ))}
+        {tareasPaginadas.map((tarea) => {
+          const nombreUsuario = getNombreUsuario(tarea.id_usuario);
+          const iniciales = getInitials(nombreUsuario);
+          const avatarColor = getAvatarColor(nombreUsuario);
+          
+          return (
+            <div className="table__row" key={tarea.id}>
+              <div className="user-info">
+                <div 
+                  className="user-avatar" 
+                  style={{ backgroundColor: avatarColor }}
+                >
+                  {iniciales}
+                  <span className="user-tooltip">{nombreUsuario}</span>
+                </div>
+              </div>
+              <span className="task-title">{tarea.trabajo_a_realizar}</span>
+              <span className={getStatusClass(tarea.estado)}>
+                {tarea.estado}
+              </span>
+              <span className="task-category">{tarea.version || "General"}</span>
+            </div>
+          );
+        })}
 
         {tareas.length === 0 && (
           <div className="table__empty">
