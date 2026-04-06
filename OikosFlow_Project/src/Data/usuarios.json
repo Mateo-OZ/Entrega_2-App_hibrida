@@ -5,7 +5,8 @@
     "telefono": "+57 3000000000",
     "fecha_nacimiento": "2000-01-01",
     "correo": "tiago@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": true
   },
   {
     "id": 2,
@@ -13,7 +14,8 @@
     "telefono": "+57 3000000001",
     "fecha_nacimiento": "1998-05-12",
     "correo": "darlene@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 3,
@@ -21,7 +23,8 @@
     "telefono": "+57 3000000002",
     "fecha_nacimiento": "1995-11-20",
     "correo": "ronald@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 4,
@@ -29,7 +32,8 @@
     "telefono": "+57 3000000003",
     "fecha_nacimiento": "1992-03-15",
     "correo": "jerome@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 5,
@@ -37,7 +41,8 @@
     "telefono": "+57 3000000004",
     "fecha_nacimiento": "1988-07-08",
     "correo": "robert@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 6,
@@ -45,7 +50,8 @@
     "telefono": "+57 3000000005",
     "fecha_nacimiento": "1993-09-22",
     "correo": "bessie@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 7,
@@ -53,7 +59,8 @@
     "telefono": "+57 3000000006",
     "fecha_nacimiento": "1990-12-01",
     "correo": "mark@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 8,
@@ -61,7 +68,8 @@
     "telefono": "+57 3000000007",
     "fecha_nacimiento": "1996-04-17",
     "correo": "angela@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 9,
@@ -69,7 +77,8 @@
     "telefono": "+57 3000000008",
     "fecha_nacimiento": "1985-06-30",
     "correo": "john@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 10,
@@ -77,7 +86,8 @@
     "telefono": "+57 3000000009",
     "fecha_nacimiento": "1999-02-14",
     "correo": "laura@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 11,
@@ -85,7 +95,8 @@
     "telefono": "+57 3000000010",
     "fecha_nacimiento": "1991-08-25",
     "correo": "pedro@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 12,
@@ -93,7 +104,8 @@
     "telefono": "+57 3000000011",
     "fecha_nacimiento": "1994-10-03",
     "correo": "sofia@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 13,
@@ -101,7 +113,8 @@
     "telefono": "+57 3000000012",
     "fecha_nacimiento": "1989-01-19",
     "correo": "daniel@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 14,
@@ -109,7 +122,8 @@
     "telefono": "+57 3000000013",
     "fecha_nacimiento": "1997-07-07",
     "correo": "albert@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   },
   {
     "id": 15,
@@ -117,6 +131,7 @@
     "telefono": "+57 3000000014",
     "fecha_nacimiento": "1980-06-14",
     "correo": "trump@mail.com",
-    "contrasena": "123456"
+    "contrasena": "123456",
+    "esDesarrollador": false
   }
 ]

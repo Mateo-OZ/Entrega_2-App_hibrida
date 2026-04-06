@@ -130,7 +130,7 @@ const Login = () => {
             <input
               className="auth__input"
               type="email"
-              placeholder="correo@mail.com"
+              placeholder="example@mail.com"
               value={correo}
               onChange={(e) => setCorreo(e.target.value)}
             />
@@ -141,7 +141,7 @@ const Login = () => {
             <input
               className="auth__input"
               type="password"
-              placeholder="••••••••"
+              placeholder="contraseña"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
             />

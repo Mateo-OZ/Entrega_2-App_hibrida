@@ -9,7 +9,7 @@ import "../Home/home.scss";
 const Home = () => {
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
-    const tareasPorPagina = 10;
+    const tareasPorPagina = 6;
 
     // Estados
     const [tareas, setTareas] = useState(() => {
@@ -24,6 +24,7 @@ const Home = () => {
 
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todas");
     const [paginaActual, setPaginaActual] = useState(1);
+    const [usuarioActual, setUsuarioActual] = useState(null);
 
     // Efectos
     useEffect(() => {
@@ -34,18 +35,30 @@ const Home = () => {
         localStorage.setItem("usuarios", JSON.stringify(usuarios));
     }, [usuarios]);
 
-    // Utilidades
-    const getCurrentUser = () => {
+    // Cargar usuario actual al inicio
+    useEffect(() => {
         const storedUser = localStorage.getItem("usuarioActivo");
         if (storedUser) {
             try {
                 const parsed = JSON.parse(storedUser);
-                return parsed.nombre_completo || "Invitado";
+                setUsuarioActual(parsed);
             } catch {
                 console.error("usuarioActivo inválido");
             }
         }
+    }, []);
+
+    // Utilidades
+    const getCurrentUser = () => {
+        if (usuarioActual) {
+            return usuarioActual.nombre_completo || "Invitado";
+        }
         return "Invitado";
+    };
+
+    // Verificar si el usuario actual tiene permisos de desarrollador
+    const isDeveloperMode = () => {
+        return usuarioActual?.esDesarrollador === true;
     };
 
     const getNombreUsuario = (id_usuario) => {
@@ -260,6 +273,12 @@ const Home = () => {
 
     return (
         <div className="home">
+            {/* Indicador de modo desarrollador (opcional) */}
+            {isDeveloperMode() && (
+                <div className="dev-mode-banner">
+                    <FaSyncAlt /> Modo Desarrollador Activado - Herramientas adicionales visibles
+                </div>
+            )}
 
             <header className="home__header">
                 <h1 className="home__title">OikosFlow</h1>
@@ -301,7 +320,6 @@ const Home = () => {
             {/* Tabla */}
             <section className="home__table">
                 <div className="table__header">
-                    <span>#</span>
                     <span>Encargado</span>
                     <span>Tarea</span>
                     <span>Estado</span>
@@ -310,7 +328,6 @@ const Home = () => {
 
                 {tareasPaginadas.map((tarea) => (
                     <div className="table__row" key={tarea.id}>
-                        <span>{tarea.id}</span>
                         <span>{getNombreUsuario(tarea.id_usuario)}</span>
                         <span>{tarea.trabajo_a_realizar}</span>
                         <span className={getStatusClass(tarea.estado)}>
@@ -360,7 +377,7 @@ const Home = () => {
                 </div>
             )}
 
-            {/* Botones de control */}
+            {/* Botones de control - Solo visible para desarrolladores */}
             <div className="home__controls">
                 <div className="home__export-import">
                     <button onClick={handleDownloadJSON} className="btn-add btn-with-icon">
@@ -377,9 +394,13 @@ const Home = () => {
                         style={{ display: "none" }}
                     />
                 </div>
-                <button onClick={handleFullReset} className="btn-add btn-with-icon">
-                    <FaSyncAlt /> Restaurar sistema
-                </button>
+                
+                {/* Botón de restaurar sistema - SOLO para desarrolladores */}
+                {isDeveloperMode() && (
+                    <button onClick={handleFullReset} className="btn-add btn-with-icon dev-reset-btn">
+                        <FaSyncAlt /> Restaurar sistema
+                    </button>
+                )}
             </div>
 
             {/* Barra de navegación */}

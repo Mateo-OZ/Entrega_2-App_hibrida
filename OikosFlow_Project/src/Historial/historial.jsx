@@ -7,7 +7,7 @@ import { FaHome, FaTasks, FaHistory, FaUser } from "react-icons/fa";
 
 const Historial = () => {
 
-  const tareasPorPagina = 10;
+  const tareasPorPagina = 6;
 
   const [tareas, setTareas] = useState(() => {
     const saved = localStorage.getItem("tareas");
@@ -87,8 +87,7 @@ const Historial = () => {
       <section className="historial__table">
 
         <div className="table__header">
-          <span>#</span>
-          <span>Nombre</span>
+          <span>Encargado</span>
           <span>Tarea</span>
           <span>Estado</span>
           <span>Categoría</span>
@@ -96,7 +95,6 @@ const Historial = () => {
 
         {tareasPaginadas.map((tarea) => (
           <div className="table__row" key={tarea.id}>
-            <span>{tarea.id}</span>
             <span>{getNombreUsuario(tarea.id_usuario)}</span>
             <span>{tarea.trabajo_a_realizar}</span>
             <span className={getStatusClass(tarea.estado)}>
